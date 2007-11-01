@@ -57,4 +57,16 @@
             <timezone>+1</timezone>
         </developer>
     </developers>
+
+    <repositories>
+        <repository>
+            <id>objectweb-snapshot</id>
+            <name>ObjectWeb Snapshot repository</name>
+            <url>http://maven.objectweb.org/maven2-snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
 </project>

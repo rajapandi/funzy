@@ -27,8 +27,6 @@ public class Variable<T extends Comparable<T>, E extends Enum<E>> {
 	public Variable(T minimum, T maximum, Class<E> literals)
 			throws IllegalRangeException {
 		checkRange(minimum, maximum, "Wrong input value");
-		System.err.println(minimum + "<" + maximum + " checked: "
-				+ minimum.compareTo(maximum));
 		min = minimum;
 		max = maximum;
 		functions = newEnumMap(literals);
