@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>no.uio.funzy</groupId>
+    <artifactId>funzy</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>Funzy</name>
+
+    <description>
+        Having fun with Fuzzy Logic! Funzy is an extensible
+        implementation of a fuzzy logic reasoning engine written in
+        Java.
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.common</groupId>
+            <artifactId>google-collect</artifactId>
+            <version>0.5-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin><!-- default compiler compliance level configuration -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <inceptionYear>2007</inceptionYear>
+
+    <developers>
+        <developer>
+            <name>Romain Rouvoy</name>
+            <id>rouvoy</id>
+            <email>rouvoy@ifi.uio.no</email>
+            <organization>Universitetet i Oslo</organization>
+            <organizationUrl>http://www.ifi.uio.no</organizationUrl>
+            <roles>
+                <role>Project manager</role>
+                <role>Developer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
+</project>
