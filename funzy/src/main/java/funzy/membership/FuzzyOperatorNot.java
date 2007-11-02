@@ -17,14 +17,27 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.core;
+package funzy.membership;
 
+import com.google.common.base.Function;
 
 /**
- * Implementation of the fuzzyfier.
+ * Implementation of a Fuzzy NOT function.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class Fuzzyfier {
+public class FuzzyOperatorNot<T extends Number> implements Function<T, Double> {
+	private final Function<T, Double> delegate;
+
+	public FuzzyOperatorNot(Function<T, Double> function) {
+		delegate = function;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.google.common.base.Function#apply(java.lang.Object)
+	 */
+	public Double apply(T value) {
+		return 1 - delegate.apply(value);
+	}
 }

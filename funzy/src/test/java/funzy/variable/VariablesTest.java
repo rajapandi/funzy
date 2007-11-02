@@ -19,22 +19,37 @@
 // THE SOFTWARE. 
 package funzy.variable;
 
-import static funzy.core.Variables.newVariable;
+import static funzy.core.Variables.newInputVariable;
 
 import org.junit.Test;
 
 import funzy.core.IllegalRangeException;
 import funzy.literals.SimpleDegree;
 
+/**
+ * Test cases for the literal variables.
+ * 
+ * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
+ * @version $Revision$
+ */
 public class VariablesTest {
-
 	@Test
-	public void CheckNewIntVariable() {
-		newVariable(0,100,SimpleDegree.class);
+	public void CheckNewEnumIntVariable() {
+		newInputVariable(0,100,SimpleDegree.class);
 	}
 	
 	@Test(expected=IllegalRangeException.class)
-	public void CheckFailureNewIntVariable() {
-		newVariable(100,0,SimpleDegree.class);
+	public void CheckFailureNewEnumIntVariable() {
+		newInputVariable(100,0,SimpleDegree.class);
+	}
+
+	@Test
+	public void CheckNewDoubleVariable() {
+		newInputVariable(0.0,100.0);
+	}
+	
+	@Test(expected=IllegalRangeException.class)
+	public void CheckFailureNewDoubleVariable() {
+		newInputVariable(100.0,0.0);
 	}
 }
