@@ -1,12 +1,10 @@
 package funzy.core;
 
-import static com.google.common.collect.Maps.newEnumMap;
 import static com.google.common.collect.Maps.newHashMap;
 import static funzy.core.Configuration.LOG;
 import static java.util.logging.Level.FINEST;
 import static java.util.logging.Logger.getLogger;
 
-import java.util.EnumMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
@@ -19,32 +17,32 @@ import com.google.common.base.Function;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class Variable<T extends Comparable<T>, E extends Enum<E>> {
+public class Variable<T extends Comparable<T>, K> {
 	private final static Logger log = getLogger("fuzzy.variable");
 	private final T min, max;
-	private final EnumMap<E, Function<T, Double>> functions;
+	private final Map<K, Function<T, Double>> functions;
 
-	public Variable(T minimum, T maximum, Class<E> literals)
+	public Variable(T minimum, T maximum, Map<K, Function<T, Double>> func)
 			throws IllegalRangeException {
 		checkRange(minimum, maximum, "Wrong input value");
 		min = minimum;
 		max = maximum;
-		functions = newEnumMap(literals);
+		functions = func;
 	}
 
-	public Variable<T, E> add(E literal, Function<T, Double> function) {
+	public Variable<T, K> add(K literal, Function<T, Double> function) {
 		functions.put(literal, function);
 		return this;
 	}
 
-	public EnumMap<E, Double> membership(T value) {
+	public Map<K, Double> membership(T value) {
 		checkRange(value, min, max, "Input value should be within [" + min
 				+ "," + max + "]");
-		Map<E, Double> memberships = newHashMap();
-		for (Entry<E, Function<T, Double>> f : functions.entrySet())
+		Map<K, Double> memberships = newHashMap();
+		for (Entry<K, Function<T, Double>> f : functions.entrySet())
 			memberships.put(f.getKey(), checkRange(f.getValue().apply(value),
 					0.0, 1.0, "Membership value should be within [0,1]"));
-		return new EnumMap<E, Double>(memberships);
+		return memberships;
 	}
 
 	private static final <T extends Comparable<T>> T checkRange(T value, T min,
