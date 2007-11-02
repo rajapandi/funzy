@@ -1,3 +1,3 @@
-#History of the project.
+# History of the project.
 
 *07/11/01* - Funzy project is created on [http://code.google.com GoogleCode].
