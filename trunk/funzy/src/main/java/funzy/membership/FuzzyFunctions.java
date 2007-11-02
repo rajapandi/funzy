@@ -9,6 +9,13 @@ import com.google.common.base.Function;
  * @version $Revision$
  */
 public final class FuzzyFunctions {
+	private static final Double LITTLE = 1.3;
+	private static final Double SLIGHTLY = 1.7;
+	private static final Double VERY = 2.0;
+	private static final Double EXTREMELY = 3.0;
+	private static final Double VERY_VERY = 4.0;
+	private static final Double SOMEWHAT = 0.5;
+
 	private FuzzyFunctions() {
 	}
 
@@ -29,6 +36,42 @@ public final class FuzzyFunctions {
 		return new FuzzyAndFunction(leftFunction, rightFunction);
 	}
 
+	public static final <N extends Number> Function<N, Double> newPowFuzzyFunction(
+			final Function<N, Double> function, final Double exponent) {
+		return new FuzzyPowFunction(function, exponent);
+	}
+
+	public static final <N extends Number> Function<N, Double> newLittleFuzzyFunction(
+			final Function<N, Double> function) {
+		return newPowFuzzyFunction(function, LITTLE);
+	}
+
+	public static final <N extends Number> Function<N, Double> newSlightlyFuzzyFunction(
+			final Function<N, Double> function) {
+		return newPowFuzzyFunction(function, SLIGHTLY);
+	}
+
+	public static final <N extends Number> Function<N, Double> newVeryFuzzyFunction(
+			final Function<N, Double> function) {
+		return newPowFuzzyFunction(function, VERY);
+	}
+
+	public static final <N extends Number> Function<N, Double> newExtremelyFuzzyFunction(
+			final Function<N, Double> function) {
+		return newPowFuzzyFunction(function, EXTREMELY);
+	}
+
+	public static final <N extends Number> Function<N, Double> newVeryVeryFuzzyFunction(
+			final Function<N, Double> function) {
+		return newPowFuzzyFunction(function, VERY_VERY);
+	}
+
+	public static final <N extends Number> Function<N, Double> newSomewhatFuzzyFunction(
+			final Function<N, Double> function) {
+		return newPowFuzzyFunction(function, SOMEWHAT);
+	}
+
+	
 	public static final <N extends Number> Function<N, Double> newFuzzyFunction(
 			final N leftBottom, final N rightTop) {
 		return new FuzzyFunction(leftBottom, rightTop);

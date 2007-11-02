@@ -3,7 +3,7 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>no.uio.funzy</groupId>
+    <groupId>funzy</groupId>
     <artifactId>funzy</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>Funzy</name>
@@ -13,6 +13,8 @@
         implementation of a fuzzy logic reasoning engine written in
         Java.
     </description>
+
+    <url>http://funzy.googlecode.com</url>
 
     <dependencies>
         <dependency>
@@ -52,11 +54,35 @@
             <organizationUrl>http://www.ifi.uio.no</organizationUrl>
             <roles>
                 <role>Project manager</role>
-                <role>Developer</role>
+                <role>Initial developer</role>
             </roles>
             <timezone>+1</timezone>
         </developer>
     </developers>
+
+    <issueManagement>
+        <system>Google issues</system>
+        <url>http://code.google.com/p/funzy/issues/list</url>
+    </issueManagement>
+
+    <scm>
+        <connection>
+            http://funzy.googlecode.com/svn/trunk/funzy
+        </connection>
+        <developerConnection>
+            https://funzy.googlecode.com/svn/trunk/funzy
+        </developerConnection>
+        <url>http://funzy.googlecode.com/svn/trunk/funzy/</url>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>
+                http://www.opensource.org/licenses/mit-license.php
+            </url>
+        </license>
+    </licenses>
 
     <repositories>
         <repository>
