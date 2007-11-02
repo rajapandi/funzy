@@ -40,24 +40,24 @@ public final class FuzzyFunctions {
 
 	public static final <N extends Number> Function<N, Double> newNotFuzzyFunction(
 			final Function<N, Double> function) {
-		return new FuzzyNotFunction(function);
+		return new FuzzyOperatorNot(function);
 	}
 
 	public static final <N extends Number> Function<N, Double> newFuzzyOrFunction(
 			final Function<N, Double> leftFunction,
 			final Function<N, Double> rightFunction) {
-		return new FuzzyOrFunction(leftFunction, rightFunction);
+		return new FuzzyOperatorOr(leftFunction, rightFunction);
 	}
 
 	public static final <N extends Number> Function<N, Double> newFuzzyAndFunction(
 			final Function<N, Double> leftFunction,
 			final Function<N, Double> rightFunction) {
-		return new FuzzyAndFunction(leftFunction, rightFunction);
+		return new FuzzyOperatorAnd(leftFunction, rightFunction);
 	}
 
 	public static final <N extends Number> Function<N, Double> newPowFuzzyFunction(
 			final Function<N, Double> function, final Double exponent) {
-		return new FuzzyPowFunction(function, exponent);
+		return new FuzzyOperatorPow(function, exponent);
 	}
 
 	public static final <N extends Number> Function<N, Double> newLittleFuzzyFunction(
@@ -109,7 +109,7 @@ public final class FuzzyFunctions {
 	public static final <N extends Number> Function<N, Double> newTrapezoidFuzzyFunction(
 			final N leftBottom, final N letTop, final N rightTop,
 			final N rightBottom) {
-		return new FuzzyCombineFunction(newFuzzyFunction(leftBottom, letTop),
+		return new FuzzyOperatorCompose(newFuzzyFunction(leftBottom, letTop),
 				newInverseFuzzyFunction(rightTop, rightBottom), rightTop);
 	}
 }

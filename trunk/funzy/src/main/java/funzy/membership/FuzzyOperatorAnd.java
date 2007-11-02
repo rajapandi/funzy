@@ -19,29 +19,28 @@
 // THE SOFTWARE. 
 package funzy.membership;
 
-import static java.lang.Math.pow;
+import static java.lang.Math.min;
 
 import com.google.common.base.Function;
 
 /**
- * Implementation of a Fuzzy POW function.
+ * Implementation of a Fuzzy AND function.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyPowFunction<T extends Number> implements Function<T, Double> {
-	private final Function<T, Double> delegate;
-	private final Double pow;
+public class FuzzyOperatorAnd<T extends Number> implements Function<T, Double> {
+	private final Function<T, Double> left, right;
 
-	public FuzzyPowFunction(Function<T, Double> function, Double exponent) {
-		delegate = function;
-		pow = exponent;
+	public FuzzyOperatorAnd(Function<T, Double> leftSide, Function<T, Double> rightSide) {
+		left = leftSide;
+		right = rightSide;
 	}
 
 	/* (non-Javadoc)
 	 * @see com.google.common.base.Function#apply(java.lang.Object)
 	 */
 	public Double apply(T value) {
-		return pow(delegate.apply(value), pow.doubleValue()) ;
+		return min(left.apply(value), right.apply(value));
 	}
 }

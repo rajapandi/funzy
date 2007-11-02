@@ -19,7 +19,7 @@
 // THE SOFTWARE. 
 package funzy.membership;
 
-import static funzy.core.Variables.newVariable;
+import static funzy.core.Variables.newInputVariable;
 import static funzy.literals.SimpleDegree.HIGH;
 import static funzy.literals.SimpleDegree.LOW;
 import static funzy.literals.SimpleDegree.MEDIUM;
@@ -33,16 +33,23 @@ import org.junit.Test;
 
 import com.google.common.base.Function;
 
-import funzy.core.Variable;
+import funzy.core.InputVariable;
 import funzy.literals.SimpleDegree;
 
+/**
+ * Test cases for the triangle fuzzy functions.
+ * 
+ * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
+ * @version $Revision$
+ */
 public class TriangleFunctionsTest {
-	private Variable variable;
+	private InputVariable variable;
 
 	@Before
 	public void setup() {
-		variable = newVariable(1, 5, SimpleDegree.class);
+		variable = newInputVariable(1, 5, SimpleDegree.class);
 	}
+
 
 	private final void set(Function low, Function medium, Function high) {
 		variable.add(LOW, low).add(MEDIUM, medium).add(HIGH, high);
@@ -50,7 +57,7 @@ public class TriangleFunctionsTest {
 
 	private final void checkMembership(int value, double low, double medium,
 			double high) {
-		Map<SimpleDegree, Double> membership = variable.membership(value);
+		Map<SimpleDegree, Double> membership = variable.fuzzyfy(value);
 		assertTrue("Checking LOW(" + membership.get(LOW) + ")", membership
 				.get(LOW) == low);
 		assertTrue("Checking MEDIUM(" + membership.get(MEDIUM) + ")",

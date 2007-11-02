@@ -17,30 +17,34 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.membership;
+package funzy.core;
 
-import static java.lang.Math.min;
+import static funzy.core.Configuration.LOG;
+import static java.util.logging.Level.FINEST;
+import static java.util.logging.Logger.getLogger;
+
+import java.util.Map;
+import java.util.logging.Logger;
 
 import com.google.common.base.Function;
 
 /**
- * Implementation of a Fuzzy AND function.
+ * Implementation of a literal output variable in fuzzy logic.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyAndFunction<T extends Number> implements Function<T, Double> {
-	private final Function<T, Double> left, right;
+public class OutputVariable<T extends Comparable<T>, K> extends Variable<T, K> {
+	private final static Logger log = getLogger("fuzzy.variable.output");
 
-	public FuzzyAndFunction(Function<T, Double> leftSide, Function<T, Double> rightSide) {
-		left = leftSide;
-		right = rightSide;
+	public OutputVariable(T minimum, T maximum, Map<K, Function<T, Double>> func)
+			throws IllegalRangeException {
+		super(minimum, maximum, func);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.google.common.base.Function#apply(java.lang.Object)
-	 */
-	public Double apply(T value) {
-		return min(left.apply(value), right.apply(value));
+	public T unfuzzy(Map<K, Double> value) {
+		if (LOG && log.isLoggable(FINEST))
+			log.finest("Calling unfuzzy for fuzzy set " + value + "...");
+		return null;
 	}
 }

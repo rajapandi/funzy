@@ -34,15 +34,15 @@ public final class Variables {
 	private Variables() {
 	}
 
-	public static final <T extends Comparable<T>, E extends Enum<E>> Variable newVariable(
+	public static final <T extends Comparable<T>, E extends Enum<E>> InputVariable newInputVariable(
 			final T min, final T max, final Class<E> literals) {
-		return new Variable<T, E>(min, max,
+		return new InputVariable<T, E>(min, max,
 				new EnumMap<E, Function<T, Double>>(literals));
 	}
 
-	public static final <T extends Comparable<T>, E extends Enum<E>> Variable newVariable(
+	public static final <T extends Comparable<T>, E> InputVariable newInputVariable(
 			final T min, final T max) {
-		return new Variable<T, E>(min, max,
+		return new InputVariable<T, E>(min, max,
 				new HashMap<E, Function<T, Double>>());
 	}
 }
