@@ -11,8 +11,7 @@ import static funzy.membership.CrispyFunctions.newFunctionLessOrEquals;
 import static funzy.membership.CrispyFunctions.newFunctionLessThan;
 import static junit.framework.Assert.assertTrue;
 
-import java.util.EnumMap;
-
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,10 +35,13 @@ public class CrispyFunctionsTest {
 
 	private final void checkMembership(int value, double low, double medium,
 			double high) {
-		EnumMap<SimpleDegree, Double> membership = variable.membership(value);
-		assertTrue(membership.get(LOW) == low);
-		assertTrue(membership.get(MEDIUM) == medium);
-		assertTrue(membership.get(HIGH) == high);
+		Map<SimpleDegree, Double> membership = variable.membership(value);
+		assertTrue("Checking LOW(" + membership.get(LOW) + ")", membership
+				.get(LOW) == low);
+		assertTrue("Checking MEDIUM(" + membership.get(MEDIUM) + ")",
+				membership.get(MEDIUM) == medium);
+		assertTrue("Checking HIGH(" + membership.get(HIGH) + ")", membership
+				.get(HIGH) == high);
 	}
 
 	@Test
