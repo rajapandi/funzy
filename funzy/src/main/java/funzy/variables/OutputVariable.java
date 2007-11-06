@@ -17,33 +17,34 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.membership;
+package funzy.variables;
 
-import com.google.common.base.Function;
+import static funzy.Configuration.LOG;
+import static java.util.logging.Level.FINEST;
+import static java.util.logging.Logger.getLogger;
+
+import java.util.Map;
+import java.util.logging.Logger;
+
+import funzy.membership.FuzzyMembership;
 
 /**
- * Implementation of a Fuzzy AND function.
+ * Implementation of a literal output variable in fuzzy logic.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyOperatorCompose<T extends Number> implements
-		Function<T, Double> {
-	private final Function<T, Double> left, right;
-	private final T border;
+public class OutputVariable<N extends Number, K> extends Variable<K> {
+	private final static Logger log = getLogger("fuzzy.variable.output");
 
-	public FuzzyOperatorCompose(Function<T, Double> leftSide,
-			Function<T, Double> rightSide, T threshold) {
-		left = leftSide;
-		right = rightSide;
-		border = threshold;
+	public OutputVariable(String name, double minimum, double maximum, Map<K, FuzzyMembership> func)
+			throws IllegalRangeException {
+		super(name, minimum, maximum, func);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.google.common.base.Function#apply(java.lang.Object)
-	 */
-	public Double apply(T value) {
-		return (value.doubleValue() <= border.doubleValue()) ? left
-				.apply(value) : right.apply(value);
+	public N unfuzzy(Map<K, Double> value) {
+		if (LOG && log.isLoggable(FINEST))
+			log.finest("Calling unfuzzy for fuzzy set " + value + "...");
+		return null;
 	}
 }

@@ -17,32 +17,44 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.core;
+package funzy.membership;
 
-import java.util.EnumMap;
-import java.util.HashMap;
+import static funzy.membership.Point.newPoint;
+import static org.junit.Assert.assertEquals;
 
-import com.google.common.base.Function;
+import org.junit.Before;
+import org.junit.Test;
+
+import funzy.membership.Point;
 
 /**
- * Implementation of a fuzzy variable factory.
+ * Test of a graph point.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public final class Variables {
-	private Variables() {
+public class PointTest {
+	private double a, b;
+	private Point p;
+
+	@Before
+	public void setup() {
+		a = 20;
+		b = 30;
+		p = newPoint(a, b);
 	}
 
-	public static final <T extends Comparable<T>, E extends Enum<E>> InputVariable newInputVariable(
-			final T min, final T max, final Class<E> literals) {
-		return new InputVariable<T, E>(min, max,
-				new EnumMap<E, Function<T, Double>>(literals));
+	@Test
+	public void checkNewPoint() {
+		assertEquals(a, p.x(), 0);
+		assertEquals(b, p.y(), 0);
 	}
 
-	public static final <T extends Comparable<T>, E> InputVariable newInputVariable(
-			final T min, final T max) {
-		return new InputVariable<T, E>(min, max,
-				new HashMap<E, Function<T, Double>>());
+	@Test
+	public void checkSubstract() {
+		Point p2 = newPoint(15, 5);
+		Point s = Point.substract(p, p2);
+		assertEquals(5, s.x(), 0);
+		assertEquals(25, s.y(), 0);
 	}
 }

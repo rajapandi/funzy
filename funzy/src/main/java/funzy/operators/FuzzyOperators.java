@@ -17,7 +17,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.membership;
+package funzy.operators;
 
 import com.google.common.base.Function;
 
@@ -27,7 +27,7 @@ import com.google.common.base.Function;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public final class FuzzyFunctions {
+public final class FuzzyOperators {
 	private static final Double LITTLE = 1.3;
 	private static final Double SLIGHTLY = 1.7;
 	private static final Double VERY = 2.0;
@@ -35,7 +35,7 @@ public final class FuzzyFunctions {
 	private static final Double VERY_VERY = 4.0;
 	private static final Double SOMEWHAT = 0.5;
 
-	private FuzzyFunctions() {
+	private FuzzyOperators() {
 	}
 
 	public static final <N extends Number> Function<N, Double> newNotFuzzyFunction(
@@ -88,28 +88,5 @@ public final class FuzzyFunctions {
 	public static final <N extends Number> Function<N, Double> newSomewhatFuzzyFunction(
 			final Function<N, Double> function) {
 		return newPowFuzzyFunction(function, SOMEWHAT);
-	}
-
-	
-	public static final <N extends Number> Function<N, Double> newFuzzyFunction(
-			final N leftBottom, final N rightTop) {
-		return new FuzzyFunction(leftBottom, rightTop);
-	}
-
-	public static final <N extends Number> Function<N, Double> newInverseFuzzyFunction(
-			final N leftBottom, final N rightTop) {
-		return newNotFuzzyFunction(newFuzzyFunction(leftBottom, rightTop));
-	}
-
-	public static final <N extends Number> Function<N, Double> newTriangleFuzzyFunction(
-			final N leftBottom, final N top, final N rightBottom) {
-		return newTrapezoidFuzzyFunction(leftBottom, top, top, rightBottom);
-	}
-
-	public static final <N extends Number> Function<N, Double> newTrapezoidFuzzyFunction(
-			final N leftBottom, final N letTop, final N rightTop,
-			final N rightBottom) {
-		return new FuzzyOperatorCompose(newFuzzyFunction(leftBottom, letTop),
-				newInverseFuzzyFunction(rightTop, rightBottom), rightTop);
 	}
 }

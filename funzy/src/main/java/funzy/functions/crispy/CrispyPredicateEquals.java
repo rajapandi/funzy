@@ -17,22 +17,22 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.membership;
+package funzy.functions.crispy;
 
 import com.google.common.base.Predicate;
 
 /**
- * Implementation of a predicate checking superiority of the value to a given
+ * Implementation of a predicate checking equality of the value to a given
  * threshold.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class CrispyPredicateGreaterThan<T extends Comparable<T>> implements
+public class CrispyPredicateEquals<T extends Comparable<T>> implements
 		Predicate<T> {
 	private T border;
 
-	public CrispyPredicateGreaterThan(T threshold) {
+	public CrispyPredicateEquals(T threshold) {
 		border = threshold;
 	}
 
@@ -40,6 +40,6 @@ public class CrispyPredicateGreaterThan<T extends Comparable<T>> implements
 	 * @see com.google.common.base.Predicate#apply(java.lang.Object)
 	 */
 	public boolean apply(T value) {
-		return border.compareTo(value) < 0;
+		return border.compareTo(value) == 0;
 	}
 }

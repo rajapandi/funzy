@@ -17,29 +17,17 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.membership;
-
-import com.google.common.base.Predicate;
+package funzy.variables;
 
 /**
- * Implementation of a predicate checking interiority of the value to a given
- * threshold.
+ * Exception thrown when the variable range is wrong.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class CrispyPredicateLessThan<T extends Comparable<T>> implements
-		Predicate<T> {
-	private T border;
+public class IllegalRangeException extends RuntimeException {
 
-	public CrispyPredicateLessThan(T threshold) {
-		border = threshold;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.google.common.base.Predicate#apply(java.lang.Object)
-	 */
-	public boolean apply(T value) {
-		return border.compareTo(value) > 0;
+	public <T> IllegalRangeException(String message, T min, T max) {
+		super(message + " range [" + min + "," + max + "]");
 	}
 }

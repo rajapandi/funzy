@@ -17,17 +17,26 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.core;
+package funzy.functions.fuzzy;
+
+import static java.lang.Double.NaN;
+import funzy.membership.FuzzyMembership;
+import funzy.membership.Line;
 
 /**
- * Exception thrown when the variable range is wrong.
+ * Implementation of a Fuzzy function.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class IllegalRangeException extends RuntimeException {
-
-	public <T> IllegalRangeException(String message, T min, T max) {
-		super(message + " range [" + min + "," + max + "]");
+public class FuzzyFunctionImpl implements FuzzyFunction {
+	/* (non-Javadoc)
+	 * @see funzy.functions.FuzzyFunction#fuzzy(double,funzy.membership.FuzzyMembership)
+	 */
+	public double fuzzy(double value, FuzzyMembership membership) {
+		for (Line line : membership.get())
+			if (line.inXRange(value))
+				return value * line.delta().y() + line.a().y();
+		return NaN;
 	}
 }
