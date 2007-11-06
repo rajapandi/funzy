@@ -17,27 +17,33 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.membership;
+package funzy.operators;
 
 import com.google.common.base.Function;
 
 /**
- * Implementation of a Fuzzy NOT function.
+ * Implementation of a Fuzzy AND function.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyOperatorNot<T extends Number> implements Function<T, Double> {
-	private final Function<T, Double> delegate;
+public class FuzzyOperatorCompose<T extends Number> implements
+		Function<T, Double> {
+	private final Function<T, Double> left, right;
+	private final T border;
 
-	public FuzzyOperatorNot(Function<T, Double> function) {
-		delegate = function;
+	public FuzzyOperatorCompose(Function<T, Double> leftSide,
+			Function<T, Double> rightSide, T threshold) {
+		left = leftSide;
+		right = rightSide;
+		border = threshold;
 	}
 
 	/* (non-Javadoc)
 	 * @see com.google.common.base.Function#apply(java.lang.Object)
 	 */
 	public Double apply(T value) {
-		return 1 - delegate.apply(value);
+		return (value.doubleValue() <= border.doubleValue()) ? left
+				.apply(value) : right.apply(value);
 	}
 }

@@ -17,46 +17,29 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.core;
+package funzy.functions.crispy;
 
-import static funzy.core.Configuration.LOG;
-import static java.util.logging.Level.FINEST;
-import static java.util.logging.Logger.getLogger;
-
-import java.util.Map;
-import java.util.logging.Logger;
-
-import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 
 /**
- * Implementation of a literal variable in fuzzy logic.
+ * Implementation of a predicate checking superiority of the value to a given
+ * threshold.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class Variable<T extends Comparable<T>, K> {
-	private final static Logger log = getLogger("fuzzy.variable");
-	protected final T min, max;
-	protected final Map<K, Function<T, Double>> functions;
+public class CrispyPredicateGreaterThan<T extends Comparable<T>> implements
+		Predicate<T> {
+	private T border;
 
-	public Variable(T minimum, T maximum, Map<K, Function<T, Double>> func)
-			throws IllegalRangeException {
-		checkRange(minimum, maximum, "Wrong input value");
-		min = minimum;
-		max = maximum;
-		functions = func;
+	public CrispyPredicateGreaterThan(T threshold) {
+		border = threshold;
 	}
 
-	public Variable<T, K> add(K literal, Function<T, Double> function) {
-		functions.put(literal, function);
-		return this;
-	}
-
-	private static final <T extends Comparable<T>> void checkRange(T min,
-			T max, String message) throws IllegalRangeException {
-		if (LOG && log.isLoggable(FINEST))
-			log.finest("Checking range: [" + min + "," + max + "]...");
-		if (min.compareTo(max) > 0)
-			throw new IllegalRangeException(message, min, max);
+	/* (non-Javadoc)
+	 * @see com.google.common.base.Predicate#apply(java.lang.Object)
+	 */
+	public boolean apply(T value) {
+		return border.compareTo(value) < 0;
 	}
 }

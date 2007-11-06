@@ -17,41 +17,38 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.membership;
+package funzy.variables;
 
-import com.google.common.base.Function;
+import java.util.EnumMap;
+import java.util.HashMap;
+
+import funzy.membership.FuzzyMembership;
 
 /**
- * Implementation of a Fuzzy function.
+ * Implementation of a fuzzy variable factory.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyFunction<T extends Number> implements Function<T, Double> {
-	private final T lb, rt;
-
-	/**
-	 * @param leftBottom
-	 * @param rightTop
-	 */
-	public FuzzyFunction(T leftBottom, T rightTop) {
-		lb = leftBottom;
-		rt = rightTop;
+public final class Variables {
+	private Variables() {
 	}
 
-	private static final <T extends Number> Double evaluate(T a, T b, T x) {
-		return (x.doubleValue() - a.doubleValue())
-				/ (b.doubleValue() - a.doubleValue());
+	public static final <N extends Number, E extends Enum<E>> InputVariable newInputVariable(
+			final String name, final double min, final double max, final Class<E> literals) {
+		return new InputVariable<E>(name, min, max,
+				new EnumMap<E, FuzzyMembership>(literals));
 	}
 
-	/* (non-Javadoc)
-	 * @see com.google.common.base.Function#apply(java.lang.Object)
-	 */
-	public Double apply(T value) {
-		if (value.doubleValue() <= lb.doubleValue())
-			return 0.0;
-		if (value.doubleValue() < rt.doubleValue())
-			return evaluate(lb, rt, value);
-		return 1.0;
+	public static final <E extends Enum<E>> InputVariable newInputVariable(
+			final double min, final double max, final Class<E> literals) {
+		return new InputVariable<E>(literals.getSimpleName(), min, max,
+				new EnumMap<E, FuzzyMembership>(literals));
+	}
+
+	public static final <N extends Number, E> InputVariable newInputVariable(
+			final String name, final double min, final double max) {
+		return new InputVariable<E>(name, min, max,
+				new HashMap<E, FuzzyMembership>());
 	}
 }

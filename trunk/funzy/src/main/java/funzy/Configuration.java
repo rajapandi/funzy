@@ -17,30 +17,15 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.membership;
-
-import static java.lang.Math.min;
-
-import com.google.common.base.Function;
+package funzy;
 
 /**
- * Implementation of a Fuzzy AND function.
+ * Funzy configuration interface.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyOperatorAnd<T extends Number> implements Function<T, Double> {
-	private final Function<T, Double> left, right;
-
-	public FuzzyOperatorAnd(Function<T, Double> leftSide, Function<T, Double> rightSide) {
-		left = leftSide;
-		right = rightSide;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.google.common.base.Function#apply(java.lang.Object)
-	 */
-	public Double apply(T value) {
-		return min(left.apply(value), right.apply(value));
-	}
+public interface Configuration {
+	/** Statically enable/disable logging in funzy. */
+	static final boolean LOG = true;
 }

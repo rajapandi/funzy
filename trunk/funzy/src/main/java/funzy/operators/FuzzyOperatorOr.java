@@ -17,39 +17,30 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variable;
+package funzy.operators;
 
-import static funzy.core.Variables.newInputVariable;
+import static java.lang.Math.max;
 
-import org.junit.Test;
-
-import funzy.core.IllegalRangeException;
-import funzy.literals.SimpleDegree;
+import com.google.common.base.Function;
 
 /**
- * Test cases for the literal variables.
+ * Implementation of a Fuzzy OR function.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class VariablesTest {
-	@Test
-	public void CheckNewEnumIntVariable() {
-		newInputVariable(0,100,SimpleDegree.class);
-	}
-	
-	@Test(expected=IllegalRangeException.class)
-	public void CheckFailureNewEnumIntVariable() {
-		newInputVariable(100,0,SimpleDegree.class);
+public class FuzzyOperatorOr<T extends Number> implements Function<T, Double> {
+	private final Function<T, Double> left, right;
+
+	public FuzzyOperatorOr(Function<T, Double> leftSide, Function<T, Double> rightSide) {
+		left = leftSide;
+		right = rightSide;
 	}
 
-	@Test
-	public void CheckNewDoubleVariable() {
-		newInputVariable(0.0,100.0);
-	}
-	
-	@Test(expected=IllegalRangeException.class)
-	public void CheckFailureNewDoubleVariable() {
-		newInputVariable(100.0,0.0);
+	/* (non-Javadoc)
+	 * @see com.google.common.base.Function#apply(java.lang.Object)
+	 */
+	public Double apply(T value) {
+		return max(left.apply(value), right.apply(value));
 	}
 }

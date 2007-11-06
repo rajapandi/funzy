@@ -17,10 +17,10 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.core;
+package funzy.variables;
 
 import static com.google.common.collect.Maps.newHashMap;
-import static funzy.core.Configuration.LOG;
+import static funzy.Configuration.LOG;
 import static java.util.logging.Level.FINEST;
 import static java.util.logging.Logger.getLogger;
 
@@ -28,7 +28,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import com.google.common.base.Function;
+import funzy.functions.fuzzy.FuzzyFunction;
+import funzy.functions.fuzzy.FuzzyFunctionImpl;
+import funzy.membership.FuzzyMembership;
 
 /**
  * Implementation of a literal input variable in fuzzy logic.
@@ -36,30 +38,32 @@ import com.google.common.base.Function;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class InputVariable<T extends Comparable<T>, K>  extends Variable<T, K>{
+public class InputVariable<K> extends Variable<K> {
 	private final static Logger log = getLogger("fuzzy.variable.input");
+	private final static FuzzyFunction function = new FuzzyFunctionImpl();
 
-	public InputVariable(T minimum, T maximum, Map<K, Function<T, Double>> func)
-			throws IllegalRangeException {
-		super(minimum, maximum, func);
+	public InputVariable(String name, double minimum, double maximum,
+			Map<K, FuzzyMembership> func) throws IllegalRangeException {
+		super(name, minimum, maximum, func);
 	}
 
-	public Map<K, Double> fuzzyfy(T value) {
-		checkRange(value, min, max, "Input value should be within [" + min
-				+ "," + max + "]");
+	public Map<K, Double> fuzzyfy(double value) {
+		checkRange(value, min(), max(), "Input value should be within ["
+				+ min() + "," + max() + "]");
 		Map<K, Double> memberships = newHashMap();
-		for (Entry<K, Function<T, Double>> f : functions.entrySet())
-			memberships.put(f.getKey(), checkRange(f.getValue().apply(value),
-					0.0, 1.0, "Membership value should be within [0,1]"));
+		for (Entry<K, FuzzyMembership> m : membership.entrySet())
+			memberships.put(m.getKey(), checkRange(function.fuzzy(value, m
+					.getValue()), 0.0, 1.0,
+					"Membership value should be within [0,1]"));
 		return memberships;
 	}
-	
-	private static final <T extends Comparable<T>> T checkRange(T value, T min,
-			T max, String message) {
+
+	private static final double checkRange(double value, double min,
+			double max, String message) {
 		if (LOG && log.isLoggable(FINEST))
 			log.finest("Checking range: " + min + "<=" + value + "<=" + max
 					+ "...");
-		assert value.compareTo(min) >= 0 && value.compareTo(max) <= 0 : message;
+		assert value >= min && value >= max : message;
 		return value;
 	}
 }
