@@ -19,26 +19,15 @@
 // THE SOFTWARE. 
 package funzy.operators;
 
-import static java.lang.Math.pow;
-
 /**
- * Implementation of a Fuzzy POW function.
+ * Exception thrown when the number of parameters is invalid.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyOperatorPow extends SingleOperator<Double> {
-	private final double pow;
+public class InvalidParametersException extends RuntimeException {
 
-	public FuzzyOperatorPow(double exponent) {
-		pow = exponent;
-	}
-
-	/* (non-Javadoc)
-	 * @see funzy.operators.SingleOperator#evaluate(java.lang.Number)
-	 */
-	@Override
-	protected Double evaluate(Double value) {
-		return pow(value, pow) ;
+	public InvalidParametersException(String message) {
+		super(message);
 	}
 }

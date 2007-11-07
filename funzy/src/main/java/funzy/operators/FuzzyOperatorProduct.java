@@ -19,31 +19,19 @@
 // THE SOFTWARE. 
 package funzy.operators;
 
-import com.google.common.base.Function;
 
 /**
- * Implementation of a Fuzzy AND function.
+ * Implementation of a Fuzzy AND operator using product operator.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyOperatorCompose<T extends Number> implements
-		Function<T, Double> {
-	private final Function<T, Double> left, right;
-	private final T border;
-
-	public FuzzyOperatorCompose(Function<T, Double> leftSide,
-			Function<T, Double> rightSide, T threshold) {
-		left = leftSide;
-		right = rightSide;
-		border = threshold;
-	}
-
+public class FuzzyOperatorProduct extends MultipleOperator<Double> {
 	/* (non-Javadoc)
-	 * @see com.google.common.base.Function#apply(java.lang.Object)
+	 * @see funzy.operators.MultipleOperator#compute(java.lang.Number,java.lang.Number)
 	 */
-	public Double apply(T value) {
-		return (value.doubleValue() <= border.doubleValue()) ? left
-				.apply(value) : right.apply(value);
+	@Override
+	protected Double compute(Double value1, Double value2) {
+		return value1.doubleValue() * value2.doubleValue();
 	}
 }

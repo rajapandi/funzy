@@ -19,10 +19,9 @@
 // THE SOFTWARE. 
 package funzy.operators;
 
-import com.google.common.base.Function;
 
 /**
- * Implementation of a fuzzy function factory.
+ * Implementation of a fuzzy operators factory.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
@@ -38,55 +37,48 @@ public final class FuzzyOperators {
 	private FuzzyOperators() {
 	}
 
-	public static final <N extends Number> Function<N, Double> newNotFuzzyFunction(
-			final Function<N, Double> function) {
-		return new FuzzyOperatorNot(function);
+	public static final FuzzyOperator<Double> newNotFuzzyFunction() {
+		return new FuzzyOperatorNot();
 	}
 
-	public static final <N extends Number> Function<N, Double> newFuzzyOrFunction(
-			final Function<N, Double> leftFunction,
-			final Function<N, Double> rightFunction) {
-		return new FuzzyOperatorOr(leftFunction, rightFunction);
+	public static final FuzzyOperator<Double> newMaxOperator() {
+		return new FuzzyOperatorMax();
 	}
 
-	public static final <N extends Number> Function<N, Double> newFuzzyAndFunction(
-			final Function<N, Double> leftFunction,
-			final Function<N, Double> rightFunction) {
-		return new FuzzyOperatorAnd(leftFunction, rightFunction);
+	public static final FuzzyOperator<Double> newMinOperator() {
+		return new FuzzyOperatorMin();
 	}
 
-	public static final <N extends Number> Function<N, Double> newPowFuzzyFunction(
-			final Function<N, Double> function, final Double exponent) {
-		return new FuzzyOperatorPow(function, exponent);
+	public static final FuzzyOperator<Double> newProductOperator() {
+		return new FuzzyOperatorProduct();
 	}
 
-	public static final <N extends Number> Function<N, Double> newLittleFuzzyFunction(
-			final Function<N, Double> function) {
-		return newPowFuzzyFunction(function, LITTLE);
+	public static final FuzzyOperator<Double> newPowFuzzyFunction(
+			final double exponent) {
+		return new FuzzyOperatorPow(exponent);
 	}
 
-	public static final <N extends Number> Function<N, Double> newSlightlyFuzzyFunction(
-			final Function<N, Double> function) {
-		return newPowFuzzyFunction(function, SLIGHTLY);
+	public static final FuzzyOperator<Double> newLittleOperator() {
+		return newPowFuzzyFunction(LITTLE);
 	}
 
-	public static final <N extends Number> Function<N, Double> newVeryFuzzyFunction(
-			final Function<N, Double> function) {
-		return newPowFuzzyFunction(function, VERY);
+	public static final FuzzyOperator<Double> newSlightlyOperator() {
+		return newPowFuzzyFunction(SLIGHTLY);
 	}
 
-	public static final <N extends Number> Function<N, Double> newExtremelyFuzzyFunction(
-			final Function<N, Double> function) {
-		return newPowFuzzyFunction(function, EXTREMELY);
+	public static final FuzzyOperator<Double> newVeryOperator() {
+		return newPowFuzzyFunction(VERY);
 	}
 
-	public static final <N extends Number> Function<N, Double> newVeryVeryFuzzyFunction(
-			final Function<N, Double> function) {
-		return newPowFuzzyFunction(function, VERY_VERY);
+	public static final FuzzyOperator<Double> newExtremelyOperator() {
+		return newPowFuzzyFunction(EXTREMELY);
 	}
 
-	public static final <N extends Number> Function<N, Double> newSomewhatFuzzyFunction(
-			final Function<N, Double> function) {
-		return newPowFuzzyFunction(function, SOMEWHAT);
+	public static final FuzzyOperator<Double> newVeryVeryOperator() {
+		return newPowFuzzyFunction(VERY_VERY);
+	}
+
+	public static final FuzzyOperator<Double> newSomewhatOperator() {
+		return newPowFuzzyFunction(SOMEWHAT);
 	}
 }

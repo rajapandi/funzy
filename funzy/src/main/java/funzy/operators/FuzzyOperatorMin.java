@@ -19,26 +19,20 @@
 // THE SOFTWARE. 
 package funzy.operators;
 
-import static java.lang.Math.pow;
+import static java.lang.Math.min;
 
 /**
- * Implementation of a Fuzzy POW function.
+ * Implementation of a Fuzzy AND oeprator using min() function.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyOperatorPow extends SingleOperator<Double> {
-	private final double pow;
-
-	public FuzzyOperatorPow(double exponent) {
-		pow = exponent;
-	}
-
+public class FuzzyOperatorMin extends MultipleOperator<Double> {
 	/* (non-Javadoc)
-	 * @see funzy.operators.SingleOperator#evaluate(java.lang.Number)
+	 * @see funzy.operators.MultipleOperator#compute(java.lang.Number, java.lang.Number)
 	 */
 	@Override
-	protected Double evaluate(Double value) {
-		return pow(value, pow) ;
+	protected Double compute(Double value1, Double value2) {
+		return min(value1, value2);
 	}
 }
