@@ -19,28 +19,20 @@
 // THE SOFTWARE. 
 package funzy.operators;
 
-import static java.lang.Math.min;
-
-import com.google.common.base.Function;
+import static java.lang.Math.max;
 
 /**
- * Implementation of a Fuzzy AND function.
+ * Implementation of a Fuzzy OR operator using max() function.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyOperatorAnd<T extends Number> implements Function<T, Double> {
-	private final Function<T, Double> left, right;
-
-	public FuzzyOperatorAnd(Function<T, Double> leftSide, Function<T, Double> rightSide) {
-		left = leftSide;
-		right = rightSide;
-	}
-
+public class FuzzyOperatorMax extends MultipleOperator<Double> {
 	/* (non-Javadoc)
-	 * @see com.google.common.base.Function#apply(java.lang.Object)
+	 * @see funzy.operators.MultipleOperator#compute(java.lang.Number, java.lang.Number)
 	 */
-	public Double apply(T value) {
-		return min(left.apply(value), right.apply(value));
+	@Override
+	protected Double compute(Double value1, Double value2) {
+		return max(value1,value2);
 	}
 }

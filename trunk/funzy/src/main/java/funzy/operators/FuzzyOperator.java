@@ -19,28 +19,19 @@
 // THE SOFTWARE. 
 package funzy.operators;
 
-import static java.lang.Math.max;
-
-import com.google.common.base.Function;
-
 /**
- * Implementation of a Fuzzy OR function.
+ * Description of a fuzzy operator.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyOperatorOr<T extends Number> implements Function<T, Double> {
-	private final Function<T, Double> left, right;
-
-	public FuzzyOperatorOr(Function<T, Double> leftSide, Function<T, Double> rightSide) {
-		left = leftSide;
-		right = rightSide;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.google.common.base.Function#apply(java.lang.Object)
+public interface FuzzyOperator<N extends Number> {
+	/**
+	 * Evaluates the operator parameter(s) and returns a single value of the
+	 * same type.
+	 * 
+	 * @param values the list of input values for the parameter.
+	 * @return the value computed by the operator.
 	 */
-	public Double apply(T value) {
-		return max(left.apply(value), right.apply(value));
-	}
+	N evaluate(N... values);
 }

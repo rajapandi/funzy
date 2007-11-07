@@ -19,26 +19,12 @@
 // THE SOFTWARE. 
 package funzy.operators;
 
-import static java.lang.Math.pow;
-
 /**
- * Implementation of a Fuzzy POW function.
+ * Test of the fuzzy operator.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyOperatorPow extends SingleOperator<Double> {
-	private final double pow;
+public class FuzzyOperatorTest {
 
-	public FuzzyOperatorPow(double exponent) {
-		pow = exponent;
-	}
-
-	/* (non-Javadoc)
-	 * @see funzy.operators.SingleOperator#evaluate(java.lang.Number)
-	 */
-	@Override
-	protected Double evaluate(Double value) {
-		return pow(value, pow) ;
-	}
 }

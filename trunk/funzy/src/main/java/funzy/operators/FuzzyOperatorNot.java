@@ -19,25 +19,19 @@
 // THE SOFTWARE. 
 package funzy.operators;
 
-import com.google.common.base.Function;
 
 /**
- * Implementation of a Fuzzy NOT function.
+ * Implementation of a Fuzzy NOT operator.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyOperatorNot<T extends Number> implements Function<T, Double> {
-	private final Function<T, Double> delegate;
-
-	public FuzzyOperatorNot(Function<T, Double> function) {
-		delegate = function;
-	}
-
+public class FuzzyOperatorNot extends SingleOperator<Double> {
 	/* (non-Javadoc)
 	 * @see com.google.common.base.Function#apply(java.lang.Object)
 	 */
-	public Double apply(T value) {
-		return 1 - delegate.apply(value);
+	@Override
+	public Double evaluate(Double value) {
+		return 1 - value;
 	}
 }
