@@ -19,7 +19,6 @@
 // THE SOFTWARE. 
 package funzy.functions.fuzzy;
 
-import static java.lang.Double.NaN;
 import funzy.membership.FuzzyMembership;
 import funzy.membership.Line;
 
@@ -30,13 +29,21 @@ import funzy.membership.Line;
  * @version $Revision$
  */
 public class FuzzyFunctionImpl implements FuzzyFunction {
-	/* (non-Javadoc)
+	private final double unknown;
+	
+	public FuzzyFunctionImpl(double value) {
+		this.unknown = value;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see funzy.functions.FuzzyFunction#fuzzy(double,funzy.membership.FuzzyMembership)
 	 */
 	public double fuzzy(double value, FuzzyMembership membership) {
 		for (Line line : membership.get())
 			if (line.inXRange(value))
-				return value * line.delta().y() + line.a().y();
-		return NaN;
+				return (value - line.a().x()) * line.delta().y() + line.a().y();
+		return unknown;
 	}
 }

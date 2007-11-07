@@ -48,13 +48,12 @@ public class FuzzyTriangleInputTest {
 	public void setup() {
 		variable = newInputVariable(1, 5, SimpleDegree.class);
 		variable.addMembership(LOW, newFuzzyMembership(newPoint(1, 1),
-				newPoint(3, 0), newPoint(5, 0)));
-		variable
-				.addMembership(MEDIUM, newFuzzyMembership(newPoint(1, 0),
+				newPoint(2, 1), newPoint(3, 0), newPoint(5, 0)));
+		variable.addMembership(MEDIUM, newFuzzyMembership(newPoint(1, 0),
 						newPoint(2, 0), newPoint(3, 1), newPoint(4, 0),
 						newPoint(5, 0)));
 		variable.addMembership(HIGH, newFuzzyMembership(newPoint(1, 0),
-				newPoint(3, 0), newPoint(5, 1)));
+				newPoint(3, 0), newPoint(4, 1), newPoint(5, 1)));
 	}
 
 	private final void checkMembership(double value, double low, double medium,
@@ -71,9 +70,9 @@ public class FuzzyTriangleInputTest {
 	@Test
 	public void checkDegrees() {
 		checkMembership(1, 1, 0, 0);
-		checkMembership(2, .5, 0, 0);
+		checkMembership(2, 1, 0, 0);
 		checkMembership(3, 0, 1, 0);
-		checkMembership(4, 0, 0, .5);
+		checkMembership(4, 0, 0, 1);
 		checkMembership(5, 0, 0, 1);
 	}
 }

@@ -19,7 +19,7 @@
 // THE SOFTWARE. 
 package funzy.membership;
 
-import static funzy.membership.Point.substract;
+import static funzy.membership.Point.newPoint;
 
 /**
  * Implementation a membership line.
@@ -33,7 +33,7 @@ public class Line {
 	public Line(Point p1, Point p2) {
 		a = p1;
 		b = p2;
-		delta = substract(b, a);
+		delta = newPoint(1,(p2.y()-p1.y())/(p2.x()-p1.x()));
 	}
 
 	public final Point a() {

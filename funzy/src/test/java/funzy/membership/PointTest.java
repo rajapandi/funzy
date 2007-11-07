@@ -51,6 +51,11 @@ public class PointTest {
 	}
 
 	@Test
+	public void checkEqualsPoint() {
+		assertEquals(p, newPoint(a,b));
+	}
+	
+	@Test
 	public void checkSubstract() {
 		Point p2 = newPoint(15, 5);
 		Point s = Point.substract(p, p2);
