@@ -41,6 +41,21 @@ public class Point {
 	public final double y() {
 		return y;
 	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equals(Object obj) {
+		Point p = (Point) obj;
+		return x==p.x && y==p.y;
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return "("+x+","+y+")";
+	}
 
 	public static final Point newPoint(final double x, final double y) {
 		return new Point(x, y);

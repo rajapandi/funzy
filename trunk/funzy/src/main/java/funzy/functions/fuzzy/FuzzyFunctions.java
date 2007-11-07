@@ -19,6 +19,7 @@
 // THE SOFTWARE. 
 package funzy.functions.fuzzy;
 
+import static java.lang.Double.NaN;
 
 /**
  * Implementation of a fuzzy function factory.
@@ -30,7 +31,11 @@ public final class FuzzyFunctions {
 	private FuzzyFunctions() {
 	}
 
+	public static final FuzzyFunction newFuzzyFunction(final double unknown) {
+		return new FuzzyFunctionImpl(unknown);
+	}
+
 	public static final FuzzyFunction newFuzzyFunction() {
-		return new FuzzyFunctionImpl();
+		return newFuzzyFunction(NaN);
 	}
 }

@@ -48,11 +48,34 @@ public class LineTest {
 		line = newLine(p1, p2);
 	}
 	
-	
 	@Test
 	public void checkNewLine() {
 		assertEquals(p1, line.a());
 		assertEquals(p2, line.b());
+	}
+	
+	@Test
+	public void checkDelta() {
+		assertEquals(newPoint(1,0), line.delta());
+	}
+	
+	@Test
+	public void checkPositiveDelta() {
+		p2 = newPoint(6, 5);
+		line = newLine(p1, p2);
+		assertEquals(newPoint(1,1), line.delta());
+	}
+	
+	@Test
+	public void checkNegativeDelta() {
+		p1 = newPoint(4, 5);
+		line = newLine(p1, p2);
+		assertEquals(newPoint(1,-1), line.delta());
+	}
+
+	@Test
+	public void checkMinRange() {
+		assertTrue(line.inXRange(4));
 	}
 	
 	@Test
@@ -61,7 +84,17 @@ public class LineTest {
 	}
 	
 	@Test
-	public void checkOutOfRange() {
-		assertFalse(line.inXRange(1));
+	public void checkMaxRange() {
+		assertTrue(line.inXRange(6));
+	}
+	
+	@Test
+	public void checkOutOfMinRange() {
+		assertFalse(line.inXRange(3));
+	}
+
+	@Test
+	public void checkOutOfMaxRange() {
+		assertFalse(line.inXRange(7));
 	}
 }
