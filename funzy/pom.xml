@@ -50,6 +50,7 @@
             <name>Romain Rouvoy</name>
             <id>rouvoy</id>
             <email>rouvoy@ifi.uio.no</email>
+            <url>http://folk.uio.no/rouvoy</url>
             <organization>Universitetet i Oslo</organization>
             <organizationUrl>http://www.ifi.uio.no</organizationUrl>
             <roles>
@@ -61,7 +62,7 @@
     </developers>
 
     <issueManagement>
-        <system>Google issues</system>
+        <system>GoogleCode Issues</system>
         <url>http://code.google.com/p/funzy/issues/list</url>
     </issueManagement>
 
@@ -72,7 +73,7 @@
         <developerConnection>
             https://funzy.googlecode.com/svn/trunk/funzy
         </developerConnection>
-        <url>http://funzy.googlecode.com/svn/trunk/funzy/</url>
+        <url>http://funzy.googlecode.com/svn/trunk/funzy</url>
     </scm>
 
     <licenses>
@@ -87,7 +88,7 @@
     <repositories>
         <repository>
             <id>objectweb-snapshot</id>
-            <name>ObjectWeb Snapshot repository</name>
+            <name>ObjectWeb Snapshot Repository</name>
             <url>http://maven.objectweb.org/maven2-snapshot</url>
             <snapshots>
                 <enabled>true</enabled>

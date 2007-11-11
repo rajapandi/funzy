@@ -24,7 +24,7 @@ import static funzy.operators.functions.FuzzyFunctions.newExtremelyFunction;
 import static funzy.operators.functions.FuzzyFunctions.newLittleFunction;
 import static funzy.operators.functions.FuzzyFunctions.newMaxFunction;
 import static funzy.operators.functions.FuzzyFunctions.newMinFunction;
-import static funzy.operators.functions.FuzzyFunctions.newNotFuzzyFunction;
+import static funzy.operators.functions.FuzzyFunctions.newNotFunction;
 import static funzy.operators.functions.FuzzyFunctions.newProductFunction;
 import static funzy.operators.functions.FuzzyFunctions.newSlightlyFunction;
 import static funzy.operators.functions.FuzzyFunctions.newSomewhatFunction;
@@ -44,19 +44,20 @@ import funzy.operators.functions.FuzzyFunction;
  * @version $Revision$
  */
 public class FuzzyFunctionTest {
-	
-	private static void assertResult(Double expected, FuzzyFunction<Double> function, Double... param) {
-		assertEquals(expected,function.evaluate(immutableList(param)));
-	}
-	
-	@Test
-	public void functionNot() {
-		assertResult(.9, newNotFuzzyFunction(), .1);
+
+	private static void assertResult(Double expected,
+			FuzzyFunction<Double> function, Double... param) {
+		assertEquals(expected, function.evaluate(immutableList(param)));
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
+	public void functionNot() {
+		assertResult(.9, newNotFunction(), .1);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
 	public void functionMultipleNot() {
-		assertResult(.9, newNotFuzzyFunction(), .1, .2);
+		assertResult(.9, newNotFunction(), .1, .2);
 	}
 
 	@Test
@@ -73,22 +74,22 @@ public class FuzzyFunctionTest {
 	public void functionVery() {
 		assertResult(pow(.5, 2), newVeryFunction(), .5);
 	}
-	
+
 	@Test
 	public void functionExtremely() {
 		assertResult(pow(.5, 3), newExtremelyFunction(), .5);
 	}
-	
+
 	@Test
 	public void functionVeryVery() {
 		assertResult(pow(.5, 4), newVeryVeryFunction(), .5);
 	}
-	
+
 	@Test
 	public void functionSomewhat() {
 		assertResult(pow(.5, .5), newSomewhatFunction(), .5);
 	}
-	
+
 	@Test
 	public void functionMin() {
 		assertResult(.1, newMinFunction(), .5, .4, .3, .2, .1);

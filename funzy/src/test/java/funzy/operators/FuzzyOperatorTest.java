@@ -26,9 +26,12 @@ import static funzy.literals.SimpleDegree.LOW;
 import static funzy.literals.SimpleDegree.MEDIUM;
 import static funzy.operators.FuzzyOperator.newOperator;
 import static funzy.operators.FuzzyValueExtractor.newExtractor;
-import static funzy.operators.functions.FuzzyFunctions.newMaxFunction;
-import static funzy.operators.functions.FuzzyFunctions.newMinFunction;
-import static funzy.operators.functions.FuzzyFunctions.newNotFuzzyFunction;
+import static funzy.operators.functions.FuzzyFunctions.AND;
+import static funzy.operators.functions.FuzzyFunctions.NOT;
+import static funzy.operators.functions.FuzzyFunctions.OR;
+import static funzy.operators.functions.FuzzyFunctions.VERY;
+import static funzy.operators.functions.FuzzyFunctions.newNotFunction;
+import static funzy.operators.functions.FuzzyFunctions.newProductFunction;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Map;
@@ -39,47 +42,68 @@ import org.junit.Test;
 import funzy.literals.SimpleDegree;
 
 /**
- * Test of the fuzzy operator.
+ * Test of the available fuzzy operators.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
 public class FuzzyOperatorTest {
-	private Map<String,Map<SimpleDegree,Double>> input;
+	private Map<String, Map<SimpleDegree, Double>> input;
 	private static final String VARIABLE = "degrees";
-	
+
 	@Before
 	public void setup() {
 		input = newHashMap();
-		input.put(VARIABLE, immutableMap(LOW, (Double) .0, MEDIUM, .3, HIGH, .8));
+		input.put(VARIABLE,
+				immutableMap(LOW, (Double) .0, MEDIUM, .3, HIGH, .8));
 	}
-	
+
 	@Test
 	public void checkExtractor() {
 		assertEquals(.0, newExtractor(VARIABLE, LOW, input).get());
 		assertEquals(.3, newExtractor(VARIABLE, MEDIUM, input).get());
 		assertEquals(.8, newExtractor(VARIABLE, HIGH, input).get());
 	}
-	
-	@Test(expected=NullPointerException.class)
+
+	@Test(expected = NullPointerException.class)
 	public void checkExtractorVariableFailure() {
 		assertEquals(.0, newExtractor("error", LOW, input).get());
 	}
 
 	@Test
 	public void checkOperatorNot() {
-		assertEquals(1.0, newOperator(newNotFuzzyFunction(), newExtractor(VARIABLE, LOW, input)).get());
-		assertEquals(.7, newOperator(newNotFuzzyFunction(), newExtractor(VARIABLE, MEDIUM, input)).get());
-		assertEquals(.2, newOperator(newNotFuzzyFunction(), newExtractor(VARIABLE, HIGH, input)).get(),.01);
+		assertEquals(1.0, newOperator(NOT,
+				newExtractor(VARIABLE, LOW, input)).get());
+		assertEquals(.7, newOperator(newNotFunction(),
+				newExtractor(VARIABLE, MEDIUM, input)).get());
+		assertEquals(.2, newOperator(newNotFunction(),
+				newExtractor(VARIABLE, HIGH, input)).get(), .01);
 	}
 
 	@Test
-	public void checkOperatorMin() {
-		assertEquals(.3, newOperator(newMinFunction(), newExtractor(VARIABLE, MEDIUM, input),newExtractor(VARIABLE, HIGH, input)).get());
+	public void checkOperatorVery() {
+		assertEquals(.09, newOperator(VERY,
+				newExtractor(VARIABLE, MEDIUM, input)).get());
 	}
 
 	@Test
-	public void checkOperatorMax() {
-		assertEquals(.8, newOperator(newMaxFunction(), newExtractor(VARIABLE, MEDIUM, input),newExtractor(VARIABLE, HIGH, input)).get());
+	public void checkOperatorAND() {
+		assertEquals(.3, newOperator(AND,
+				newExtractor(VARIABLE, MEDIUM, input),
+				newExtractor(VARIABLE, HIGH, input)).get());
+	}
+
+	@Test
+	public void checkOperatorOR() {
+		assertEquals(.8, newOperator(OR,
+				newExtractor(VARIABLE, MEDIUM, input),
+				newExtractor(VARIABLE, HIGH, input)).get());
+	}
+
+	@Test
+	public void checkOperatorProduct() {
+		assertEquals(.24, newOperator(newProductFunction(),
+				newExtractor(VARIABLE, MEDIUM, input),
+				newExtractor(VARIABLE, HIGH, input)).get());
 	}
 }
