@@ -41,7 +41,7 @@ import funzy.variables.InputVariable;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyTriangleInputTest {
+public class TriangleInputVariableTest {
 	private InputVariable variable;
 
 	@Before

@@ -36,7 +36,7 @@ import funzy.variables.Variable;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class MembershipsTest {
+public class MembershipFunctionTest {
 	private Variable variable;
 
 	@Before

@@ -21,7 +21,7 @@ package funzy.variables;
 
 import static com.google.common.collect.Maps.newHashMap;
 import static funzy.Configuration.LOG;
-import static funzy.functions.fuzzy.FuzzyFunctions.newFuzzyFunction;
+import static funzy.fuzzy.Fuzzyfiers.newFuzzyFunction;
 import static java.util.logging.Level.FINEST;
 import static java.util.logging.Logger.getLogger;
 
@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import funzy.functions.fuzzy.FuzzyFunction;
+import funzy.fuzzy.Fuzzyfier;
 import funzy.membership.FuzzyMembership;
 
 /**
@@ -40,7 +40,7 @@ import funzy.membership.FuzzyMembership;
  */
 public class InputVariable<K> extends Variable<K> {
 	private final static Logger log = getLogger("fuzzy.variable.input");
-	private final static FuzzyFunction function = newFuzzyFunction();
+	private final static Fuzzyfier function = newFuzzyFunction();
 
 	public InputVariable(String name, double minimum, double maximum,
 			Map<K, FuzzyMembership> func) throws IllegalRangeException {

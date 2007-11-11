@@ -17,16 +17,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.operators;
+package funzy.operators.functions;
 
 
 /**
- * Implementation of a fuzzy operators factory.
+ * Implementation of a fuzzy Functions factory.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public final class FuzzyOperators {
+public final class FuzzyFunctions {
 	private static final Double LITTLE = 1.3;
 	private static final Double SLIGHTLY = 1.7;
 	private static final Double VERY = 2.0;
@@ -34,51 +34,51 @@ public final class FuzzyOperators {
 	private static final Double VERY_VERY = 4.0;
 	private static final Double SOMEWHAT = 0.5;
 
-	private FuzzyOperators() {
+	private FuzzyFunctions() {
 	}
 
-	public static final FuzzyOperator<Double> newNotFuzzyFunction() {
-		return new FuzzyOperatorNot();
+	public static final FuzzyFunction<Double> newNotFuzzyFunction() {
+		return new FuzzyFunctionNot();
 	}
 
-	public static final FuzzyOperator<Double> newMaxOperator() {
-		return new FuzzyOperatorMax();
+	public static final FuzzyFunction<Double> newMaxFunction() {
+		return new FuzzyFunctionMax();
 	}
 
-	public static final FuzzyOperator<Double> newMinOperator() {
-		return new FuzzyOperatorMin();
+	public static final FuzzyFunction<Double> newMinFunction() {
+		return new FuzzyFunctionMin();
 	}
 
-	public static final FuzzyOperator<Double> newProductOperator() {
-		return new FuzzyOperatorProduct();
+	public static final FuzzyFunction<Double> newProductFunction() {
+		return new FuzzyFunctionProduct();
 	}
 
-	public static final FuzzyOperator<Double> newPowFuzzyFunction(
+	public static final FuzzyFunction<Double> newPowFuzzyFunction(
 			final double exponent) {
-		return new FuzzyOperatorPow(exponent);
+		return new FuzzyFunctionPow(exponent);
 	}
 
-	public static final FuzzyOperator<Double> newLittleOperator() {
+	public static final FuzzyFunction<Double> newLittleFunction() {
 		return newPowFuzzyFunction(LITTLE);
 	}
 
-	public static final FuzzyOperator<Double> newSlightlyOperator() {
+	public static final FuzzyFunction<Double> newSlightlyFunction() {
 		return newPowFuzzyFunction(SLIGHTLY);
 	}
 
-	public static final FuzzyOperator<Double> newVeryOperator() {
+	public static final FuzzyFunction<Double> newVeryFunction() {
 		return newPowFuzzyFunction(VERY);
 	}
 
-	public static final FuzzyOperator<Double> newExtremelyOperator() {
+	public static final FuzzyFunction<Double> newExtremelyFunction() {
 		return newPowFuzzyFunction(EXTREMELY);
 	}
 
-	public static final FuzzyOperator<Double> newVeryVeryOperator() {
+	public static final FuzzyFunction<Double> newVeryVeryFunction() {
 		return newPowFuzzyFunction(VERY_VERY);
 	}
 
-	public static final FuzzyOperator<Double> newSomewhatOperator() {
+	public static final FuzzyFunction<Double> newSomewhatFunction() {
 		return newPowFuzzyFunction(SOMEWHAT);
 	}
 }

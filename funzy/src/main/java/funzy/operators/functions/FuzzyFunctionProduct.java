@@ -17,44 +17,21 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.operators;
+package funzy.operators.functions;
 
-import static com.google.common.collect.Iterables.transform;
-import static java.util.Arrays.asList;
-
-import java.util.Collection;
-
-import com.google.common.base.Function;
-import com.google.common.base.Supplier;
-
-import funzy.operators.functions.FuzzyFunction;
 
 /**
- * Implementation of a fuzzy operator.
+ * Implementation of a Fuzzy AND operator using product operator.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyOperator<N extends Number>  implements Supplier<N>{
-	private FuzzyFunction<N> function;
-	private Collection<Supplier<N>> operators;
-	private Function<Supplier<N>, N> values = new Function<Supplier<N>, N>() {
-		public N apply(Supplier<N> operator) {
-			return operator.get();
-		}
-	};
-	
-	private FuzzyOperator(FuzzyFunction<N> f, Supplier<N>[] ops) {
-		function = f;
-		operators = asList(ops);
-	}
-
-	public N get() {
-		return function.evaluate(transform(operators, values));
-	}
-	
-	
-	public static final <N extends Number> Supplier<N> newOperator(FuzzyFunction<N> function, Supplier<N>... operators) {
-		return new FuzzyOperator<N>(function, operators);
+public class FuzzyFunctionProduct extends FuzzyFunctionMultiple<Double> {
+	/* (non-Javadoc)
+	 * @see funzy.operators.MultipleOperator#compute(java.lang.Number,java.lang.Number)
+	 */
+	@Override
+	protected Double evaluate(Double value1, Double value2) {
+		return value1.doubleValue() * value2.doubleValue();
 	}
 }

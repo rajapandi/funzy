@@ -17,29 +17,36 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.functions.crispy;
+package funzy.operators;
 
-import com.google.common.base.Predicate;
+import static com.google.common.base.Objects.nonNull;
+
+import java.util.Map;
+
+import com.google.common.base.Supplier;
 
 /**
- * Implementation of a predicate checking superiority of the value to a given
- * threshold.
+ * Implementation of a fuzzy literal extractor.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class CrispyPredicateGreaterThan<T extends Comparable<T>> implements
-		Predicate<T> {
-	private T border;
-
-	public CrispyPredicateGreaterThan(T threshold) {
-		border = threshold;
+public class FuzzyValueExtractor <K, V, N extends Number> implements Supplier<N>{
+	private Map<K, Map<V,N>> values;
+	private K key;
+	private V value;
+	
+	private FuzzyValueExtractor(K variable, V literal, Map<K, Map<V,N>> provider) {
+		key = variable;
+		value = literal;
+		values = provider;
 	}
-
-	/* (non-Javadoc)
-	 * @see com.google.common.base.Predicate#apply(java.lang.Object)
-	 */
-	public boolean apply(T value) {
-		return border.compareTo(value) < 0;
+	
+	public N get() {
+		return nonNull(nonNull(values.get(key)).get(value));
+	}
+	
+	public static final <K, V, N extends Number> Supplier<N> newExtractor(K variable, V literal, Map<K, Map<V,N>> provider) {
+		return new FuzzyValueExtractor<K,V,N>(variable, literal, provider);
 	}
 }

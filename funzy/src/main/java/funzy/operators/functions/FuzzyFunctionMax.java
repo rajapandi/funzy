@@ -17,33 +17,22 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.functions.fuzzy;
+package funzy.operators.functions;
 
-import funzy.membership.FuzzyMembership;
-import funzy.membership.Line;
+import static java.lang.Math.max;
 
 /**
- * Implementation of a Fuzzy function.
+ * Implementation of a Fuzzy OR operator using max() function.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyFunctionImpl implements FuzzyFunction {
-	private final double unknown;
-	
-	public FuzzyFunctionImpl(double value) {
-		this.unknown = value;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see funzy.functions.FuzzyFunction#fuzzy(double,funzy.membership.FuzzyMembership)
+public class FuzzyFunctionMax extends FuzzyFunctionMultiple<Double> {
+	/* (non-Javadoc)
+	 * @see funzy.operators.MultipleOperator#compute(java.lang.Number, java.lang.Number)
 	 */
-	public double fuzzy(double value, FuzzyMembership membership) {
-		for (Line line : membership.get())
-			if (line.inXRange(value))
-				return (value - line.a().x()) * line.delta().y() + line.a().y();
-		return unknown;
+	@Override
+	protected Double evaluate(Double value1, Double value2) {
+		return max(value1,value2);
 	}
 }

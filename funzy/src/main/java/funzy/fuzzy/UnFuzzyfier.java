@@ -17,21 +17,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.operators;
+package funzy.fuzzy;
 
+import funzy.membership.FuzzyMembership;
 
 /**
- * Implementation of a Fuzzy NOT operator.
+ * Description of a unfuzzy function.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyOperatorNot extends SingleOperator<Double> {
-	/* (non-Javadoc)
-	 * @see com.google.common.base.Function#apply(java.lang.Object)
-	 */
-	@Override
-	public Double evaluate(Double value) {
-		return 1 - value;
-	}
+public interface UnFuzzyfier <N extends Number> {
+	double fuzzy(double confidence, FuzzyMembership membership);
 }

@@ -19,82 +19,47 @@
 // THE SOFTWARE. 
 package funzy.membership;
 
-import static funzy.membership.Line.newLine;
 import static funzy.membership.Point.newPoint;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import funzy.membership.Line;
 import funzy.membership.Point;
 
 /**
- * Test of a graph line.
+ * Test of a graph point.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class LineTest {
-	private Point p1, p2;
-	private Line line ;
+public class MembershipPointTest {
+	private double a, b;
+	private Point p;
 
 	@Before
 	public void setup() {
-		p1= newPoint(4, 3);
-		p2 = newPoint(6, 3);
-		line = newLine(p1, p2);
-	}
-	
-	@Test
-	public void checkNewLine() {
-		assertEquals(p1, line.a());
-		assertEquals(p2, line.b());
-	}
-	
-	@Test
-	public void checkDelta() {
-		assertEquals(newPoint(1,0), line.delta());
-	}
-	
-	@Test
-	public void checkPositiveDelta() {
-		p2 = newPoint(6, 5);
-		line = newLine(p1, p2);
-		assertEquals(newPoint(1,1), line.delta());
-	}
-	
-	@Test
-	public void checkNegativeDelta() {
-		p1 = newPoint(4, 5);
-		line = newLine(p1, p2);
-		assertEquals(newPoint(1,-1), line.delta());
+		a = 20;
+		b = 30;
+		p = newPoint(a, b);
 	}
 
 	@Test
-	public void checkMinRange() {
-		assertTrue(line.inXRange(4));
-	}
-	
-	@Test
-	public void checkInRange() {
-		assertTrue(line.inXRange(5));
-	}
-	
-	@Test
-	public void checkMaxRange() {
-		assertTrue(line.inXRange(6));
-	}
-	
-	@Test
-	public void checkOutOfMinRange() {
-		assertFalse(line.inXRange(3));
+	public void checkNewPoint() {
+		assertEquals(a, p.x(), 0);
+		assertEquals(b, p.y(), 0);
 	}
 
 	@Test
-	public void checkOutOfMaxRange() {
-		assertFalse(line.inXRange(7));
+	public void checkEqualsPoint() {
+		assertEquals(p, newPoint(a,b));
+	}
+	
+	@Test
+	public void checkSubstract() {
+		Point p2 = newPoint(15, 5);
+		Point s = Point.substract(p, p2);
+		assertEquals(5, s.x(), 0);
+		assertEquals(25, s.y(), 0);
 	}
 }
