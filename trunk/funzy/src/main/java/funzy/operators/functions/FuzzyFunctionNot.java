@@ -17,28 +17,21 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.operators;
+package funzy.operators.functions;
 
-import static java.lang.Math.pow;
 
 /**
- * Implementation of a Fuzzy POW function.
+ * Implementation of a Fuzzy NOT operator.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyOperatorPow extends SingleOperator<Double> {
-	private final double pow;
-
-	public FuzzyOperatorPow(double exponent) {
-		pow = exponent;
-	}
-
+public class FuzzyFunctionNot extends FuzzyFunctionSingle<Double> {
 	/* (non-Javadoc)
-	 * @see funzy.operators.SingleOperator#evaluate(java.lang.Number)
+	 * @see com.google.common.base.Function#apply(java.lang.Object)
 	 */
 	@Override
-	protected Double evaluate(Double value) {
-		return pow(value, pow) ;
+	public Double evaluate(Double value) {
+		return 1 - value;
 	}
 }

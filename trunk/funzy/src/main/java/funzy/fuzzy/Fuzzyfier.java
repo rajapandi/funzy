@@ -17,30 +17,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.functions.crispy;
+package funzy.fuzzy;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
+import funzy.membership.FuzzyMembership;
 
 /**
- * Implementation of a Crispy function.
+ * Description of a fuzzy function.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class CrispyFunction<T> implements Function<T, Double> {
-	private Predicate<T> pred;
-
-	public CrispyFunction(Predicate<T> predicate) {
-		pred = predicate;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.google.common.base.Function#apply(java.lang.Object)
-	 */
-	public Double apply(T value) {
-		return pred.apply(value) ? 1.0 : 0.0;
-	}
+public interface Fuzzyfier {
+	double fuzzy(double value, FuzzyMembership membership);
 }

@@ -17,22 +17,30 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.operators;
+package funzy.crispy;
 
-import static java.lang.Math.max;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 
 /**
- * Implementation of a Fuzzy OR operator using max() function.
+ * Implementation of a Crispy function.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyOperatorMax extends MultipleOperator<Double> {
-	/* (non-Javadoc)
-	 * @see funzy.operators.MultipleOperator#compute(java.lang.Number, java.lang.Number)
+public class CrispyFunction<T> implements Function<T, Double> {
+	private Predicate<T> pred;
+
+	public CrispyFunction(Predicate<T> predicate) {
+		pred = predicate;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.google.common.base.Function#apply(java.lang.Object)
 	 */
-	@Override
-	protected Double compute(Double value1, Double value2) {
-		return max(value1,value2);
+	public Double apply(T value) {
+		return pred.apply(value) ? 1.0 : 0.0;
 	}
 }

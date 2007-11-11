@@ -17,22 +17,29 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.operators;
+package funzy.crispy;
 
-import static java.lang.Math.min;
+import com.google.common.base.Predicate;
 
 /**
- * Implementation of a Fuzzy AND oeprator using min() function.
+ * Implementation of a predicate checking interiority of the value to a given
+ * threshold.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyOperatorMin extends MultipleOperator<Double> {
+public class CrispyPredicateLessThan<T extends Comparable<T>> implements
+		Predicate<T> {
+	private T border;
+
+	public CrispyPredicateLessThan(T threshold) {
+		border = threshold;
+	}
+
 	/* (non-Javadoc)
-	 * @see funzy.operators.MultipleOperator#compute(java.lang.Number, java.lang.Number)
+	 * @see com.google.common.base.Predicate#apply(java.lang.Object)
 	 */
-	@Override
-	protected Double compute(Double value1, Double value2) {
-		return min(value1, value2);
+	public boolean apply(T value) {
+		return border.compareTo(value) > 0;
 	}
 }

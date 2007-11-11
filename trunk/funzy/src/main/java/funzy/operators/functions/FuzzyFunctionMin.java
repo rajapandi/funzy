@@ -17,21 +17,22 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.operators;
+package funzy.operators.functions;
 
+import static java.lang.Math.min;
 
 /**
- * Implementation of a Fuzzy AND operator using product operator.
+ * Implementation of a Fuzzy AND oeprator using min() function.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyOperatorProduct extends MultipleOperator<Double> {
+public class FuzzyFunctionMin extends FuzzyFunctionMultiple<Double> {
 	/* (non-Javadoc)
-	 * @see funzy.operators.MultipleOperator#compute(java.lang.Number,java.lang.Number)
+	 * @see funzy.operators.MultipleOperator#compute(java.lang.Number, java.lang.Number)
 	 */
 	@Override
-	protected Double compute(Double value1, Double value2) {
-		return value1.doubleValue() * value2.doubleValue();
+	protected Double evaluate(Double value1, Double value2) {
+		return min(value1, value2);
 	}
 }

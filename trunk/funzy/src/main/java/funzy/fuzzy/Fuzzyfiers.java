@@ -17,29 +17,25 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.functions.crispy;
+package funzy.fuzzy;
 
-import com.google.common.base.Predicate;
+import static java.lang.Double.NaN;
 
 /**
- * Implementation of a predicate checking interiority of the value to a given
- * threshold.
+ * Implementation of a fuzzy function factory.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class CrispyPredicateLessThan<T extends Comparable<T>> implements
-		Predicate<T> {
-	private T border;
-
-	public CrispyPredicateLessThan(T threshold) {
-		border = threshold;
+public final class Fuzzyfiers {
+	private Fuzzyfiers() {
 	}
 
-	/* (non-Javadoc)
-	 * @see com.google.common.base.Predicate#apply(java.lang.Object)
-	 */
-	public boolean apply(T value) {
-		return border.compareTo(value) > 0;
+	public static final Fuzzyfier newFuzzyFunction(final double unknown) {
+		return new FuzzyfierImpl(unknown);
+	}
+
+	public static final Fuzzyfier newFuzzyFunction() {
+		return newFuzzyFunction(NaN);
 	}
 }

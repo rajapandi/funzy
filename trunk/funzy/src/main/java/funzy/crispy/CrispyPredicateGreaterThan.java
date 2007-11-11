@@ -17,16 +17,29 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.functions.fuzzy;
+package funzy.crispy;
 
-import funzy.membership.FuzzyMembership;
+import com.google.common.base.Predicate;
 
 /**
- * Description of a fuzzy function.
+ * Implementation of a predicate checking superiority of the value to a given
+ * threshold.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public interface FuzzyFunction {
-	double fuzzy(double value, FuzzyMembership membership);
+public class CrispyPredicateGreaterThan<T extends Comparable<T>> implements
+		Predicate<T> {
+	private T border;
+
+	public CrispyPredicateGreaterThan(T threshold) {
+		border = threshold;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.google.common.base.Predicate#apply(java.lang.Object)
+	 */
+	public boolean apply(T value) {
+		return border.compareTo(value) < 0;
+	}
 }

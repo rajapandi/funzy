@@ -17,49 +17,33 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.membership;
+package funzy.fuzzy;
 
-import static funzy.membership.Point.newPoint;
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import funzy.membership.Point;
+import funzy.membership.FuzzyMembership;
+import funzy.membership.Line;
 
 /**
- * Test of a graph point.
+ * Implementation of a Fuzzy function.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class PointTest {
-	private double a, b;
-	private Point p;
-
-	@Before
-	public void setup() {
-		a = 20;
-		b = 30;
-		p = newPoint(a, b);
-	}
-
-	@Test
-	public void checkNewPoint() {
-		assertEquals(a, p.x(), 0);
-		assertEquals(b, p.y(), 0);
-	}
-
-	@Test
-	public void checkEqualsPoint() {
-		assertEquals(p, newPoint(a,b));
+public class FuzzyfierImpl implements Fuzzyfier {
+	private final double unknown;
+	
+	public FuzzyfierImpl(double value) {
+		this.unknown = value;
 	}
 	
-	@Test
-	public void checkSubstract() {
-		Point p2 = newPoint(15, 5);
-		Point s = Point.substract(p, p2);
-		assertEquals(5, s.x(), 0);
-		assertEquals(25, s.y(), 0);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see funzy.functions.FuzzyFunction#fuzzy(double,funzy.membership.FuzzyMembership)
+	 */
+	public double fuzzy(double value, FuzzyMembership membership) {
+		for (Line line : membership.get())
+			if (line.inXRange(value))
+				return (value - line.a().x()) * line.delta().y() + line.a().y();
+		return unknown;
 	}
 }

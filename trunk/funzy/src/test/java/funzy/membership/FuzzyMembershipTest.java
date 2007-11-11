@@ -17,9 +17,9 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.functions;
+package funzy.membership;
 
-import static funzy.functions.fuzzy.FuzzyFunctions.newFuzzyFunction;
+import static funzy.fuzzy.Fuzzyfiers.newFuzzyFunction;
 import static funzy.membership.Memberships.newFuzzyMembership;
 import static funzy.membership.Point.newPoint;
 import static java.lang.Double.NaN;
@@ -28,7 +28,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import funzy.functions.fuzzy.FuzzyFunction;
+import funzy.fuzzy.Fuzzyfier;
 import funzy.membership.FuzzyMembership;
 
 /**
@@ -37,8 +37,8 @@ import funzy.membership.FuzzyMembership;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyFunctionTest {
-	private FuzzyFunction function;
+public class FuzzyMembershipTest {
+	private Fuzzyfier function;
 	private double unknown = NaN;
 	private final FuzzyMembership growing = newFuzzyMembership(newPoint(1, 0),
 			newPoint(5, 1));
