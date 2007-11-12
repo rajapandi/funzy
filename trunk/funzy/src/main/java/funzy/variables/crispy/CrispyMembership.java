@@ -17,34 +17,31 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables;
+package funzy.variables.crispy;
 
-import static funzy.Configuration.LOG;
-import static java.util.logging.Level.FINEST;
-import static java.util.logging.Logger.getLogger;
+import static com.google.common.collect.Lists.immutableList;
 
-import java.util.Map;
-import java.util.logging.Logger;
+import java.util.List;
 
-import funzy.variables.memberships.FuzzyMembership;
+import com.google.common.base.Supplier;
+
+import funzy.variables.memberships.Point;
+
 
 /**
- * Implementation of a literal output variable in fuzzy logic.
+ * Implementation of a Crispy membership function.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class OutputVariable<N extends Number, K> extends Variable<K> {
-	private final static Logger log = getLogger("fuzzy.variable.output");
+public class CrispyMembership implements Supplier<List<Point>> {
+	private final List<Point> points ;
 
-	public OutputVariable(String name, double minimum, double maximum, Map<K, FuzzyMembership> func)
-			throws IllegalRangeException {
-		super(name, minimum, maximum, func);
+	public CrispyMembership(Point... point) {
+		points = immutableList(point);
 	}
 
-	public N unfuzzy(Map<K, Double> value) {
-		if (LOG && log.isLoggable(FINEST))
-			log.finest("Calling unfuzzy for fuzzy set " + value + "...");
-		return null;
+	public List<Point> get() {
+		return points;
 	}
 }

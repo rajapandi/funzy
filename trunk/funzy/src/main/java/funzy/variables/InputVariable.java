@@ -21,7 +21,7 @@ package funzy.variables;
 
 import static com.google.common.collect.Maps.newHashMap;
 import static funzy.Configuration.LOG;
-import static funzy.fuzzy.Fuzzyfiers.newFuzzyFunction;
+import static funzy.variables.fuzzy.Fuzzyfiers.newFuzzyFunction;
 import static java.util.logging.Level.FINEST;
 import static java.util.logging.Logger.getLogger;
 
@@ -29,8 +29,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import funzy.fuzzy.Fuzzyfier;
-import funzy.membership.FuzzyMembership;
+import funzy.variables.fuzzy.Fuzzyfier;
+import funzy.variables.memberships.FuzzyMembership;
 
 /**
  * Implementation of a literal input variable in fuzzy logic.

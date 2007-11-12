@@ -17,34 +17,22 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables;
+package funzy.rules.functions;
 
-import static funzy.Configuration.LOG;
-import static java.util.logging.Level.FINEST;
-import static java.util.logging.Logger.getLogger;
-
-import java.util.Map;
-import java.util.logging.Logger;
-
-import funzy.variables.memberships.FuzzyMembership;
 
 /**
- * Implementation of a literal output variable in fuzzy logic.
+ * Description of a fuzzy operator.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class OutputVariable<N extends Number, K> extends Variable<K> {
-	private final static Logger log = getLogger("fuzzy.variable.output");
-
-	public OutputVariable(String name, double minimum, double maximum, Map<K, FuzzyMembership> func)
-			throws IllegalRangeException {
-		super(name, minimum, maximum, func);
-	}
-
-	public N unfuzzy(Map<K, Double> value) {
-		if (LOG && log.isLoggable(FINEST))
-			log.finest("Calling unfuzzy for fuzzy set " + value + "...");
-		return null;
-	}
+public interface FuzzyFunction<N extends Number> {
+	/**
+	 * Evaluates the operator parameter(s) and returns a single value of the
+	 * same type.
+	 * 
+	 * @param values the list of input values for the parameter.
+	 * @return the value computed by the operator.
+	 */
+	N evaluate(Iterable<N> values);
 }

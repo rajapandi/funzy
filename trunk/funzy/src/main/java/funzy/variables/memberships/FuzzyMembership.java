@@ -17,34 +17,45 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables;
+package funzy.variables.memberships;
 
-import static funzy.Configuration.LOG;
-import static java.util.logging.Level.FINEST;
-import static java.util.logging.Logger.getLogger;
+import static com.google.common.collect.Lists.newArrayList;
+import static funzy.variables.memberships.Line.newLine;
 
-import java.util.Map;
-import java.util.logging.Logger;
+import java.util.List;
 
-import funzy.variables.memberships.FuzzyMembership;
+import com.google.common.base.Supplier;
 
 /**
- * Implementation of a literal output variable in fuzzy logic.
+ * Implementation of a Fuzzy membership function. A fuzzy membership is an
+ * ordered sequence of lines whose Y values are within range [0,1].
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class OutputVariable<N extends Number, K> extends Variable<K> {
-	private final static Logger log = getLogger("fuzzy.variable.output");
+public class FuzzyMembership implements Supplier<Iterable<Line>> {
+	private final List<Line> lines = newArrayList();
 
-	public OutputVariable(String name, double minimum, double maximum, Map<K, FuzzyMembership> func)
-			throws IllegalRangeException {
-		super(name, minimum, maximum, func);
+	public FuzzyMembership(Point... points) {
+		Point pred = null;
+		for (Point suc : points) {
+			if (pred != null) {
+				if (pred.x() > suc.x())
+					throw new IllegalMembershipException(
+							"Membership indexes should be ordered");
+				if (suc.y() < 0 || suc.y() > 1)
+					throw new IllegalMembershipException(
+							"Membership value should be within range [0,1]");
+				lines.add(newLine(pred, suc));
+			}
+			pred = suc;
+		}
 	}
 
-	public N unfuzzy(Map<K, Double> value) {
-		if (LOG && log.isLoggable(FINEST))
-			log.finest("Calling unfuzzy for fuzzy set " + value + "...");
-		return null;
+	/* (non-Javadoc)
+	 * @see com.google.common.base.Supplier#get()
+	 */
+	public Iterable<Line> get() {
+		return lines;
 	}
 }

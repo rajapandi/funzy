@@ -26,9 +26,9 @@ import static java.util.logging.Logger.getLogger;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import funzy.membership.FuzzyMembership;
-import funzy.membership.IllegalMembershipException;
-import funzy.membership.Line;
+import funzy.variables.memberships.FuzzyMembership;
+import funzy.variables.memberships.IllegalMembershipException;
+import funzy.variables.memberships.Line;
 
 /**
  * Implementation of a literal variable in fuzzy logic.

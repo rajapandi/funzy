@@ -17,34 +17,29 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables;
+package funzy.variables.crispy;
 
-import static funzy.Configuration.LOG;
-import static java.util.logging.Level.FINEST;
-import static java.util.logging.Logger.getLogger;
-
-import java.util.Map;
-import java.util.logging.Logger;
-
-import funzy.variables.memberships.FuzzyMembership;
+import com.google.common.base.Predicate;
 
 /**
- * Implementation of a literal output variable in fuzzy logic.
+ * Implementation of a predicate checking equality of the value to a given
+ * threshold.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class OutputVariable<N extends Number, K> extends Variable<K> {
-	private final static Logger log = getLogger("fuzzy.variable.output");
+public class CrispyPredicateEquals<T extends Comparable<T>> implements
+		Predicate<T> {
+	private T border;
 
-	public OutputVariable(String name, double minimum, double maximum, Map<K, FuzzyMembership> func)
-			throws IllegalRangeException {
-		super(name, minimum, maximum, func);
+	public CrispyPredicateEquals(T threshold) {
+		border = threshold;
 	}
 
-	public N unfuzzy(Map<K, Double> value) {
-		if (LOG && log.isLoggable(FINEST))
-			log.finest("Calling unfuzzy for fuzzy set " + value + "...");
-		return null;
+	/* (non-Javadoc)
+	 * @see com.google.common.base.Predicate#apply(java.lang.Object)
+	 */
+	public boolean apply(T value) {
+		return border.compareTo(value) == 0;
 	}
 }
