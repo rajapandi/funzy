@@ -19,20 +19,32 @@
 // THE SOFTWARE. 
 package funzy.operators.functions;
 
-import static java.lang.Math.min;
+import static com.google.common.collect.Lists.immutableList;
 
 /**
- * Implementation of a Fuzzy AND operator using the function min().
+ * Implementation of a Fuzzy XOR operator using AND, OR, NOT operators.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyFunctionMin extends FuzzyFunctionMultiple<Double> {
+public class FuzzyFunctionXor extends FuzzyFunctionMultiple<Double> {
+	private FuzzyFunction<Double> min, max, minus;
+
+	public FuzzyFunctionXor(FuzzyFunction<Double> and,
+			FuzzyFunction<Double> or, FuzzyFunction<Double> not) {
+		min = and;
+		max = or;
+		minus = not;
+	}
+
 	/* (non-Javadoc)
-	 * @see funzy.operators.MultipleOperator#compute(java.lang.Number, java.lang.Number)
+	 * @see funzy.operators.MultipleOperator#compute(java.lang.Number,java.lang.Number)
 	 */
 	@Override
 	protected Double evaluate(Double value1, Double value2) {
-		return min(value1, value2);
+		Iterable<Double> in = immutableList(value1, value2);
+
+		return min.evaluate(immutableList(max.evaluate(in), minus
+				.evaluate(immutableList(min.evaluate(in)))));
 	}
 }

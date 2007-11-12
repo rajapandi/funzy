@@ -20,16 +20,22 @@
 package funzy.operators;
 
 import static com.google.common.collect.Lists.immutableList;
-import static funzy.operators.functions.FuzzyFunctions.newExtremelyFunction;
-import static funzy.operators.functions.FuzzyFunctions.newLittleFunction;
-import static funzy.operators.functions.FuzzyFunctions.newMaxFunction;
-import static funzy.operators.functions.FuzzyFunctions.newMinFunction;
-import static funzy.operators.functions.FuzzyFunctions.newNotFunction;
-import static funzy.operators.functions.FuzzyFunctions.newProductFunction;
-import static funzy.operators.functions.FuzzyFunctions.newSlightlyFunction;
-import static funzy.operators.functions.FuzzyFunctions.newSomewhatFunction;
-import static funzy.operators.functions.FuzzyFunctions.newVeryFunction;
-import static funzy.operators.functions.FuzzyFunctions.newVeryVeryFunction;
+import static funzy.operators.functions.FuzzyFunctions.add;
+import static funzy.operators.functions.FuzzyFunctions.extremely;
+import static funzy.operators.functions.FuzzyFunctions.little;
+import static funzy.operators.functions.FuzzyFunctions.max;
+import static funzy.operators.functions.FuzzyFunctions.min;
+import static funzy.operators.functions.FuzzyFunctions.nand;
+import static funzy.operators.functions.FuzzyFunctions.nop;
+import static funzy.operators.functions.FuzzyFunctions.nor;
+import static funzy.operators.functions.FuzzyFunctions.not;
+import static funzy.operators.functions.FuzzyFunctions.nxr;
+import static funzy.operators.functions.FuzzyFunctions.prod;
+import static funzy.operators.functions.FuzzyFunctions.slightly;
+import static funzy.operators.functions.FuzzyFunctions.somewhat;
+import static funzy.operators.functions.FuzzyFunctions.very;
+import static funzy.operators.functions.FuzzyFunctions.veryvery;
+import static funzy.operators.functions.FuzzyFunctions.xor;
 import static java.lang.Math.pow;
 import static org.junit.Assert.assertEquals;
 
@@ -44,64 +50,99 @@ import funzy.operators.functions.FuzzyFunction;
  * @version $Revision$
  */
 public class FuzzyFunctionTest {
-
 	private static void assertResult(Double expected,
 			FuzzyFunction<Double> function, Double... param) {
 		assertEquals(expected, function.evaluate(immutableList(param)));
 	}
 
 	@Test
+	public void functionNop() {
+		assertResult(.1, nop(), .1);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void functionNopFailure() {
+		assertResult(.1, nop(), .1, .2);
+	}
+	
+	@Test
 	public void functionNot() {
-		assertResult(.9, newNotFunction(), .1);
+		assertResult(.9, not(), .1);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void functionMultipleNot() {
-		assertResult(.9, newNotFunction(), .1, .2);
+		assertResult(.9, not(), .1, .2);
 	}
 
 	@Test
 	public void functionLittle() {
-		assertResult(pow(.5, 1.3), newLittleFunction(), .5);
+		assertResult(pow(.5, 1.3), little(), .5);
 	}
 
 	@Test
 	public void functionSlightly() {
-		assertResult(pow(.5, 1.7), newSlightlyFunction(), .5);
+		assertResult(pow(.5, 1.7), slightly(), .5);
 	}
 
 	@Test
 	public void functionVery() {
-		assertResult(pow(.5, 2), newVeryFunction(), .5);
+		assertResult(pow(.5, 2), very(), .5);
 	}
 
 	@Test
 	public void functionExtremely() {
-		assertResult(pow(.5, 3), newExtremelyFunction(), .5);
+		assertResult(pow(.5, 3), extremely(), .5);
 	}
 
 	@Test
 	public void functionVeryVery() {
-		assertResult(pow(.5, 4), newVeryVeryFunction(), .5);
+		assertResult(pow(.5, 4), veryvery(), .5);
 	}
 
 	@Test
 	public void functionSomewhat() {
-		assertResult(pow(.5, .5), newSomewhatFunction(), .5);
+		assertResult(pow(.5, .5), somewhat(), .5);
 	}
 
 	@Test
 	public void functionMin() {
-		assertResult(.1, newMinFunction(), .5, .4, .3, .2, .1);
+		assertResult(.1, min(), .5, .4, .3, .2, .1);
 	}
 
 	@Test
 	public void functionMax() {
-		assertResult(.5, newMaxFunction(), .5, .4, .3, .2, .1);
+		assertResult(.5, max(), .5, .4, .3, .2, .1);
 	}
 
 	@Test
-	public void functionProduct() {
-		assertResult(.2, newProductFunction(), .5, .4);
+	public void functionProd() {
+		assertResult(.2, prod(), .5, .4);
+	}
+
+	@Test
+	public void functionAdd() {
+		assertResult(.9, add(), .5, .4);
+	}
+	
+	@Test
+	public void functionXor() {
+		//TODO: Check the semantics of XOR
+		assertResult(.5, xor(), .5, .4);
+	}
+
+	@Test
+	public void functionNxr() {
+		assertResult(.5, nxr(), .5, .4);
+	}
+
+	@Test
+	public void functionNor() {
+		assertResult(.5, nor(), .5, .4);
+	}
+
+	@Test
+	public void functionNand() {
+		assertResult(.6, nand(), .5, .4);
 	}
 }

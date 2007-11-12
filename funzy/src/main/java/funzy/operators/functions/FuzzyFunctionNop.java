@@ -19,20 +19,19 @@
 // THE SOFTWARE. 
 package funzy.operators.functions;
 
-import static java.lang.Math.min;
 
 /**
- * Implementation of a Fuzzy AND operator using the function min().
+ * Implementation of a Fuzzy NOT operator.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyFunctionMin extends FuzzyFunctionMultiple<Double> {
+public class FuzzyFunctionNop extends FuzzyFunctionSingle<Double> {
 	/* (non-Javadoc)
-	 * @see funzy.operators.MultipleOperator#compute(java.lang.Number, java.lang.Number)
+	 * @see com.google.common.base.Function#apply(java.lang.Object)
 	 */
 	@Override
-	protected Double evaluate(Double value1, Double value2) {
-		return min(value1, value2);
+	public Double evaluate(Double value) {
+		return value;
 	}
 }

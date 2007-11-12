@@ -17,29 +17,21 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.membership;
-
-import static com.google.common.collect.Lists.immutableList;
-
-import java.util.List;
-
-import com.google.common.base.Supplier;
+package funzy.operators.functions;
 
 
 /**
- * Implementation of a Crispy membership function.
+ * Implementation of a Fuzzy ADD operator using product operator.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class CrispyMembership implements Supplier<List<Point>> {
-	private final List<Point> points ;
-
-	public CrispyMembership(Point... point) {
-		points = immutableList(point);
-	}
-
-	public List<Point> get() {
-		return points;
+public class FuzzyFunctionAdd extends FuzzyFunctionMultiple<Double> {
+	/* (non-Javadoc)
+	 * @see funzy.operators.MultipleOperator#compute(java.lang.Number,java.lang.Number)
+	 */
+	@Override
+	protected Double evaluate(Double value1, Double value2) {
+		return value1.doubleValue() + value2.doubleValue();
 	}
 }

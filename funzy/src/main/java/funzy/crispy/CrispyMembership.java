@@ -17,22 +17,31 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.operators.functions;
+package funzy.crispy;
 
-import static java.lang.Math.min;
+import static com.google.common.collect.Lists.immutableList;
+
+import java.util.List;
+
+import com.google.common.base.Supplier;
+
+import funzy.membership.Point;
+
 
 /**
- * Implementation of a Fuzzy AND operator using the function min().
+ * Implementation of a Crispy membership function.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyFunctionMin extends FuzzyFunctionMultiple<Double> {
-	/* (non-Javadoc)
-	 * @see funzy.operators.MultipleOperator#compute(java.lang.Number, java.lang.Number)
-	 */
-	@Override
-	protected Double evaluate(Double value1, Double value2) {
-		return min(value1, value2);
+public class CrispyMembership implements Supplier<List<Point>> {
+	private final List<Point> points ;
+
+	public CrispyMembership(Point... point) {
+		points = immutableList(point);
+	}
+
+	public List<Point> get() {
+		return points;
 	}
 }

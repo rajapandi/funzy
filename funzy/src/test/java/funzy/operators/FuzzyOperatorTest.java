@@ -25,13 +25,13 @@ import static funzy.literals.SimpleDegree.HIGH;
 import static funzy.literals.SimpleDegree.LOW;
 import static funzy.literals.SimpleDegree.MEDIUM;
 import static funzy.operators.FuzzyOperator.newOperator;
-import static funzy.operators.FuzzyValueExtractor.newExtractor;
+import static funzy.operators.FuzzyExtractor.newExtractor;
 import static funzy.operators.functions.FuzzyFunctions.AND;
 import static funzy.operators.functions.FuzzyFunctions.NOT;
 import static funzy.operators.functions.FuzzyFunctions.OR;
 import static funzy.operators.functions.FuzzyFunctions.VERY;
-import static funzy.operators.functions.FuzzyFunctions.newNotFunction;
-import static funzy.operators.functions.FuzzyFunctions.newProductFunction;
+import static funzy.operators.functions.FuzzyFunctions.not;
+import static funzy.operators.functions.FuzzyFunctions.prod;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Map;
@@ -74,9 +74,9 @@ public class FuzzyOperatorTest {
 	public void checkOperatorNot() {
 		assertEquals(1.0, newOperator(NOT,
 				newExtractor(VARIABLE, LOW, input)).get());
-		assertEquals(.7, newOperator(newNotFunction(),
+		assertEquals(.7, newOperator(not(),
 				newExtractor(VARIABLE, MEDIUM, input)).get());
-		assertEquals(.2, newOperator(newNotFunction(),
+		assertEquals(.2, newOperator(not(),
 				newExtractor(VARIABLE, HIGH, input)).get(), .01);
 	}
 
@@ -102,7 +102,7 @@ public class FuzzyOperatorTest {
 
 	@Test
 	public void checkOperatorProduct() {
-		assertEquals(.24, newOperator(newProductFunction(),
+		assertEquals(.24, newOperator(prod(),
 				newExtractor(VARIABLE, MEDIUM, input),
 				newExtractor(VARIABLE, HIGH, input)).get());
 	}

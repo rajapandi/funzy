@@ -31,12 +31,12 @@ import com.google.common.base.Supplier;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyValueExtractor <K, V, N extends Number> implements Supplier<N>{
+public class FuzzyExtractor <K, V, N extends Number> implements Supplier<N>{
 	private Map<K, Map<V,N>> values;
 	private K key;
 	private V value;
 	
-	private FuzzyValueExtractor(K variable, V literal, Map<K, Map<V,N>> provider) {
+	private FuzzyExtractor(K variable, V literal, Map<K, Map<V,N>> provider) {
 		key = variable;
 		value = literal;
 		values = provider;
@@ -47,6 +47,6 @@ public class FuzzyValueExtractor <K, V, N extends Number> implements Supplier<N>
 	}
 	
 	public static final <K, V, N extends Number> Supplier<N> newExtractor(K variable, V literal, Map<K, Map<V,N>> provider) {
-		return new FuzzyValueExtractor<K,V,N>(variable, literal, provider);
+		return new FuzzyExtractor<K,V,N>(variable, literal, provider);
 	}
 }
