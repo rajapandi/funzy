@@ -17,34 +17,42 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables;
+package funzy.variables.memberships;
 
-import static funzy.Configuration.LOG;
-import static java.util.logging.Level.FINEST;
-import static java.util.logging.Logger.getLogger;
-
-import java.util.Map;
-import java.util.logging.Logger;
-
-import funzy.variables.memberships.FuzzyMembership;
+import static funzy.variables.memberships.Point.newPoint;
 
 /**
- * Implementation of a literal output variable in fuzzy logic.
+ * Implementation a membership line.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class OutputVariable<N extends Number, K> extends Variable<K> {
-	private final static Logger log = getLogger("fuzzy.variable.output");
+public class Line {
+	private final Point a, b, delta;
 
-	public OutputVariable(String name, double minimum, double maximum, Map<K, FuzzyMembership> func)
-			throws IllegalRangeException {
-		super(name, minimum, maximum, func);
+	public Line(Point p1, Point p2) {
+		a = p1;
+		b = p2;
+		delta = newPoint(1,(p2.y()-p1.y())/(p2.x()-p1.x()));
 	}
 
-	public N unfuzzy(Map<K, Double> value) {
-		if (LOG && log.isLoggable(FINEST))
-			log.finest("Calling unfuzzy for fuzzy set " + value + "...");
-		return null;
+	public final Point a() {
+		return a;
+	}
+
+	public final Point b() {
+		return b;
+	}
+
+	public final Point delta() {
+		return delta;
+	}
+	
+	public final boolean inXRange(final double value) {
+		return value >= a.x() && value <= b.x();
+	}
+	
+	public static final Line newLine(final Point p1, final Point p2) {
+		return new Line(p1, p2);
 	}
 }

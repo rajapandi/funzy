@@ -17,34 +17,33 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables;
-
-import static funzy.Configuration.LOG;
-import static java.util.logging.Level.FINEST;
-import static java.util.logging.Logger.getLogger;
-
-import java.util.Map;
-import java.util.logging.Logger;
+package funzy.variables.fuzzy;
 
 import funzy.variables.memberships.FuzzyMembership;
+import funzy.variables.memberships.Line;
 
 /**
- * Implementation of a literal output variable in fuzzy logic.
+ * Implementation of a Fuzzy function.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class OutputVariable<N extends Number, K> extends Variable<K> {
-	private final static Logger log = getLogger("fuzzy.variable.output");
-
-	public OutputVariable(String name, double minimum, double maximum, Map<K, FuzzyMembership> func)
-			throws IllegalRangeException {
-		super(name, minimum, maximum, func);
+public class FuzzyfierImpl implements Fuzzyfier {
+	private final double unknown;
+	
+	public FuzzyfierImpl(double value) {
+		this.unknown = value;
 	}
-
-	public N unfuzzy(Map<K, Double> value) {
-		if (LOG && log.isLoggable(FINEST))
-			log.finest("Calling unfuzzy for fuzzy set " + value + "...");
-		return null;
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see funzy.functions.FuzzyFunction#fuzzy(double,funzy.membership.FuzzyMembership)
+	 */
+	public double fuzzy(double value, FuzzyMembership membership) {
+		for (Line line : membership.get())
+			if (line.inXRange(value))
+				return (value - line.a().x()) * line.delta().y() + line.a().y();
+		return unknown;
 	}
 }

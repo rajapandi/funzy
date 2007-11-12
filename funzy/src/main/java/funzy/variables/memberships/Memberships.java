@@ -17,34 +17,34 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables;
+package funzy.variables.memberships;
 
-import static funzy.Configuration.LOG;
-import static java.util.logging.Level.FINEST;
-import static java.util.logging.Logger.getLogger;
+import static funzy.variables.memberships.Point.newPoint;
+import funzy.variables.crispy.CrispyMembership;
 
-import java.util.Map;
-import java.util.logging.Logger;
-
-import funzy.variables.memberships.FuzzyMembership;
 
 /**
- * Implementation of a literal output variable in fuzzy logic.
+ * Implementation a membership function factory.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class OutputVariable<N extends Number, K> extends Variable<K> {
-	private final static Logger log = getLogger("fuzzy.variable.output");
-
-	public OutputVariable(String name, double minimum, double maximum, Map<K, FuzzyMembership> func)
-			throws IllegalRangeException {
-		super(name, minimum, maximum, func);
+public class Memberships {
+	private Memberships() {
 	}
 
-	public N unfuzzy(Map<K, Double> value) {
-		if (LOG && log.isLoggable(FINEST))
-			log.finest("Calling unfuzzy for fuzzy set " + value + "...");
-		return null;
+	public static final CrispyMembership newCrispyMembership(Point... points) {
+		return new CrispyMembership(points);
+	}
+
+	public static final CrispyMembership newCrispyMembership(double... points) {
+		Point[] list = new Point[points.length];
+		for (int i = 0; i < points.length; i++)
+			list[i] = newPoint(points[i], 1);
+		return newCrispyMembership(list);
+	}
+	
+	public static final FuzzyMembership newFuzzyMembership(Point... points) {
+		return new FuzzyMembership(points);
 	}
 }

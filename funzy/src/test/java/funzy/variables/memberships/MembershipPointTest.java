@@ -17,34 +17,49 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables;
+package funzy.variables.memberships;
 
-import static funzy.Configuration.LOG;
-import static java.util.logging.Level.FINEST;
-import static java.util.logging.Logger.getLogger;
+import static funzy.variables.memberships.Point.newPoint;
+import static org.junit.Assert.assertEquals;
 
-import java.util.Map;
-import java.util.logging.Logger;
+import org.junit.Before;
+import org.junit.Test;
 
-import funzy.variables.memberships.FuzzyMembership;
+import funzy.variables.memberships.Point;
 
 /**
- * Implementation of a literal output variable in fuzzy logic.
+ * Test of a graph point.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class OutputVariable<N extends Number, K> extends Variable<K> {
-	private final static Logger log = getLogger("fuzzy.variable.output");
+public class MembershipPointTest {
+	private double a, b;
+	private Point p;
 
-	public OutputVariable(String name, double minimum, double maximum, Map<K, FuzzyMembership> func)
-			throws IllegalRangeException {
-		super(name, minimum, maximum, func);
+	@Before
+	public void setup() {
+		a = 20;
+		b = 30;
+		p = newPoint(a, b);
 	}
 
-	public N unfuzzy(Map<K, Double> value) {
-		if (LOG && log.isLoggable(FINEST))
-			log.finest("Calling unfuzzy for fuzzy set " + value + "...");
-		return null;
+	@Test
+	public void checkNewPoint() {
+		assertEquals(a, p.x(), 0);
+		assertEquals(b, p.y(), 0);
+	}
+
+	@Test
+	public void checkEqualsPoint() {
+		assertEquals(p, newPoint(a,b));
+	}
+	
+	@Test
+	public void checkSubstract() {
+		Point p2 = newPoint(15, 5);
+		Point s = Point.substract(p, p2);
+		assertEquals(5, s.x(), 0);
+		assertEquals(25, s.y(), 0);
 	}
 }

@@ -17,34 +17,30 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables;
+package funzy.variables.crispy;
 
-import static funzy.Configuration.LOG;
-import static java.util.logging.Level.FINEST;
-import static java.util.logging.Logger.getLogger;
-
-import java.util.Map;
-import java.util.logging.Logger;
-
-import funzy.variables.memberships.FuzzyMembership;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 
 /**
- * Implementation of a literal output variable in fuzzy logic.
+ * Implementation of a Crispy function.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class OutputVariable<N extends Number, K> extends Variable<K> {
-	private final static Logger log = getLogger("fuzzy.variable.output");
+public class CrispyFunction<T> implements Function<T, Double> {
+	private Predicate<T> pred;
 
-	public OutputVariable(String name, double minimum, double maximum, Map<K, FuzzyMembership> func)
-			throws IllegalRangeException {
-		super(name, minimum, maximum, func);
+	public CrispyFunction(Predicate<T> predicate) {
+		pred = predicate;
 	}
 
-	public N unfuzzy(Map<K, Double> value) {
-		if (LOG && log.isLoggable(FINEST))
-			log.finest("Calling unfuzzy for fuzzy set " + value + "...");
-		return null;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.google.common.base.Function#apply(java.lang.Object)
+	 */
+	public Double apply(T value) {
+		return pred.apply(value) ? 1.0 : 0.0;
 	}
 }

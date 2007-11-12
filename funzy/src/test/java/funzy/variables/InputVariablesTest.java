@@ -19,32 +19,42 @@
 // THE SOFTWARE. 
 package funzy.variables;
 
-import static funzy.Configuration.LOG;
-import static java.util.logging.Level.FINEST;
-import static java.util.logging.Logger.getLogger;
+import static funzy.variables.Variables.newInputVariable;
 
-import java.util.Map;
-import java.util.logging.Logger;
+import org.junit.Test;
 
-import funzy.variables.memberships.FuzzyMembership;
+import funzy.literals.SimpleDegree;
+import funzy.variables.IllegalRangeException;
 
 /**
- * Implementation of a literal output variable in fuzzy logic.
+ * Test cases for the literal variables.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class OutputVariable<N extends Number, K> extends Variable<K> {
-	private final static Logger log = getLogger("fuzzy.variable.output");
-
-	public OutputVariable(String name, double minimum, double maximum, Map<K, FuzzyMembership> func)
-			throws IllegalRangeException {
-		super(name, minimum, maximum, func);
+public class InputVariablesTest {
+	@Test
+	public void CheckNewEnumIntVariable() {
+		newInputVariable(0,100,SimpleDegree.class);
+	}
+	
+	@Test(expected=IllegalRangeException.class)
+	public void CheckFailureNewEnumIntVariable() {
+		newInputVariable(100,0,SimpleDegree.class);
 	}
 
-	public N unfuzzy(Map<K, Double> value) {
-		if (LOG && log.isLoggable(FINEST))
-			log.finest("Calling unfuzzy for fuzzy set " + value + "...");
-		return null;
+	@Test
+	public void CheckNewDoubleVariable() {
+		newInputVariable("length",0.0,100.0);
+	}
+	
+	@Test(expected=IllegalRangeException.class)
+	public void CheckFailureNewDoubleVariable() {
+		newInputVariable("Incorrect range",100.0,0.0);
+	}
+	
+	@Test
+	public void CheckNewIntVariable() {
+		newInputVariable("temperature",-10,10);
 	}
 }

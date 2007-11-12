@@ -22,7 +22,7 @@ package funzy.variables;
 import java.util.EnumMap;
 import java.util.HashMap;
 
-import funzy.membership.FuzzyMembership;
+import funzy.variables.memberships.FuzzyMembership;
 
 /**
  * Implementation of a fuzzy variable factory.
