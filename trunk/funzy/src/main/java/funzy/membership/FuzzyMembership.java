@@ -52,9 +52,7 @@ public class FuzzyMembership implements Supplier<Iterable<Line>> {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see com.google.common.base.Supplier#get()
 	 */
 	public Iterable<Line> get() {

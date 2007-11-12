@@ -44,7 +44,7 @@ public class Variable<K> {
 
 	public Variable(String identifier, double minimum, double maximum,
 			Map<K, FuzzyMembership> memberships) {
-		checkRange(minimum, maximum, "Incorrect variable range definition");
+		checkRange(minimum, maximum, "Incorrect range for variable "+identifier);
 		name = identifier;
 		min = minimum;
 		max = maximum;

@@ -22,7 +22,7 @@ package funzy.operators.functions;
 import static java.lang.Math.max;
 
 /**
- * Implementation of a Fuzzy OR operator using max() function.
+ * Implementation of a Fuzzy OR operator using the function max().
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$

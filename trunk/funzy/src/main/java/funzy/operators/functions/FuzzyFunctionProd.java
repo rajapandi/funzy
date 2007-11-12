@@ -26,7 +26,7 @@ package funzy.operators.functions;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyFunctionProduct extends FuzzyFunctionMultiple<Double> {
+public class FuzzyFunctionProd extends FuzzyFunctionMultiple<Double> {
 	/* (non-Javadoc)
 	 * @see funzy.operators.MultipleOperator#compute(java.lang.Number,java.lang.Number)
 	 */
