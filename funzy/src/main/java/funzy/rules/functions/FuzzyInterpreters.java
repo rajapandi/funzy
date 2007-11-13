@@ -20,12 +20,12 @@
 package funzy.rules.functions;
 
 /**
- * Implementation of a fuzzy Functions factory.
+ * Implementation of a Fuzzy interpreter functions factory.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public final class FuzzyFunctions {
+public final class FuzzyInterpreters {
 	private static final Double CONST_LITTLE = 1.3;
 	private static final Double CONST_SLIGHTLY = 1.7;
 	private static final Double CONST_VERY = 2.0;
@@ -33,7 +33,7 @@ public final class FuzzyFunctions {
 	private static final Double CONST_VERY_VERY = 4.0;
 	private static final Double CONST_SOMEWHAT = 0.5;
 
-	private FuzzyFunctions() {
+	private FuzzyInterpreters() {
 	}
 
 	public static final FuzzyFunction<Double> not() {

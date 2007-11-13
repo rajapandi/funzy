@@ -20,22 +20,22 @@
 package funzy.rules.operators;
 
 import static com.google.common.collect.Lists.immutableList;
-import static funzy.rules.functions.FuzzyFunctions.add;
-import static funzy.rules.functions.FuzzyFunctions.extremely;
-import static funzy.rules.functions.FuzzyFunctions.little;
-import static funzy.rules.functions.FuzzyFunctions.max;
-import static funzy.rules.functions.FuzzyFunctions.min;
-import static funzy.rules.functions.FuzzyFunctions.nand;
-import static funzy.rules.functions.FuzzyFunctions.nop;
-import static funzy.rules.functions.FuzzyFunctions.nor;
-import static funzy.rules.functions.FuzzyFunctions.not;
-import static funzy.rules.functions.FuzzyFunctions.nxr;
-import static funzy.rules.functions.FuzzyFunctions.prod;
-import static funzy.rules.functions.FuzzyFunctions.slightly;
-import static funzy.rules.functions.FuzzyFunctions.somewhat;
-import static funzy.rules.functions.FuzzyFunctions.very;
-import static funzy.rules.functions.FuzzyFunctions.veryvery;
-import static funzy.rules.functions.FuzzyFunctions.xor;
+import static funzy.rules.functions.FuzzyInterpreters.add;
+import static funzy.rules.functions.FuzzyInterpreters.extremely;
+import static funzy.rules.functions.FuzzyInterpreters.little;
+import static funzy.rules.functions.FuzzyInterpreters.max;
+import static funzy.rules.functions.FuzzyInterpreters.min;
+import static funzy.rules.functions.FuzzyInterpreters.nand;
+import static funzy.rules.functions.FuzzyInterpreters.nop;
+import static funzy.rules.functions.FuzzyInterpreters.nor;
+import static funzy.rules.functions.FuzzyInterpreters.not;
+import static funzy.rules.functions.FuzzyInterpreters.nxr;
+import static funzy.rules.functions.FuzzyInterpreters.prod;
+import static funzy.rules.functions.FuzzyInterpreters.slightly;
+import static funzy.rules.functions.FuzzyInterpreters.somewhat;
+import static funzy.rules.functions.FuzzyInterpreters.very;
+import static funzy.rules.functions.FuzzyInterpreters.veryvery;
+import static funzy.rules.functions.FuzzyInterpreters.xor;
 import static java.lang.Math.pow;
 import static org.junit.Assert.assertEquals;
 

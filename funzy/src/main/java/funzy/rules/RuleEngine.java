@@ -17,50 +17,42 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables;
+package funzy.rules;
 
-import static funzy.variables.NumberSupplier.newNumberSupplier;
-import static funzy.variables.InputVariable.newInputVariable;
+import static com.google.common.collect.Lists.newLinkedList;
+import static com.google.common.collect.Maps.newHashMap;
 
-import org.junit.Test;
+import java.util.List;
+import java.util.Map;
 
-import funzy.literals.SimpleDegree;
-import funzy.variables.IllegalRangeException;
+import funzy.Pull;
+import funzy.variables.InputVariable;
 
 /**
- * Test cases for the literal variables.
+ * Implementation of the fuzzy rule engine.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class InputVariablesTest {
-	@Test
-	public void CheckNewEnumIntVariable() {
-		newInputVariable(SimpleDegree.class,0,100, newNumberSupplier(0));
-	}
-	
-	@Test(expected=IllegalRangeException.class)
-	public void newEnumIntVariable() {
-		newInputVariable(SimpleDegree.class,100,0, newNumberSupplier(0));
+public class RuleEngine<E> implements Pull<Map<String,Map<E,Double>>> {
+	private final Map<String,Map<E,Double>> values = newHashMap();
+	private final List<FuzzyRule<E,Double>> rules = newLinkedList();
+	private final List<InputVariable<Double,E>> inputs = newLinkedList();
+
+	public void addRule(FuzzyRule<E,Double> rule) {
+		rules.add(rule);
 	}
 
-	@Test
-	public void newIntVariable() {
-		newInputVariable("temperature",-10,10, newNumberSupplier(0));
+	public void addInputVariable(InputVariable<Double,E> input) {
+		inputs.add(input);
 	}
-	
-	@Test
-	public void newDoubleVariable() {
-		newInputVariable("length",0.0,100.0, newNumberSupplier(.0));
-	}
-	
-	@Test(expected=IllegalRangeException.class)
-	public void newDoubleVariableRangeFailure() {
-		newInputVariable("Incorrect range",100.0,0.0, newNumberSupplier(.0));
-	}
-	
-	@Test(expected=NullPointerException.class)
-	public void newDoubleVariableProviderFailure() {
-		newInputVariable("Incorrect provider",0.0,10.0, null);
+
+	public Map<String,Map<E,Double>> pull() {
+		values.clear();
+		for(InputVariable<Double,E> in : inputs)
+			values.put(in.name(),in.pull());
+		for(FuzzyRule<E,Double> rule: rules)
+			rule.evaluate();
+		return values;
 	}
 }
