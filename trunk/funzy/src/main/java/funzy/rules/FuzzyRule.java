@@ -17,38 +17,35 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables;
+package funzy.rules;
 
-import java.util.EnumMap;
-import java.util.HashMap;
-
-import funzy.variables.memberships.FuzzyMembership;
+import static com.google.common.collect.Lists.immutableList;
+import funzy.rules.operators.FuzzyOperator;
 
 /**
- * Implementation of a fuzzy variable factory.
+ * Implementation of a fuzzy rule.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public final class Variables {
-	private Variables() {
+public class FuzzyRule<E, N extends Number> {
+	private final FuzzyOperator<N> condition;
+	private final RuleAssigner<E, N>[] assign;
+
+	private FuzzyRule(FuzzyOperator<N> cond, RuleAssigner<E, N>... assigners) {
+		condition = cond;
+		assign = assigners;
 	}
 
-	public static final <N extends Number, E extends Enum<E>> InputVariable newInputVariable(
-			final String name, final double min, final double max, final Class<E> literals) {
-		return new InputVariable<E>(name, min, max,
-				new EnumMap<E, FuzzyMembership>(literals));
+	public Iterable<RuleAssigner<E, N>> evaluate() {
+		N confidence = condition.get();
+		for (RuleAssigner<E, N> ass : assign)
+			ass.assign(confidence);
+		return immutableList(assign);
 	}
 
-	public static final <E extends Enum<E>> InputVariable newInputVariable(
-			final double min, final double max, final Class<E> literals) {
-		return new InputVariable<E>(literals.getSimpleName(), min, max,
-				new EnumMap<E, FuzzyMembership>(literals));
-	}
-
-	public static final <N extends Number, E> InputVariable newInputVariable(
-			final String name, final double min, final double max) {
-		return new InputVariable<E>(name, min, max,
-				new HashMap<E, FuzzyMembership>());
+	public static final <E, N extends Number> FuzzyRule<E, N> newRule(
+			FuzzyOperator<N> condition, RuleAssigner<E, N>... assigners) {
+		return new FuzzyRule<E, N>(condition, assigners);
 	}
 }

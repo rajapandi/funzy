@@ -19,16 +19,16 @@
 // THE SOFTWARE. 
 package funzy.variables;
 
+import static com.google.common.base.Objects.nonNull;
 import static com.google.common.collect.Maps.newHashMap;
-import static funzy.Configuration.LOG;
 import static funzy.variables.fuzzy.Fuzzyfiers.newFuzzyFunction;
-import static java.util.logging.Level.FINEST;
-import static java.util.logging.Logger.getLogger;
 
+import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Logger;
 
+import funzy.Pull;
 import funzy.variables.fuzzy.Fuzzyfier;
 import funzy.variables.memberships.FuzzyMembership;
 
@@ -38,32 +38,42 @@ import funzy.variables.memberships.FuzzyMembership;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class InputVariable<K> extends Variable<K> {
-	private final static Logger log = getLogger("fuzzy.variable.input");
-	private final static Fuzzyfier function = newFuzzyFunction();
+public class InputVariable<N extends Number, K> extends Variable<N, K>
+		implements Pull<Map<K, Double>> {
+	private final Fuzzyfier fuzzyfier = newFuzzyFunction(); // Default
+	private final Pull<N> input;
 
-	public InputVariable(String name, double minimum, double maximum,
+	private InputVariable(String name, N minimum, N maximum, Pull<N> provider,
 			Map<K, FuzzyMembership> func) throws IllegalRangeException {
 		super(name, minimum, maximum, func);
+		input = nonNull(provider, "Provider reference is required");
 	}
 
-	public Map<K, Double> fuzzyfy(double value) {
-		checkRange(value, min(), max(), "Input value should be within ["
-				+ min() + "," + max() + "]");
-		Map<K, Double> memberships = newHashMap();
+	public Map<K, Double> pull() {
+		final double value = input.pull().doubleValue();
+		final Map<K, Double> memberships = newHashMap();
 		for (Entry<K, FuzzyMembership> m : membership.entrySet())
-			memberships.put(m.getKey(), checkRange(function.fuzzy(value, m
-					.getValue()), 0.0, 1.0,
-					"Membership value should be within [0,1]"));
+			memberships.put(m.getKey(), fuzzyfier.fuzzy(value, m.getValue()));
 		return memberships;
 	}
 
-	private static final double checkRange(double value, double min,
-			double max, String message) {
-		if (LOG && log.isLoggable(FINEST))
-			log.finest("Checking range: " + min + "<=" + value + "<=" + max
-					+ "...");
-		assert value >= min && value >= max : message;
-		return value;
+	// Factory methods
+
+	public static final <N extends Number, E extends Enum<E>> InputVariable newInputVariable(
+			Class<E> literals, String name, N min, N max, Pull<N> provider) {
+		return new InputVariable<N, E>(name, min, max, provider,
+				new EnumMap<E, FuzzyMembership>(literals));
+	}
+
+	public static final <N extends Number, E extends Enum<E>> InputVariable newInputVariable(
+			Class<E> literals, N min, N max, Pull<N> provider) {
+		return new InputVariable<N, E>(literals.getSimpleName(), min, max,
+				provider, new EnumMap<E, FuzzyMembership>(literals));
+	}
+
+	public static final <N extends Number, E> InputVariable newInputVariable(
+			String name, N min, N max, Pull<N> provider) {
+		return new InputVariable<N, E>(name, min, max, provider,
+				new HashMap<E, FuzzyMembership>());
 	}
 }

@@ -20,7 +20,8 @@
 package funzy.variables.memberships;
 
 import static funzy.literals.SimpleDegree.LOW;
-import static funzy.variables.Variables.newInputVariable;
+import static funzy.variables.InputVariable.newInputVariable;
+import static funzy.variables.NumberSupplier.newNumberSupplier;
 import static funzy.variables.memberships.Memberships.newFuzzyMembership;
 import static funzy.variables.memberships.Point.newPoint;
 
@@ -29,7 +30,6 @@ import org.junit.Test;
 
 import funzy.literals.SimpleDegree;
 import funzy.variables.Variable;
-import funzy.variables.memberships.IllegalMembershipException;
 
 /**
  * Test cases for the membership functions.
@@ -42,7 +42,7 @@ public class MembershipFunctionTest {
 
 	@Before
 	public void setup() {
-		variable = newInputVariable(0, 10, SimpleDegree.class);
+		variable = newInputVariable(SimpleDegree.class, 0, 10, newNumberSupplier(0));
 	}
 
 	@Test

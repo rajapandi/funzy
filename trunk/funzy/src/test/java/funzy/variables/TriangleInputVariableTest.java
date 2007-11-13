@@ -22,7 +22,8 @@ package funzy.variables;
 import static funzy.literals.SimpleDegree.HIGH;
 import static funzy.literals.SimpleDegree.LOW;
 import static funzy.literals.SimpleDegree.MEDIUM;
-import static funzy.variables.Variables.newInputVariable;
+import static funzy.variables.InputVariable.newInputVariable;
+import static funzy.variables.NumberSupplier.newNumberSupplier;
 import static funzy.variables.memberships.Memberships.newFuzzyMembership;
 import static funzy.variables.memberships.Point.newPoint;
 import static org.junit.Assert.assertTrue;
@@ -33,7 +34,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import funzy.literals.SimpleDegree;
-import funzy.variables.InputVariable;
 
 /**
  * Test cases for the fuzzy functions.
@@ -42,11 +42,13 @@ import funzy.variables.InputVariable;
  * @version $Revision$
  */
 public class TriangleInputVariableTest {
-	private InputVariable variable;
+	private InputVariable<Integer,SimpleDegree> variable;
+	private NumberSupplier<Integer> provider;
 
 	@Before
 	public void setup() {
-		variable = newInputVariable(1, 5, SimpleDegree.class);
+		provider = newNumberSupplier(0);
+		variable = newInputVariable(SimpleDegree.class, 1, 5,provider);
 		variable.addMembership(LOW, newFuzzyMembership(newPoint(1, 1),
 				newPoint(2, 1), newPoint(3, 0), newPoint(5, 0)));
 		variable.addMembership(MEDIUM, newFuzzyMembership(newPoint(1, 0),
@@ -56,9 +58,10 @@ public class TriangleInputVariableTest {
 				newPoint(3, 0), newPoint(4, 1), newPoint(5, 1)));
 	}
 
-	private final void checkMembership(double value, double low, double medium,
+	private final void checkMembership(int value, double low, double medium,
 			double high) {
-		Map<SimpleDegree, Double> membership = variable.fuzzyfy(value);
+		provider.set(value);
+		Map<SimpleDegree, Double> membership = variable.pull();
 		assertTrue("Checking LOW(" + membership.get(LOW) + ")", membership
 				.get(LOW) == low);
 		assertTrue("Checking MEDIUM(" + membership.get(MEDIUM) + ")",

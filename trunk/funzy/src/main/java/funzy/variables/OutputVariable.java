@@ -34,10 +34,10 @@ import funzy.variables.memberships.FuzzyMembership;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class OutputVariable<N extends Number, K> extends Variable<K> {
+public class OutputVariable<N extends Number, K> extends Variable<N,K> {
 	private final static Logger log = getLogger("fuzzy.variable.output");
 
-	public OutputVariable(String name, double minimum, double maximum, Map<K, FuzzyMembership> func)
+	public OutputVariable(String name, N minimum, N maximum, Map<K, FuzzyMembership> func)
 			throws IllegalRangeException {
 		super(name, minimum, maximum, func);
 	}

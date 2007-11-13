@@ -17,50 +17,45 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables;
+package funzy.rules;
 
-import static funzy.variables.NumberSupplier.newNumberSupplier;
-import static funzy.variables.InputVariable.newInputVariable;
-
-import org.junit.Test;
-
-import funzy.literals.SimpleDegree;
-import funzy.variables.IllegalRangeException;
+import static com.google.common.collect.Lists.immutableList;
+import funzy.rules.functions.FuzzyFunction;
 
 /**
- * Test cases for the literal variables.
+ * Implementation of the assignement part of a rule.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class InputVariablesTest {
-	@Test
-	public void CheckNewEnumIntVariable() {
-		newInputVariable(SimpleDegree.class,0,100, newNumberSupplier(0));
-	}
-	
-	@Test(expected=IllegalRangeException.class)
-	public void newEnumIntVariable() {
-		newInputVariable(SimpleDegree.class,100,0, newNumberSupplier(0));
+public class RuleAssigner<E, N extends Number> {
+	private final String var;
+	private final E lit;
+	private final FuzzyFunction<N>[] func;
+	private N confidence;
+
+	public RuleAssigner(String variable, E literal,
+			FuzzyFunction<N>... functions) {
+		var = variable;
+		lit = literal;
+		func = functions;
 	}
 
-	@Test
-	public void newIntVariable() {
-		newInputVariable("temperature",-10,10, newNumberSupplier(0));
+	public void assign(N value) {
+		confidence = value;
+		for (FuzzyFunction<N> f : func)
+			confidence = f.evaluate(immutableList(confidence));
 	}
-	
-	@Test
-	public void newDoubleVariable() {
-		newInputVariable("length",0.0,100.0, newNumberSupplier(.0));
+
+	public N confidence() {
+		return confidence;
 	}
-	
-	@Test(expected=IllegalRangeException.class)
-	public void newDoubleVariableRangeFailure() {
-		newInputVariable("Incorrect range",100.0,0.0, newNumberSupplier(.0));
+
+	public String variable() {
+		return var;
 	}
-	
-	@Test(expected=NullPointerException.class)
-	public void newDoubleVariableProviderFailure() {
-		newInputVariable("Incorrect provider",0.0,10.0, null);
+
+	public E literal() {
+		return lit;
 	}
 }
