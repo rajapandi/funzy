@@ -21,7 +21,6 @@ package funzy.variables;
 
 import static com.google.common.base.Objects.nonNull;
 import static com.google.common.collect.Maps.newHashMap;
-import static funzy.variables.fuzzy.Fuzzyfiers.newFuzzyFunction;
 
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -29,8 +28,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import funzy.Pull;
-import funzy.variables.fuzzy.Fuzzyfier;
-import funzy.variables.memberships.FuzzyMembership;
+import funzy.variables.memberships.Membership;
 
 /**
  * Implementation of a literal input variable in fuzzy logic.
@@ -38,42 +36,45 @@ import funzy.variables.memberships.FuzzyMembership;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class InputVariable<N extends Number, K> extends Variable<N, K>
-		implements Pull<Map<K, Double>> {
-	private final Fuzzyfier fuzzyfier = newFuzzyFunction(); // Default
-	private final Pull<N> input;
+public class InputVariable<L, X extends Number, Y extends Number> extends
+		Variable<L, X, Y> implements Pull<Map<L, Y>> {
 
-	private InputVariable(String name, N minimum, N maximum, Pull<N> provider,
-			Map<K, FuzzyMembership> func) throws IllegalRangeException {
-		super(name, minimum, maximum, func);
+	private final Pull<X> input;
+
+	private InputVariable(String name, X minimum, X maximum, Pull<X> provider,
+			Y ceil, Y floor, Map<L, Membership<X, Y>> memberships)
+			throws IllegalRangeException {
+		super(name, minimum, maximum, ceil, floor, memberships);
 		input = nonNull(provider, "Provider reference is required");
 	}
 
-	public Map<K, Double> pull() {
-		final double value = input.pull().doubleValue();
-		final Map<K, Double> memberships = newHashMap();
-		for (Entry<K, FuzzyMembership> m : membership.entrySet())
-			memberships.put(m.getKey(), fuzzyfier.fuzzy(value, m.getValue()));
+	public Map<L, Y> pull() {
+		final X value = input.pull();
+		final Map<L, Y> memberships = newHashMap();
+		for (Entry<L, Membership<X, Y>> m : members.entrySet())
+			if (m.getValue().inXRange(value))
+				memberships.put(m.getKey(), m.getValue().solveY(value));
 		return memberships;
 	}
 
 	// Factory methods
 
-	public static final <N extends Number, E extends Enum<E>> InputVariable newInputVariable(
-			Class<E> literals, String name, N min, N max, Pull<N> provider) {
-		return new InputVariable<N, E>(name, min, max, provider,
-				new EnumMap<E, FuzzyMembership>(literals));
+	public static final <L extends Enum<L>, X extends Number> InputVariable newInputVariable(
+			Class<L> literals, String name, X min, X max, Pull<X> provider) {
+		return new InputVariable<L, X, Double>(name, min, max, provider, 0.0,
+				1.0, new EnumMap<L, Membership<X, Double>>(literals));
 	}
 
-	public static final <N extends Number, E extends Enum<E>> InputVariable newInputVariable(
-			Class<E> literals, N min, N max, Pull<N> provider) {
-		return new InputVariable<N, E>(literals.getSimpleName(), min, max,
-				provider, new EnumMap<E, FuzzyMembership>(literals));
+	public static final <L extends Enum<L>, X extends Number> InputVariable newInputVariable(
+			Class<L> literals, X min, X max, Pull<X> provider) {
+		return new InputVariable<L, X, Double>(literals.getSimpleName(), min,
+				max, provider, 0.0, 1.0, new EnumMap<L, Membership<X, Double>>(
+						literals));
 	}
 
-	public static final <N extends Number, E> InputVariable newInputVariable(
-			String name, N min, N max, Pull<N> provider) {
-		return new InputVariable<N, E>(name, min, max, provider,
-				new HashMap<E, FuzzyMembership>());
+	public static final <L, X extends Number> InputVariable newInputVariable(
+			String name, X min, X max, Pull<X> provider) {
+		return new InputVariable<L, X, Double>(name, min, max, provider, 0.0,
+				1.0, new HashMap<L, Membership<X, Double>>());
 	}
 }

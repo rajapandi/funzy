@@ -19,14 +19,9 @@
 // THE SOFTWARE. 
 package funzy.variables;
 
-import static funzy.Configuration.LOG;
-import static java.util.logging.Level.FINEST;
-import static java.util.logging.Logger.getLogger;
-
 import java.util.Map;
-import java.util.logging.Logger;
 
-import funzy.variables.memberships.FuzzyMembership;
+import funzy.variables.memberships.Membership;
 
 /**
  * Implementation of a literal output variable in fuzzy logic.
@@ -34,17 +29,10 @@ import funzy.variables.memberships.FuzzyMembership;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class OutputVariable<N extends Number, K> extends Variable<N,K> {
-	private final static Logger log = getLogger("fuzzy.variable.output");
+public class OutputVariable<L, X extends Number> extends Variable<L, X, Double> {
 
-	public OutputVariable(String name, N minimum, N maximum, Map<K, FuzzyMembership> func)
-			throws IllegalRangeException {
-		super(name, minimum, maximum, func);
-	}
-
-	public N unfuzzy(Map<K, Double> value) {
-		if (LOG && log.isLoggable(FINEST))
-			log.finest("Calling unfuzzy for fuzzy set " + value + "...");
-		return null;
+	public OutputVariable(String name, X minimum, X maximum,
+			Map<L, Membership<X, Double>> func) throws IllegalRangeException {
+		super(name, minimum, maximum, 0.0, 1.0, func);
 	}
 }

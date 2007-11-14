@@ -25,7 +25,7 @@ import java.util.List;
 
 import com.google.common.base.Supplier;
 
-import funzy.variables.memberships.Point;
+import funzy.variables.memberships.PointMembership;
 
 
 /**
@@ -34,14 +34,14 @@ import funzy.variables.memberships.Point;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class CrispyMembership implements Supplier<List<Point>> {
-	private final List<Point> points ;
+public class CrispyMembership implements Supplier<List<PointMembership>> {
+	private final List<PointMembership> points ;
 
-	public CrispyMembership(Point... point) {
+	public CrispyMembership(PointMembership... point) {
 		points = immutableList(point);
 	}
 
-	public List<Point> get() {
+	public List<PointMembership> get() {
 		return points;
 	}
 }

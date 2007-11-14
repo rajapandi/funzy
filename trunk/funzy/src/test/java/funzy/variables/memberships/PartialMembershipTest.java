@@ -19,82 +19,49 @@
 // THE SOFTWARE. 
 package funzy.variables.memberships;
 
-import static funzy.variables.memberships.Line.newLine;
-import static funzy.variables.memberships.Point.newPoint;
+import static funzy.variables.memberships.FuzzyMembership.newFuzzyMembership;
+import static funzy.variables.memberships.PointMembership.newPoint;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import funzy.variables.memberships.Line;
-import funzy.variables.memberships.Point;
-
 /**
- * Test of a graph line.
+ * Test cases for the crispy functions.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class MembershipLineTest {
-	private Point p1, p2;
-	private Line line ;
+public class PartialMembershipTest {
+	private FuzzyMembership partial;
 
 	@Before
 	public void setup() {
-		p1= newPoint(4, 3);
-		p2 = newPoint(6, 3);
-		line = newLine(p1, p2);
-	}
-	
-	@Test
-	public void checkNewLine() {
-		assertEquals(p1, line.a());
-		assertEquals(p2, line.b());
-	}
-	
-	@Test
-	public void checkDelta() {
-		assertEquals(newPoint(1,0), line.delta());
-	}
-	
-	@Test
-	public void checkPositiveDelta() {
-		p2 = newPoint(6, 5);
-		line = newLine(p1, p2);
-		assertEquals(newPoint(1,1), line.delta());
-	}
-	
-	@Test
-	public void checkNegativeDelta() {
-		p1 = newPoint(4, 5);
-		line = newLine(p1, p2);
-		assertEquals(newPoint(1,-1), line.delta());
+		partial = newFuzzyMembership(newPoint(2.0, 0.0), newPoint(5.0, 1.0));
 	}
 
 	@Test
-	public void checkMinRange() {
-		assertTrue(line.inXRange(4));
-	}
-	
-	@Test
-	public void checkInRange() {
-		assertTrue(line.inXRange(5));
-	}
-	
-	@Test
-	public void checkMaxRange() {
-		assertTrue(line.inXRange(6));
-	}
-	
-	@Test
-	public void checkOutOfMinRange() {
-		assertFalse(line.inXRange(3));
+	public void solveX1() {
+		assertEquals(null, partial.solveY(1.0));
 	}
 
 	@Test
-	public void checkOutOfMaxRange() {
-		assertFalse(line.inXRange(7));
+	public void solveX2() {
+		assertEquals(0.0, partial.solveY(2.0));
+	}
+
+	@Test
+	public void solveX3() {
+		assertEquals(0.33, partial.solveY(3.0), 0.01);
+	}
+
+	@Test
+	public void solveX4() {
+		assertEquals(0.66, partial.solveY(4.0), 0.01);
+	}
+
+	@Test
+	public void solveX5() {
+		assertEquals(1.0, partial.solveY(5.0));
 	}
 }

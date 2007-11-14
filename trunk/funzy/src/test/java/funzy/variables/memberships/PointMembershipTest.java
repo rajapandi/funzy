@@ -17,25 +17,41 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables.fuzzy;
+package funzy.variables.memberships;
 
-import static java.lang.Double.NaN;
+import static funzy.variables.memberships.PointMembership.newPoint;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import funzy.variables.memberships.PointMembership;
 
 /**
- * Implementation of a fuzzy function factory.
+ * Test of a graph point.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public final class Fuzzyfiers {
-	private Fuzzyfiers() {
+public class PointMembershipTest {
+	private Double a, b;
+	private PointMembership<Double,Double> p;
+
+	@Before
+	public void setup() {
+		a = 20.0;
+		b = 30.0;
+		p = newPoint(a, b);
 	}
 
-	public static final Fuzzyfier newFuzzyFunction(final double unknown) {
-		return new FuzzyfierImpl(unknown);
+	@Test
+	public void checkNewPoint() {
+		assertEquals(a, p.x());
+		assertEquals(b, p.y());
 	}
 
-	public static final Fuzzyfier newFuzzyFunction() {
-		return newFuzzyFunction(NaN);
+	@Test
+	public void checkEqualsPoint() {
+		assertEquals(p, newPoint(a,b));
 	}
 }

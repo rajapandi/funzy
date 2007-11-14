@@ -34,24 +34,24 @@ import funzy.variables.InputVariable;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class RuleEngine<E> implements Pull<Map<String,Map<E,Double>>> {
-	private final Map<String,Map<E,Double>> values = newHashMap();
-	private final List<FuzzyRule<E,Double>> rules = newLinkedList();
-	private final List<InputVariable<Double,E>> inputs = newLinkedList();
+public class RuleEngine<L> implements Pull<Map<String, Map<L, Double>>> {
+	private final Map<String, Map<L, Double>> values = newHashMap();
+	private final List<FuzzyRule<L, Double>> rules = newLinkedList();
+	private final List<InputVariable<L, Double, Double>> inputs = newLinkedList();
 
-	public void addRule(FuzzyRule<E,Double> rule) {
+	public void addRule(FuzzyRule<L, Double> rule) {
 		rules.add(rule);
 	}
 
-	public void addInputVariable(InputVariable<Double,E> input) {
+	public void addInputVariable(InputVariable<L, Double, Double> input) {
 		inputs.add(input);
 	}
 
-	public Map<String,Map<E,Double>> pull() {
+	public Map<String, Map<L, Double>> pull() {
 		values.clear();
-		for(InputVariable<Double,E> in : inputs)
-			values.put(in.name(),in.pull());
-		for(FuzzyRule<E,Double> rule: rules)
+		for (InputVariable<L, Double, Double> in : inputs)
+			values.put(in.name(), in.pull());
+		for (FuzzyRule<L, Double> rule : rules)
 			rule.evaluate();
 		return values;
 	}

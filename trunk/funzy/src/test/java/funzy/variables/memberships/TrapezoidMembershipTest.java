@@ -19,47 +19,50 @@
 // THE SOFTWARE. 
 package funzy.variables.memberships;
 
-import static funzy.variables.memberships.Point.newPoint;
+import static funzy.variables.memberships.FuzzyMembership.newFuzzyMembership;
+import static funzy.variables.memberships.PointMembership.newPoint;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import funzy.variables.memberships.Point;
-
 /**
- * Test of a graph point.
+ * Test cases for the trapezoid membership.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class MembershipPointTest {
-	private double a, b;
-	private Point p;
+public class TrapezoidMembershipTest {
+	private FuzzyMembership trapezoid;
 
 	@Before
 	public void setup() {
-		a = 20;
-		b = 30;
-		p = newPoint(a, b);
+		trapezoid = newFuzzyMembership(newPoint(1.0, 0.0), newPoint(2.0, 1.0),
+				newPoint(4.0, 1.0), newPoint(5.0, 0.0));
 	}
 
 	@Test
-	public void checkNewPoint() {
-		assertEquals(a, p.x(), 0);
-		assertEquals(b, p.y(), 0);
+	public void solveX1() {
+		assertEquals(0.0, trapezoid.solveY(1.0));
 	}
 
 	@Test
-	public void checkEqualsPoint() {
-		assertEquals(p, newPoint(a,b));
+	public void solveX2() {
+		assertEquals(1.0, trapezoid.solveY(2.0));
 	}
-	
+
 	@Test
-	public void checkSubstract() {
-		Point p2 = newPoint(15, 5);
-		Point s = Point.substract(p, p2);
-		assertEquals(5, s.x(), 0);
-		assertEquals(25, s.y(), 0);
+	public void solveX3() {
+		assertEquals(1.0, trapezoid.solveY(3.0));
+	}
+
+	@Test
+	public void solveX4() {
+		assertEquals(1.0, trapezoid.solveY(4.0));
+	}
+
+	@Test
+	public void solveX5() {
+		assertEquals(0.0, trapezoid.solveY(5.0));
 	}
 }

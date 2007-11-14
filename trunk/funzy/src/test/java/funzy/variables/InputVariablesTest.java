@@ -19,7 +19,7 @@
 // THE SOFTWARE. 
 package funzy.variables;
 
-import static funzy.variables.NumberSupplier.newNumberSupplier;
+import static funzy.variables.NumberProvider.newNumberSupplier;
 import static funzy.variables.InputVariable.newInputVariable;
 
 import org.junit.Test;

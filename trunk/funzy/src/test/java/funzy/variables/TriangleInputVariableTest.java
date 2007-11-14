@@ -23,9 +23,9 @@ import static funzy.literals.SimpleDegree.HIGH;
 import static funzy.literals.SimpleDegree.LOW;
 import static funzy.literals.SimpleDegree.MEDIUM;
 import static funzy.variables.InputVariable.newInputVariable;
-import static funzy.variables.NumberSupplier.newNumberSupplier;
-import static funzy.variables.memberships.Memberships.newFuzzyMembership;
-import static funzy.variables.memberships.Point.newPoint;
+import static funzy.variables.NumberProvider.newNumberSupplier;
+import static funzy.variables.memberships.FuzzyMembership.newFuzzyMembership;
+import static funzy.variables.memberships.PointMembership.newPoint;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
@@ -42,23 +42,23 @@ import funzy.literals.SimpleDegree;
  * @version $Revision$
  */
 public class TriangleInputVariableTest {
-	private InputVariable<Integer,SimpleDegree> variable;
-	private NumberSupplier<Integer> provider;
+	private InputVariable<SimpleDegree, Double, Double> variable;
+	private NumberProvider<Double> provider;
 
 	@Before
 	public void setup() {
-		provider = newNumberSupplier(0);
-		variable = newInputVariable(SimpleDegree.class, 1, 5,provider);
-		variable.addMembership(LOW, newFuzzyMembership(newPoint(1, 1),
-				newPoint(2, 1), newPoint(3, 0), newPoint(5, 0)));
-		variable.addMembership(MEDIUM, newFuzzyMembership(newPoint(1, 0),
-						newPoint(2, 0), newPoint(3, 1), newPoint(4, 0),
-						newPoint(5, 0)));
-		variable.addMembership(HIGH, newFuzzyMembership(newPoint(1, 0),
-				newPoint(3, 0), newPoint(4, 1), newPoint(5, 1)));
+		provider = newNumberSupplier(0.0);
+		variable = newInputVariable(SimpleDegree.class, 1.0, 5.0, provider);
+		variable.addMembership(LOW, newFuzzyMembership(newPoint(1.0, 1.0),
+				newPoint(2.0, 1.0), newPoint(3.0, 0.0), newPoint(5.0, 0.0)));
+		variable.addMembership(MEDIUM, newFuzzyMembership(newPoint(1.0, 0.0),
+				newPoint(2.0, 0.0), newPoint(3.0, 1.0), newPoint(4.0, 0.0),
+				newPoint(5.0, 0.0)));
+		variable.addMembership(HIGH, newFuzzyMembership(newPoint(1.0, 0.0),
+				newPoint(3.0, 0.0), newPoint(4.0, 1.0), newPoint(5.0, 1.0)));
 	}
 
-	private final void checkMembership(int value, double low, double medium,
+	private final void checkMembership(double value, double low, double medium,
 			double high) {
 		provider.set(value);
 		Map<SimpleDegree, Double> membership = variable.pull();
@@ -71,11 +71,27 @@ public class TriangleInputVariableTest {
 	}
 
 	@Test
-	public void checkDegrees() {
+	public void checkDegree1() {
 		checkMembership(1, 1, 0, 0);
+	}
+
+	@Test
+	public void checkDegree2() {
 		checkMembership(2, 1, 0, 0);
+	}
+
+	@Test
+	public void checkDegree3() {
 		checkMembership(3, 0, 1, 0);
+	}
+
+	@Test
+	public void checkDegree4() {
 		checkMembership(4, 0, 0, 1);
+	}
+
+	@Test
+	public void checkDegree5() {
 		checkMembership(5, 0, 0, 1);
 	}
 }
