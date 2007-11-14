@@ -20,15 +20,14 @@
 package funzy.variables;
 
 import static funzy.Configuration.LOG;
+import static funzy.variables.IllegalRangeException.checkRange;
 import static java.util.logging.Level.WARNING;
 import static java.util.logging.Logger.getLogger;
 
 import java.util.Map;
 import java.util.logging.Logger;
 
-import funzy.variables.memberships.FuzzyMembership;
-import funzy.variables.memberships.IllegalMembershipException;
-import funzy.variables.memberships.Line;
+import funzy.variables.memberships.Membership;
 
 /**
  * Implementation of a literal variable in fuzzy logic.
@@ -36,53 +35,51 @@ import funzy.variables.memberships.Line;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class Variable<N extends Number, K> {
+public class Variable<L, X extends Number, Y extends Number> {
+	
 	private final Logger log = getLogger("funzy.variable");
 	private final String name;
-	private final double xMin, xMax;
-	protected final double floor=0, ceil=1;
-	protected final Map<K, FuzzyMembership> membership;
+	private final X min, max;
+	private final Y fl, ce;
+	protected final Map<L, Membership<X,Y>> members;
 
-	protected Variable(String identifier, N minimum, N maximum,
-			Map<K, FuzzyMembership> memberships) {
-		checkRange(minimum, maximum, "Incorrect range for variable "+identifier);
+	protected Variable(String identifier, X minimum, X maximum, Y ceil, Y floor,
+			Map<L, Membership<X,Y>> memberships) {
+		checkRange(minimum, maximum, "Incorrect range for variable "
+				+ identifier);
 		name = identifier;
-		xMin = minimum.doubleValue();
-		xMax = maximum.doubleValue();
-		membership = memberships;
+		min = minimum;
+		max = maximum;
+		fl = floor;
+		ce = ceil;
+		members = memberships;
 	}
 
 	public final double min() {
-		return xMin;
+		return min.doubleValue();
 	}
 
 	public final double max() {
-		return xMax;
+		return max.doubleValue();
 	}
 
+	public final double floor() {
+		return fl.doubleValue();
+	}
+
+	public final double ceil() {
+		return ce.doubleValue();
+	}
+	
 	public final String name() {
 		return name;
 	}
 
-	public Variable<N,K> addMembership(K key, FuzzyMembership value) {
-		if (LOG && log.isLoggable(WARNING) && membership.get(key) != null)
+	public Variable<L, X, Y> addMembership(L key, Membership<X,Y> value) {
+		if (LOG && log.isLoggable(WARNING) && members.get(key) != null)
 			log.warning("A membership " + key
 					+ " is already defined for variable " + name);
-		for (Line l : value.get())
-			if (l.a().x() < xMin || l.b().x() > xMax)
-				throw new IllegalMembershipException("Membership for " + name
-						+ " should be within [" + xMin + "," + xMax + "]");
-		membership.put(key, value);
+		members.put(key, value);
 		return this;
-	}
-
-	public Map<K, FuzzyMembership> memberships() {
-		return membership;
-	}
-
-	private static final <T extends Number> void checkRange(T min, T max,
-			String message) throws IllegalRangeException {
-		if (min.doubleValue() > max.doubleValue())
-			throw new IllegalRangeException(message, min, max);
 	}
 }

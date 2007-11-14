@@ -19,49 +19,50 @@
 // THE SOFTWARE. 
 package funzy.variables.memberships;
 
+import static funzy.variables.memberships.FuzzyMembership.newFuzzyMembership;
+import static funzy.variables.memberships.PointMembership.newPoint;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
+import org.junit.Test;
+
 /**
- * Implementation a membership point.
+ * Test cases for the triangle membership.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class Point {
-	private final double x;
-	private final double y;
+public class TriangleMembershipTest {
+	private FuzzyMembership triangle;
 
-	public Point(final double abs, final double ord) {
-		x = abs;
-		y = ord;
-	}
-
-	public final double x() {
-		return x;
+	@Before
+	public void setup() {
+		triangle = newFuzzyMembership(newPoint(1.0, 0.0), newPoint(3.0, 1.0),
+				newPoint(5.0, 0.0));
 	}
 
-	public final double y() {
-		return y;
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	public boolean equals(Object obj) {
-		Point p = (Point) obj;
-		return x==p.x && y==p.y;
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		return "("+x+","+y+")";
+	@Test
+	public void solveX1() {
+		assertEquals(0.0, triangle.solveY(1.0));
 	}
 
-	public static final Point newPoint(final double x, final double y) {
-		return new Point(x, y);
+	@Test
+	public void solveX2() {
+		assertEquals(0.5, triangle.solveY(2.0));
 	}
 
-	public static final Point substract(Point a, Point b) {
-		return newPoint(a.x - b.x, a.y - b.y);
+	@Test
+	public void solveX3() {
+		assertEquals(1.0, triangle.solveY(3.0));
+	}
+
+	@Test
+	public void solveX4() {
+		assertEquals(0.5, triangle.solveY(4.0));
+	}
+
+	@Test
+	public void solveX5() {
+		assertEquals(0.0, triangle.solveY(5.0));
 	}
 }

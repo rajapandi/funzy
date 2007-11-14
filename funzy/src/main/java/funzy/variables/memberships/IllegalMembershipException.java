@@ -29,4 +29,14 @@ public class IllegalMembershipException extends RuntimeException {
 	public IllegalMembershipException(String string) {
 		super(string);
 	}
+
+	public static final void checkMembership(Number min, Number max,
+			Number... values) throws IllegalMembershipException {
+		for (Number val : values)
+			if (val.doubleValue() < min.doubleValue()
+					|| val.doubleValue() > max.doubleValue())
+				throw new IllegalMembershipException(
+						"Membership for should be within [" + min + "," + max
+								+ "]");
+	}
 }

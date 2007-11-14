@@ -30,4 +30,10 @@ public class IllegalRangeException extends RuntimeException {
 	public <T> IllegalRangeException(String message, T min, T max) {
 		super(message + " range [" + min + "," + max + "]");
 	}
+	
+	public static final <T extends Number> void checkRange(T min, T max,
+			String message) throws IllegalRangeException {
+		if (min.doubleValue() > max.doubleValue())
+			throw new IllegalRangeException(message, min, max);
+	}
 }

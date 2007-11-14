@@ -17,33 +17,51 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables.fuzzy;
+package funzy.variables.memberships;
 
-import funzy.variables.memberships.FuzzyMembership;
-import funzy.variables.memberships.Line;
+import static funzy.variables.memberships.FuzzyMembership.newFuzzyMembership;
+import static funzy.variables.memberships.PointMembership.newPoint;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
- * Implementation of a Fuzzy function.
+ * Test cases for the growing membership.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyfierImpl implements Fuzzyfier {
-	private final double unknown;
-	
-	public FuzzyfierImpl(double value) {
-		this.unknown = value;
+public class GrowingMembershipTest {
+	private FuzzyMembership growing;
+
+	@Before
+	public void setup() {
+		growing = newFuzzyMembership(newPoint(1.0, 0.0), newPoint(5.0, 1.0));
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see funzy.functions.FuzzyFunction#fuzzy(double,funzy.membership.FuzzyMembership)
-	 */
-	public double fuzzy(double value, FuzzyMembership membership) {
-		for (Line line : membership.get())
-			if (line.inXRange(value))
-				return (value - line.a().x()) * line.delta().y() + line.a().y();
-		return unknown;
+
+	@Test
+	public void solveX1() {
+		assertEquals(0.0, growing.solveY(1.0));
+	}
+
+	@Test
+	public void solveX2() {
+		assertEquals(0.25, growing.solveY(2.0));
+	}
+
+	@Test
+	public void solveX3() {
+		assertEquals(0.5, growing.solveY(3.0));
+	}
+
+	@Test
+	public void solveX4() {
+		assertEquals(0.75, growing.solveY(4.0));
+	}
+
+	@Test
+	public void solveX5() {
+		assertEquals(1.0, growing.solveY(5.0));
 	}
 }

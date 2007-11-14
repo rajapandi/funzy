@@ -19,74 +19,79 @@
 // THE SOFTWARE. 
 package funzy.variables.memberships;
 
-import static funzy.variables.fuzzy.Fuzzyfiers.newFuzzyFunction;
-import static funzy.variables.memberships.Memberships.newFuzzyMembership;
-import static funzy.variables.memberships.Point.newPoint;
-import static java.lang.Double.NaN;
-import static org.junit.Assert.assertEquals;
+import static funzy.literals.SimpleDegree.LOW;
+import static funzy.variables.InputVariable.newInputVariable;
+import static funzy.variables.NumberProvider.newNumberSupplier;
+import static funzy.variables.memberships.FuzzyMembership.newFuzzyMembership;
+import static funzy.variables.memberships.PointMembership.newPoint;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import funzy.variables.fuzzy.Fuzzyfier;
-import funzy.variables.memberships.FuzzyMembership;
+import funzy.literals.SimpleDegree;
+import funzy.variables.Variable;
 
 /**
- * Test cases for the crispy functions.
+ * Test cases for the membership functions.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
 public class FuzzyMembershipTest {
-	private Fuzzyfier function;
-	private double unknown = NaN;
-	private final FuzzyMembership growing = newFuzzyMembership(newPoint(1, 0),
-			newPoint(5, 1));
-	private final FuzzyMembership triangle = newFuzzyMembership(newPoint(1, 0),
-			newPoint(3, 1), newPoint(5, 0));
-	private final FuzzyMembership trapezoid = newFuzzyMembership(
-			newPoint(1, 0), newPoint(2, 1), newPoint(4, 1), newPoint(5, 0));
-	private final FuzzyMembership partial = newFuzzyMembership(newPoint(2, 0),
-			newPoint(5, 1));
+	private Variable variable;
 
 	@Before
 	public void setup() {
-		function = newFuzzyFunction(unknown);
+		variable = newInputVariable(SimpleDegree.class, 0, 10,
+				newNumberSupplier(0));
 	}
 
 	@Test
-	public void checkGrowingMembership() {
-		assertEquals(0.0, function.fuzzy(1, growing));
-		assertEquals(0.25, function.fuzzy(2, growing));
-		assertEquals(0.5, function.fuzzy(3, growing));
-		assertEquals(0.75, function.fuzzy(4, growing));
-		assertEquals(1.0, function.fuzzy(5, growing));
+	public void fuzzyMembership() {
+		variable.addMembership(LOW, newFuzzyMembership(newPoint(0.0, 0.0),
+				newPoint(3.0, 1.0), newPoint(6.0, 0.0), newPoint(9.0, 1.0),
+				newPoint(10.0, 1.0)));
 	}
 
 	@Test
-	public void checkTriangleMembership() {
-		assertEquals(0.0, function.fuzzy(1, triangle));
-		assertEquals(0.5, function.fuzzy(2, triangle));
-		assertEquals(1.0, function.fuzzy(3, triangle));
-		assertEquals(0.5, function.fuzzy(4, triangle));
-		assertEquals(0.0, function.fuzzy(5, triangle));
+	public void inverseFuzzyMembership() {
+		variable.addMembership(LOW, newFuzzyMembership(newPoint(0.0, 1.0),
+				newPoint(3.0, 0.0), newPoint(6.0, 1.0), newPoint(9.0, 0.0),
+				newPoint(10.0, 0.0)));
 	}
 
-	@Test
-	public void checkTrapezoidMembership() {
-		assertEquals(0.0, function.fuzzy(1, trapezoid));
-		assertEquals(1.0, function.fuzzy(2, trapezoid));
-		assertEquals(1.0, function.fuzzy(3, trapezoid));
-		assertEquals(1.0, function.fuzzy(4, trapezoid));
-		assertEquals(0.0, function.fuzzy(5, trapezoid));
+	@Test(expected = IllegalMembershipException.class)
+	public void unorderedFuzzyMembership() {
+		variable.addMembership(LOW,
+				newFuzzyMembership(newPoint(0.0, 0.0), newPoint(6.0, 1.0), newPoint(3.0,
+						0.0), newPoint(9.0, 1.0), newPoint(10.0, 1.0)));
 	}
 
-	@Test
-	public void checkPartialMembership() {
-		assertEquals(unknown, function.fuzzy(1, partial));
-		assertEquals(0.0, function.fuzzy(2, partial));
-		assertEquals(0.33, function.fuzzy(3, partial), 0.01);
-		assertEquals(0.66, function.fuzzy(4, partial), 0.01);
-		assertEquals(1.0, function.fuzzy(5, partial));
+//	@Test(expected = IllegalMembershipException.class)
+	public void outOfCeilRangeFuzzyMembership() {
+		variable.addMembership(LOW,
+				newFuzzyMembership(newPoint(0.0, 0.0), newPoint(6.0, 2.0), newPoint(3.0,
+						0.0), newPoint(9.0, 1.0), newPoint(10.0, 1.0)));
+	}
+
+//	@Test(expected = IllegalMembershipException.class)
+	public void outOfFloorRangeFuzzyMembership2() {
+		variable.addMembership(LOW, newFuzzyMembership(newPoint(0.0, 0.0),
+				newPoint(6.0, -1.0), newPoint(3.0, 0.0), newPoint(9.0, 1.0),
+				newPoint(10.0, 1.0)));
+	}
+
+//	@Test(expected = IllegalMembershipException.class)
+	public void outOfMinRangeFuzzyMembership() {
+		variable.addMembership(LOW,
+				newFuzzyMembership(newPoint(-2.0, 0.0), newPoint(6.0, 2.0), newPoint(3.0,
+						0.0), newPoint(9.0, 1.0), newPoint(10.0, 1.0)));
+	}
+
+//	@Test(expected = IllegalMembershipException.class)
+	public void outOfMaxRangeFuzzyMembership2() {
+		variable.addMembership(LOW,
+				newFuzzyMembership(newPoint(0.0, 0.0), newPoint(6.0, 2.0), newPoint(3.0,
+						0.0), newPoint(9.0, 1.0), newPoint(11.0, 1.0)));
 	}
 }
