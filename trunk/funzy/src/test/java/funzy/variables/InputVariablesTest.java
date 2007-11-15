@@ -36,12 +36,12 @@ import funzy.variables.IllegalRangeException;
 public class InputVariablesTest {
 	@Test
 	public void CheckNewEnumIntVariable() {
-		newInputVariable(SimpleDegree.class,0,100, newNumberSupplier(0));
+		newInputVariable(SimpleDegree.class,0.0,100.0, newNumberSupplier(0));
 	}
 	
 	@Test(expected=IllegalRangeException.class)
 	public void newEnumIntVariable() {
-		newInputVariable(SimpleDegree.class,100,0, newNumberSupplier(0));
+		newInputVariable(SimpleDegree.class,100.0,0.0, newNumberSupplier(0));
 	}
 
 	@Test

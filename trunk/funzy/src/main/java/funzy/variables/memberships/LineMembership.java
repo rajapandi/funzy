@@ -19,7 +19,7 @@
 // THE SOFTWARE. 
 package funzy.variables.memberships;
 
-import static funzy.variables.memberships.PointMembership.newPoint;
+import static java.lang.Double.NaN;
 
 /**
  * Implementation a membership line.
@@ -27,13 +27,15 @@ import static funzy.variables.memberships.PointMembership.newPoint;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class LineMembership implements Membership<Double,Double> {
-	private final PointMembership<Double,Double> a, b, delta;
+public class LineMembership implements Membership {
+	private final PointMembership a, b;
+	private final double delta, unknown;
 
-	public LineMembership(PointMembership<Double,Double> p1, PointMembership<Double,Double> p2) {
+	private LineMembership(double defaultValue, PointMembership p1, PointMembership p2) {
+		unknown = defaultValue;
 		a = p1;
 		b = p2;
-		delta = newPoint(1.0,(b.y()-a.y())/(b.x()-a.x()));
+		delta = (b.y()-a.y())/(b.x()-a.x());
 	}
 
 	public PointMembership a() {
@@ -44,32 +46,38 @@ public class LineMembership implements Membership<Double,Double> {
 		return b;
 	}
 
-	public PointMembership delta() {
+	public double delta() {
 		return delta;
 	}
 	
-	public boolean inXRange(Double x) {
+	public boolean inXRange(double x) {
 		return x >= a.x() && x <= b.x();
 	}
 	
-	public Double solveY(Double x) {
-		return (x - a.x()) * delta.y() + a.y();
-	}
-	
-	public boolean inYRange(Double y) {
+	public boolean inYRange(double y) {
 		if (a.y()<= b.y())
 			return y >= a.y() && y <= b.y();
 		return y >= b.y() && y <= a.y();
 	}
 	
-	public Double solveX(Double y) {
-		if (delta.y() != 0)
-			return (y - a.y()) / delta.y() + a.x();
-		// TODO Different implementations are possible (Left, Right or CoG)
-		return null;
+	public double solveY(double x) {
+		if (inXRange(x))
+			return (x - a.x()) * delta + a.y();
+		return unknown;
 	}
 	
-	public static LineMembership newLine(PointMembership<Double,Double> a, PointMembership<Double,Double> b) {
-		return new LineMembership(a, b);
+	public double solveX(double y) {
+		if (delta != 0)
+			return (y - a.y()) / delta + a.x();
+		// TODO Different implementations are possible (Left, Right or CoG)
+		return unknown;
+	}
+	
+	public static LineMembership newLine(double unknown, PointMembership a, PointMembership b) {
+		return new LineMembership(unknown,a, b);
+	}
+	
+	public static LineMembership newLine(PointMembership a, PointMembership b) {
+		return newLine(NaN, a, b);
 	}
 }

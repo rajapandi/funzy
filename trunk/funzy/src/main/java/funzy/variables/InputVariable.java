@@ -36,22 +36,22 @@ import funzy.variables.memberships.Membership;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class InputVariable<L, X extends Number, Y extends Number> extends
-		Variable<L, X, Y> implements Pull<Map<L, Y>> {
+public class InputVariable<L> extends Variable<L> implements
+		Pull<Map<L, Double>> {
 
-	private final Pull<X> input;
+	private final Pull<Double> input;
 
-	private InputVariable(String name, X minimum, X maximum, Pull<X> provider,
-			Y ceil, Y floor, Map<L, Membership<X, Y>> memberships)
-			throws IllegalRangeException {
+	private InputVariable(String name, double minimum, double maximum,
+			Pull<Double> provider, double ceil, double floor,
+			Map<L, Membership> memberships) throws IllegalRangeException {
 		super(name, minimum, maximum, ceil, floor, memberships);
 		input = nonNull(provider, "Provider reference is required");
 	}
 
-	public Map<L, Y> pull() {
-		final X value = input.pull();
-		final Map<L, Y> memberships = newHashMap();
-		for (Entry<L, Membership<X, Y>> m : members.entrySet())
+	public Map<L, Double> pull() {
+		final double value = input.pull();
+		final Map<L, Double> memberships = newHashMap();
+		for (Entry<L, Membership> m : members.entrySet())
 			if (m.getValue().inXRange(value))
 				memberships.put(m.getKey(), m.getValue().solveY(value));
 		return memberships;
@@ -59,22 +59,22 @@ public class InputVariable<L, X extends Number, Y extends Number> extends
 
 	// Factory methods
 
-	public static final <L extends Enum<L>, X extends Number> InputVariable newInputVariable(
-			Class<L> literals, String name, X min, X max, Pull<X> provider) {
-		return new InputVariable<L, X, Double>(name, min, max, provider, 0.0,
-				1.0, new EnumMap<L, Membership<X, Double>>(literals));
+	public static final <L extends Enum<L>> InputVariable newInputVariable(
+			Class<L> literals, String name, double min, double max,
+			Pull<Double> provider) {
+		return new InputVariable<L>(name, min, max, provider, 0, 1,
+				new EnumMap<L, Membership>(literals));
 	}
 
-	public static final <L extends Enum<L>, X extends Number> InputVariable newInputVariable(
-			Class<L> literals, X min, X max, Pull<X> provider) {
-		return new InputVariable<L, X, Double>(literals.getSimpleName(), min,
-				max, provider, 0.0, 1.0, new EnumMap<L, Membership<X, Double>>(
-						literals));
+	public static final <L extends Enum<L>> InputVariable newInputVariable(
+			Class<L> literals, double min, double max, Pull<Double> provider) {
+		return newInputVariable(literals, literals.getSimpleName(), min, max,
+				provider);
 	}
 
-	public static final <L, X extends Number> InputVariable newInputVariable(
-			String name, X min, X max, Pull<X> provider) {
-		return new InputVariable<L, X, Double>(name, min, max, provider, 0.0,
-				1.0, new HashMap<L, Membership<X, Double>>());
+	public static final <L> InputVariable newInputVariable(
+			String name, double min, double max, Pull<Double> provider) {
+		return new InputVariable<L>(name, min, max, provider, 0, 1,
+				new HashMap<L, Membership>());
 	}
 }

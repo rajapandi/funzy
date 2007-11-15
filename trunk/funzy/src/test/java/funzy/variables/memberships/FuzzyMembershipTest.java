@@ -38,7 +38,7 @@ import funzy.variables.Variable;
  * @version $Revision$
  */
 public class FuzzyMembershipTest {
-	private Variable variable;
+	private Variable<SimpleDegree> variable;
 
 	@Before
 	public void setup() {

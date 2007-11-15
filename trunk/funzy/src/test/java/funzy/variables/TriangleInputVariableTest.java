@@ -42,20 +42,20 @@ import funzy.literals.SimpleDegree;
  * @version $Revision$
  */
 public class TriangleInputVariableTest {
-	private InputVariable<SimpleDegree, Double, Double> variable;
-	private NumberProvider<Double> provider;
+	private InputVariable<SimpleDegree> variable;
+	private NumberProvider provider;
 
 	@Before
 	public void setup() {
-		provider = newNumberSupplier(0.0);
-		variable = newInputVariable(SimpleDegree.class, 1.0, 5.0, provider);
-		variable.addMembership(LOW, newFuzzyMembership(newPoint(1.0, 1.0),
-				newPoint(2.0, 1.0), newPoint(3.0, 0.0), newPoint(5.0, 0.0)));
-		variable.addMembership(MEDIUM, newFuzzyMembership(newPoint(1.0, 0.0),
-				newPoint(2.0, 0.0), newPoint(3.0, 1.0), newPoint(4.0, 0.0),
-				newPoint(5.0, 0.0)));
-		variable.addMembership(HIGH, newFuzzyMembership(newPoint(1.0, 0.0),
-				newPoint(3.0, 0.0), newPoint(4.0, 1.0), newPoint(5.0, 1.0)));
+		provider = newNumberSupplier(0);
+		variable = newInputVariable(SimpleDegree.class, 1, 5, provider);
+		variable.addMembership(LOW, newFuzzyMembership(newPoint(1, 1),
+				newPoint(2, 1), newPoint(3, 0), newPoint(5, 0)));
+		variable.addMembership(MEDIUM, newFuzzyMembership(newPoint(1, 0),
+				newPoint(2, 0), newPoint(3, 1), newPoint(4, 0),
+				newPoint(5, 0)));
+		variable.addMembership(HIGH, newFuzzyMembership(newPoint(1, 0),
+				newPoint(3, 0), newPoint(4, 1), newPoint(5, 1)));
 	}
 
 	private final void checkMembership(double value, double low, double medium,

@@ -22,6 +22,7 @@ package funzy.variables.memberships;
 import static com.google.common.collect.Lists.newArrayList;
 import static funzy.variables.memberships.IllegalMembershipException.checkMembership;
 import static funzy.variables.memberships.LineMembership.newLine;
+import static java.lang.Double.NaN;
 
 import java.util.List;
 
@@ -32,20 +33,15 @@ import java.util.List;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyMembership implements Membership<Double, Double> {
+public class FuzzyMembership implements Membership {
 
 	private final List<LineMembership> lines = newArrayList();
 	private final Double unknown;
 
-	public FuzzyMembership(PointMembership<Double, Double>... points) {
-		this(null, points);
-	}
-
-	public FuzzyMembership(Double defaultValue,
-			PointMembership<Double, Double>... points) {
+	private FuzzyMembership(double defaultValue, PointMembership... points) {
 		unknown = defaultValue;
-		PointMembership<Double, Double> pred = null;
-		for (PointMembership<Double, Double> suc : points) {
+		PointMembership pred = null;
+		for (PointMembership suc : points) {
 			if (pred != null) {
 				if (pred.x() > suc.x())
 					throw new IllegalMembershipException(
@@ -57,36 +53,41 @@ public class FuzzyMembership implements Membership<Double, Double> {
 		}
 	}
 
-	public boolean inXRange(Double value) {
+	public boolean inXRange(double value) {
 		for (LineMembership l : lines)
 			if (l.inXRange(value))
 				return true;
 		return false;
 	}
 
-	public Double solveY(Double x) {
+	public double solveY(double x) {
 		for (LineMembership l : lines)
-			if (l.inXRange(x.doubleValue()))
+			if (l.inXRange(x))
 				return l.solveY(x);
 		return unknown;
 	}
 
-	public boolean inYRange(Double value) {
+	public boolean inYRange(double value) {
 		for (LineMembership l : lines)
 			if (l.inYRange(value))
 				return true;
 		return false;
 	}
 
-	public Double solveX(Double y) {
+	public double solveX(double y) {
 		for (LineMembership l : lines)
-			if (l.inYRange(y.doubleValue()))
+			if (l.inYRange(y))
 				return l.solveX(y);
 		return unknown;
 	}
 
+	public static final FuzzyMembership newFuzzyMembership(double unknown,
+			PointMembership... points) {
+		return new FuzzyMembership(unknown, points);
+	}
+
 	public static final FuzzyMembership newFuzzyMembership(
-			PointMembership<Double, Double>... points) {
-		return new FuzzyMembership(points);
+			PointMembership... points) {
+		return newFuzzyMembership(NaN, points);
 	}
 }

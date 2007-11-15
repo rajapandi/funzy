@@ -38,7 +38,7 @@ import funzy.variables.memberships.PointMembership;
  * @version $Revision$
  */
 public class LineMembershipTest {
-	private PointMembership<Double,Double> p1, p2;
+	private PointMembership p1, p2;
 	private LineMembership line ;
 
 	@Before
@@ -56,14 +56,14 @@ public class LineMembershipTest {
 	
 	@Test
 	public void delta() {
-		assertEquals(newPoint(1.0,0.5), line.delta());
+		assertEquals(0.5, line.delta());
 	}
 		
 	@Test
 	public void negativeDelta() {
 		p1 = newPoint(1.0, 2.0);
 		line = newLine(p1, p2);
-		assertEquals(newPoint(1.0,-0.5), line.delta());
+		assertEquals(-0.5, line.delta());
 	}
 
 	@Test

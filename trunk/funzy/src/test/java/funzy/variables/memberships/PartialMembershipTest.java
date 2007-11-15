@@ -21,6 +21,7 @@ package funzy.variables.memberships;
 
 import static funzy.variables.memberships.FuzzyMembership.newFuzzyMembership;
 import static funzy.variables.memberships.PointMembership.newPoint;
+import static java.lang.Double.NaN;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
@@ -42,7 +43,7 @@ public class PartialMembershipTest {
 
 	@Test
 	public void solveX1() {
-		assertEquals(null, partial.solveY(1.0));
+		assertEquals(NaN, partial.solveY(1.0));
 	}
 
 	@Test

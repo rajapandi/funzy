@@ -2,22 +2,22 @@ package funzy.variables;
 
 import funzy.Pull;
 
-public class NumberProvider <N extends Number> implements Pull<N> {
-	private N value;
+public class NumberProvider implements Pull<Double> {
+	private double value;
 
-	private NumberProvider(N input) {
+	private NumberProvider(double input) {
 		value = input;
 	}
-	
-	public void set(N input) {
+
+	public void set(double input) {
 		value = input;
 	}
-	
-	public N pull() {
+
+	public Double pull() {
 		return value;
 	}
 
-	public static final<N extends Number>  NumberProvider<N> newNumberSupplier(final N input) {
-		return new NumberProvider<N>(input);
+	public static final NumberProvider newNumberSupplier(double input) {
+		return new NumberProvider(input);
 	}
 }
