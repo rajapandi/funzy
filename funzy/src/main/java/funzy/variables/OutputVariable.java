@@ -29,10 +29,10 @@ import funzy.variables.memberships.Membership;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class OutputVariable<L, X extends Number> extends Variable<L, X, Double> {
+public class OutputVariable<L> extends Variable<L> {
 
-	public OutputVariable(String name, X minimum, X maximum,
-			Map<L, Membership<X, Double>> func) throws IllegalRangeException {
+	private OutputVariable(String name, double minimum, double maximum,
+			Map<L, Membership> func) throws IllegalRangeException {
 		super(name, minimum, maximum, 0.0, 1.0, func);
 	}
 }

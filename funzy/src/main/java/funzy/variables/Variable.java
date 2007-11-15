@@ -21,6 +21,8 @@ package funzy.variables;
 
 import static funzy.Configuration.LOG;
 import static funzy.variables.IllegalRangeException.checkRange;
+import static funzy.variables.memberships.FuzzyMembership.newFuzzyMembership;
+import static funzy.variables.memberships.PointMembership.newPoint;
 import static java.util.logging.Level.WARNING;
 import static java.util.logging.Logger.getLogger;
 
@@ -35,16 +37,15 @@ import funzy.variables.memberships.Membership;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class Variable<L, X extends Number, Y extends Number> {
-	
+public class Variable<L> {
+
 	private final Logger log = getLogger("funzy.variable");
 	private final String name;
-	private final X min, max;
-	private final Y fl, ce;
-	protected final Map<L, Membership<X,Y>> members;
+	private final double min, max, fl, ce;
+	protected final Map<L, Membership> members;
 
-	protected Variable(String identifier, X minimum, X maximum, Y ceil, Y floor,
-			Map<L, Membership<X,Y>> memberships) {
+	protected Variable(String identifier, double minimum, double maximum, double ceil,
+			double floor, Map<L, Membership> memberships) {
 		checkRange(minimum, maximum, "Incorrect range for variable "
 				+ identifier);
 		name = identifier;
@@ -56,30 +57,42 @@ public class Variable<L, X extends Number, Y extends Number> {
 	}
 
 	public final double min() {
-		return min.doubleValue();
+		return min;
 	}
 
 	public final double max() {
-		return max.doubleValue();
+		return max;
 	}
 
 	public final double floor() {
-		return fl.doubleValue();
+		return fl;
 	}
 
 	public final double ceil() {
-		return ce.doubleValue();
+		return ce;
 	}
-	
+
 	public final String name() {
 		return name;
 	}
 
-	public Variable<L, X, Y> addMembership(L key, Membership<X,Y> value) {
+	public Variable<L> addMembership(L key, Membership value) {
 		if (LOG && log.isLoggable(WARNING) && members.get(key) != null)
 			log.warning("A membership " + key
 					+ " is already defined for variable " + name);
 		members.put(key, value);
 		return this;
+	}
+
+	public Variable<L> addTriangleMembership(L key, double a, double b,
+			double c, double unknown) {
+		return addMembership(key, newFuzzyMembership(unknown, newPoint(a, fl),
+				newPoint(b, ce), newPoint(c, fl)));
+	}
+
+	public Variable<L> addTrapezoidMembership(L key, double a, double b,
+			double c, double d, double unknown) {
+		return addMembership(key, newFuzzyMembership(unknown, newPoint(a, fl),
+				newPoint(b, ce), newPoint(c, ce), newPoint(d, fl)));
 	}
 }

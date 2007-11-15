@@ -34,13 +34,13 @@ import funzy.variables.memberships.PointMembership;
  * @version $Revision$
  */
 public class PointMembershipTest {
-	private Double a, b;
-	private PointMembership<Double,Double> p;
+	private double a, b;
+	private PointMembership p;
 
 	@Before
 	public void setup() {
-		a = 20.0;
-		b = 30.0;
+		a = 20;
+		b = 30;
 		p = newPoint(a, b);
 	}
 

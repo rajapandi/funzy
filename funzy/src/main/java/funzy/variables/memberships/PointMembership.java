@@ -19,62 +19,67 @@
 // THE SOFTWARE. 
 package funzy.variables.memberships;
 
+import static java.lang.Double.NaN;
+
 /**
  * Implementation a membership point.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class PointMembership<X extends Number, Y extends Number> implements
-		Membership<X, Y> {
+public class PointMembership implements Membership {
+	private final double unknown;
+	private final double x;
+	private final double y;
 
-	private final X x;
-	private final Y y;
-
-	public PointMembership(X abs, Y ord) {
+	private PointMembership(double defaultValue, double abs, double ord) {
+		unknown = defaultValue;
 		x = abs;
 		y = ord;
 	}
-
-	public X x() {
+	
+	public double x() {
 		return x;
 	}
 
-	public Y y() {
+	public double y() {
 		return y;
 	}
 
-	public boolean inXRange(X value) {
-		return x.equals(value);
+	public boolean inXRange(double value) {
+		return x == value;
 	}
 
-	public boolean inYRange(Y value) {
-		return y.equals(value);
+	public boolean inYRange(double value) {
+		return y == value;
 	}
 
-	public X solveX(Y value) {
-		if (y.equals(value))
+	public double solveX(double value) {
+		if (y == value)
 			return x;
-		return null;
+		return unknown;
 	}
 
-	public Y solveY(X value) {
-		if (x.equals(value))
+	public double solveY(double value) {
+		if (x == value)
 			return y;
-		return null;
+		return unknown;
 	}
 
 	public boolean equals(Object obj) {
 		PointMembership p = (PointMembership) obj;
-		return x.equals(p.x) && y.equals(p.y);
+		return x == p.x && y == p.y;
 	}
 
 	public String toString() {
 		return "(" + x + "," + y + ")";
 	}
 
-	public static final <X extends Number, Y extends Number> PointMembership<X, Y> newPoint(
-			X x, Y y) {
-		return new PointMembership(x, y);
+	public static final PointMembership newPoint(double x, double y) {
+		return newPoint(NaN, x, y);
+	}
+
+	public static final PointMembership newPoint(double unknown, double x, double y) {
+		return new PointMembership(unknown, x, y);
 	}
 }
