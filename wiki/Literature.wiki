@@ -1,0 +1,11 @@
+#summary Literature associated to Funzy.
+
+= Introduction =
+
+This page lists the interesting infromation related to Fuzzy Logic.
+
+
+= Details =
+
+== Papers ==
+  * Lotfi A. Zadeh: *Generalized theory of uncertainty (GTU)—principal concepts and ideas*. _Computational Statistics & Data Analysis_ 51:15–46 (2006). Elsevier.
