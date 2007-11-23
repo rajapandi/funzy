@@ -19,9 +19,18 @@
 // THE SOFTWARE. 
 package funzy.variables;
 
-import java.util.Map;
+import static com.google.common.base.Objects.nonNull;
+import static com.google.common.collect.Lists.newArrayList;
+import static funzy.variables.memberships.PointMembership.newPoint;
+import static funzy.variables.solvers.Solvers.DEFAULT;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import funzy.Pull;
 import funzy.variables.memberships.Membership;
+import funzy.variables.memberships.PointMembership;
 
 /**
  * Implementation of a literal output variable in fuzzy logic.
@@ -29,10 +38,25 @@ import funzy.variables.memberships.Membership;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class OutputVariable<L> extends Variable<L> {
+public class OutputVariable<L> extends Variable<L> implements Pull<Double> {
+	private final Pull<Map<L, Double>> input;
 
 	private OutputVariable(String name, double minimum, double maximum,
-			Map<L, Membership> func) throws IllegalRangeException {
-		super(name, minimum, maximum, 0.0, 1.0, func);
+			Pull<Map<L, Double>> provider, double ceil, double floor,
+			Map<L, Membership> memberships) throws IllegalRangeException {
+		super(name, minimum, maximum, ceil, floor, memberships);
+		input = nonNull(provider, "Provider reference is required");
+	}
+
+	public Double pull() {
+		Map<L, Double> values = input.pull();
+		List<PointMembership> points = newArrayList();
+		for (Entry<L, Double> m : values.entrySet())
+			points.add(newPoint(m.getValue(), solve(m.getKey(),m.getValue())));
+		return DEFAULT.solve(points).x();
+	}
+	
+	private Double solve(L key, double confidence) {
+		return members.get(key).unfuzzy(confidence);
 	}
 }

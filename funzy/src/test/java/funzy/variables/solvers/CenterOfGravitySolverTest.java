@@ -17,51 +17,63 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables.memberships;
+package funzy.variables.solvers;
 
-import static funzy.variables.memberships.FuzzyMembership.newFuzzyMembership;
+import static com.google.common.collect.Lists.immutableList;
 import static funzy.variables.memberships.PointMembership.newPoint;
+import static funzy.variables.solvers.Solvers.COG;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import funzy.variables.memberships.PointMembership;
+
 /**
- * Test cases for the growing membership.
+ * Test of the center of gravity (COG) solver.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class GrowingMembershipTest {
-	private FuzzyMembership growing;
+public class CenterOfGravitySolverTest {
+    private PointMembership a, b, c, d,e;
 
-	@Before
-	public void setup() {
-		growing = newFuzzyMembership(newPoint(1.0, 0.0), newPoint(5.0, 1.0));
-	}
+    @Before
+    public void setup() {
+        a = newPoint(0, 0);
+        b = newPoint(1, 1);
+        c = newPoint(2, 1);
+        d = newPoint(3, 0);
+        e = newPoint(0, 3);
+    }
 
-	@Test
-	public void solveX1() {
-		assertEquals(0.0, growing.solveY(1.0));
-	}
+    @Test
+    public void pointCoG() {
+        assertEquals(a, COG.solve(immutableList(a)));
+    }
 
-	@Test
-	public void solveX2() {
-		assertEquals(0.25, growing.solveY(2.0));
-	}
+    @Test
+    public void increasingLineCoG() {
+        assertEquals(newPoint(.5, .5), COG.solve(immutableList(a, b)));
+    }
 
-	@Test
-	public void solveX3() {
-		assertEquals(0.5, growing.solveY(3.0));
-	}
+    @Test
+    public void horizontalLineCoG() {
+        assertEquals(newPoint(1.5, 1), COG.solve(immutableList(b, c)));
+    }
 
-	@Test
-	public void solveX4() {
-		assertEquals(0.75, growing.solveY(4.0));
-	}
+    @Test
+    public void decreasingLineCoG() {
+        assertEquals(newPoint(2.5, .5), COG.solve(immutableList(c, d)));
+    }
 
-	@Test
-	public void solveX5() {
-		assertEquals(1.0, growing.solveY(5.0));
-	}
+    @Test
+    public void triangleCoG() {
+        assertEquals(newPoint(1, 1), COG.solve(immutableList(a, e, d)));
+    }
+
+    @Test
+    public void trapezoidCoG() {
+        assertEquals(newPoint(1.5, .5), COG.solve(immutableList(a, b, c, d)));
+    }
 }

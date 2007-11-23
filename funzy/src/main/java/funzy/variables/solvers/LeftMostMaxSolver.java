@@ -17,53 +17,26 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables.memberships;
+package funzy.variables.solvers;
 
-import static funzy.variables.IllegalRangeException.checkRange;
-import funzy.variables.IllegalRangeException;
+import java.util.List;
+
+import funzy.variables.memberships.PointMembership;
 
 /**
- * Implementation a membership point.
+ * Implementation of solver that computes the left most max value (LMM) of a
+ * list of points.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class PointMembership implements Membership {
-	private final double x, y;
+public class LeftMostMaxSolver implements Solver {
 
-	private PointMembership(double abs, double ord) {
-		x = abs;
-		y = ord;
-	}
-
-	public double x() {
-		return x;
-	}
-
-	public double y() {
-		return y;
-	}
-
-	public double unfuzzy(double value) throws IllegalRangeException {
-		checkRange(value, y, y);
-		return x ;
-	}
-
-	public double fuzzy(double value) throws IllegalRangeException {
-		checkRange(value, x, x);
-		return y;
-	}
-
-	public boolean equals(Object obj) {
-		PointMembership p = (PointMembership) obj;
-		return x == p.x && y == p.y;
-	}
-
-	public String toString() {
-		return "(" + x + "," + y + ")";
-	}
-
-	public static final PointMembership newPoint(double x, double y) {
-		return new PointMembership(x, y);
-	}
+    public PointMembership solve(List<PointMembership> points) {
+        PointMembership max = null;
+        for (PointMembership p : points)
+            if (max == null || max.y() < p.y())
+                max = p;
+        return max;
+    }
 }

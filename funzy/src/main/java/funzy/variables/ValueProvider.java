@@ -17,53 +17,40 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables.memberships;
+package funzy.variables;
 
-import static funzy.variables.IllegalRangeException.checkRange;
-import funzy.variables.IllegalRangeException;
+import java.util.Map;
+
+import funzy.Pull;
 
 /**
- * Implementation a membership point.
+ * Structure encapsulating a fuzzy result consumed by another module.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class PointMembership implements Membership {
-	private final double x, y;
+public class ValueProvider<T> implements Pull<T> {
+	private T value;
 
-	private PointMembership(double abs, double ord) {
-		x = abs;
-		y = ord;
+	public void set(T input) {
+		value = input;
 	}
 
-	public double x() {
-		return x;
+	public T pull() {
+		return value;
 	}
 
-	public double y() {
-		return y;
+	public static final <T> ValueProvider<T> newValueProvider(T input) {
+		ValueProvider provider = new ValueProvider<T>();
+		provider.set(input);
+		return provider;
 	}
 
-	public double unfuzzy(double value) throws IllegalRangeException {
-		checkRange(value, y, y);
-		return x ;
+	public static final ValueProvider<Double> newDoubleProvider() {
+		return new ValueProvider<Double>();
 	}
 
-	public double fuzzy(double value) throws IllegalRangeException {
-		checkRange(value, x, x);
-		return y;
-	}
-
-	public boolean equals(Object obj) {
-		PointMembership p = (PointMembership) obj;
-		return x == p.x && y == p.y;
-	}
-
-	public String toString() {
-		return "(" + x + "," + y + ")";
-	}
-
-	public static final PointMembership newPoint(double x, double y) {
-		return new PointMembership(x, y);
+	public static final <L> ValueProvider<Map<L, Double>> newMapProvider() {
+		return new ValueProvider<Map<L, Double>>();
 	}
 }

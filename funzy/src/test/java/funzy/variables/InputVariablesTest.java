@@ -19,7 +19,7 @@
 // THE SOFTWARE. 
 package funzy.variables;
 
-import static funzy.variables.NumberProvider.newNumberSupplier;
+import static funzy.variables.ValueProvider.newValueProvider;
 import static funzy.variables.InputVariable.newInputVariable;
 
 import org.junit.Test;
@@ -36,27 +36,27 @@ import funzy.variables.IllegalRangeException;
 public class InputVariablesTest {
 	@Test
 	public void CheckNewEnumIntVariable() {
-		newInputVariable(SimpleDegree.class,0.0,100.0, newNumberSupplier(0));
+		newInputVariable(SimpleDegree.class,0.0,100.0, newValueProvider(.0));
 	}
 	
 	@Test(expected=IllegalRangeException.class)
 	public void newEnumIntVariable() {
-		newInputVariable(SimpleDegree.class,100.0,0.0, newNumberSupplier(0));
+		newInputVariable(SimpleDegree.class,100.0,0.0, newValueProvider(.0));
 	}
 
 	@Test
 	public void newIntVariable() {
-		newInputVariable("temperature",-10,10, newNumberSupplier(0));
+		newInputVariable("temperature",-10,10, newValueProvider(.0));
 	}
 	
 	@Test
 	public void newDoubleVariable() {
-		newInputVariable("length",0.0,100.0, newNumberSupplier(.0));
+		newInputVariable("length",0.0,100.0, newValueProvider(.0));
 	}
 	
 	@Test(expected=IllegalRangeException.class)
 	public void newDoubleVariableRangeFailure() {
-		newInputVariable("Incorrect range",100.0,0.0, newNumberSupplier(.0));
+		newInputVariable("Incorrect range",100.0,0.0, newValueProvider(.0));
 	}
 	
 	@Test(expected=NullPointerException.class)

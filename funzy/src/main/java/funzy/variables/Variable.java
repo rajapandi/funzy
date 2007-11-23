@@ -46,8 +46,7 @@ public class Variable<L> {
 
 	protected Variable(String identifier, double minimum, double maximum, double ceil,
 			double floor, Map<L, Membership> memberships) {
-		checkRange(minimum, maximum, "Incorrect range for variable "
-				+ identifier);
+		checkRange(minimum, maximum);
 		name = identifier;
 		min = minimum;
 		max = maximum;
@@ -85,14 +84,26 @@ public class Variable<L> {
 	}
 
 	public Variable<L> addTriangleMembership(L key, double a, double b,
-			double c, double unknown) {
-		return addMembership(key, newFuzzyMembership(unknown, newPoint(a, fl),
+			double c) {
+		return addMembership(key, newFuzzyMembership(newPoint(a, fl),
 				newPoint(b, ce), newPoint(c, fl)));
 	}
 
+	public Variable<L> addInverseTriangleMembership(L key, double a, double b,
+			double c) {
+		return addMembership(key, newFuzzyMembership(newPoint(a, ce),
+				newPoint(b, fl), newPoint(c, ce)));
+	}
+	
 	public Variable<L> addTrapezoidMembership(L key, double a, double b,
-			double c, double d, double unknown) {
-		return addMembership(key, newFuzzyMembership(unknown, newPoint(a, fl),
+			double c, double d) {
+		return addMembership(key, newFuzzyMembership(newPoint(a, fl),
 				newPoint(b, ce), newPoint(c, ce), newPoint(d, fl)));
+	}
+	
+	public Variable<L> addInverseTrapezoidMembership(L key, double a, double b,
+			double c, double d) {
+		return addMembership(key, newFuzzyMembership(newPoint(a, ce),
+				newPoint(b, fl), newPoint(c, fl), newPoint(d, ce)));
 	}
 }

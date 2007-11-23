@@ -19,7 +19,18 @@
 // THE SOFTWARE. 
 package funzy.variables.memberships;
 
-import static java.lang.Double.NaN;
+import static com.google.common.collect.Lists.newArrayList;
+import static funzy.variables.IllegalRangeException.checkRange;
+import static funzy.variables.memberships.PointMembership.newPoint;
+import static funzy.variables.solvers.Solvers.LMM;
+import static java.lang.Double.isNaN;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import static java.util.Arrays.asList;
+
+import java.util.List;
+
+import funzy.variables.IllegalRangeException;
 
 /**
  * Implementation a membership line.
@@ -28,56 +39,61 @@ import static java.lang.Double.NaN;
  * @version $Revision$
  */
 public class LineMembership implements Membership {
-	private final PointMembership a, b;
-	private final double delta, unknown;
+    private final PointMembership a, b;
+    private final double delta;
 
-	private LineMembership(double defaultValue, PointMembership p1, PointMembership p2) {
-		unknown = defaultValue;
-		a = p1;
-		b = p2;
-		delta = (b.y()-a.y())/(b.x()-a.x());
-	}
+    private LineMembership(PointMembership p1, PointMembership p2) {
+        a = p1;
+        b = p2;
+        delta = (b.y() - a.y()) / (b.x() - a.x());
+    }
 
-	public PointMembership a() {
-		return a;
-	}
+    public PointMembership a() {
+        return a;
+    }
 
-	public PointMembership b() {
-		return b;
-	}
+    public PointMembership b() {
+        return b;
+    }
 
-	public double delta() {
-		return delta;
-	}
-	
-	public boolean inXRange(double x) {
-		return x >= a.x() && x <= b.x();
-	}
-	
-	public boolean inYRange(double y) {
-		if (a.y()<= b.y())
-			return y >= a.y() && y <= b.y();
-		return y >= b.y() && y <= a.y();
-	}
-	
-	public double solveY(double x) {
-		if (inXRange(x))
-			return (x - a.x()) * delta + a.y();
-		return unknown;
-	}
-	
-	public double solveX(double y) {
-		if (delta != 0)
-			return (y - a.y()) / delta + a.x();
-		// TODO Different implementations are possible (Left, Right or CoG)
-		return unknown;
-	}
-	
-	public static LineMembership newLine(double unknown, PointMembership a, PointMembership b) {
-		return new LineMembership(unknown,a, b);
-	}
-	
-	public static LineMembership newLine(PointMembership a, PointMembership b) {
-		return newLine(NaN, a, b);
-	}
+    public double delta() {
+        return delta;
+    }
+
+    public double fuzzy(double x) throws IllegalRangeException {
+        checkRange(x, a.x(), b.x());
+        double res = (x - a.x()) * delta + a.y();
+        return isNaN(res) ? max(a.y(), b.y()) : res;
+    }
+
+    public double unfuzzy(double y) throws IllegalRangeException {
+        checkRange(y, min(a.y(), b.y()), max(a.y(), b.y()));
+        return LMM.solve(trunc(y)).x();
+    }
+
+    public List<PointMembership> trunc(double y) {
+        if (y >= max(a.y(), b.y()))
+            return asList(a, b);
+        if (y > min(a.y(), b.y())) {
+            double x = (y - a.y()) / delta + a.x();
+            PointMembership p = newPoint(isNaN(x) ? a.x() : x, y);
+            return delta >= 0 ? asList(a, p) : asList(p, b);
+        }
+        if (y == min(a.y(), b.y()))
+            return delta >= 0 ? asList(a) : asList(b);
+        return newArrayList();
+    }
+
+    public boolean equals(Object obj) {
+        LineMembership p = (LineMembership) obj;
+        return a.equals(p.a) && b.equals(p.b);
+    }
+
+    public String toString() {
+        return "[" + a + ":" + b + "]";
+    }
+
+    public static LineMembership newLine(PointMembership a, PointMembership b) {
+        return new LineMembership(a, b);
+    }
 }

@@ -52,8 +52,11 @@ public class InputVariable<L> extends Variable<L> implements
 		final double value = input.pull();
 		final Map<L, Double> memberships = newHashMap();
 		for (Entry<L, Membership> m : members.entrySet())
-			if (m.getValue().inXRange(value))
-				memberships.put(m.getKey(), m.getValue().solveY(value));
+			try {
+				memberships.put(m.getKey(), m.getValue().fuzzy(value));
+			} catch(IllegalRangeException e) {
+				continue;
+			}
 		return memberships;
 	}
 

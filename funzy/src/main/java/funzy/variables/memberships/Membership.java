@@ -19,19 +19,35 @@
 // THE SOFTWARE. 
 package funzy.variables.memberships;
 
+import funzy.variables.IllegalRangeException;
+
 /**
- * Implementation a membership function.
+ * Implementation a membership function that supports fuzzy/unfuzzy operations.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
 public interface Membership {
-	
-	boolean inXRange(double value);
 
-	double solveY(double x);
+    /**
+     * Fuzzyfies an observed value into a degree of confidence associated to the
+     * membership function.
+     * 
+     * @param value the observed value.
+     * @return the degree of confidence associated to this membership.
+     * @throws IllegalRangeException thrown if the observed value is out of the
+     *             range of the membership.
+     */
+    double fuzzy(double value) throws IllegalRangeException;
 
-	boolean inYRange(double value);
-
-	double solveX(double y);
+    /**
+     * Unfuzzyfies a degree of confidence into a concrete value associated to
+     * the membership range.
+     * 
+     * @param confidence the confidence associated to the membership.
+     * @return the concrete value associated to the confidence.
+     * @throws IllegalRangeException thrown if the degree of confidence is out
+     *             of the range of the membership.
+     */
+    double unfuzzy(double confidence) throws IllegalRangeException;
 }

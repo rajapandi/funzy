@@ -17,52 +17,62 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables.memberships;
+package funzy.variables.solvers;
 
-import static funzy.variables.memberships.FuzzyMembership.newFuzzyMembership;
+import static com.google.common.collect.Lists.immutableList;
 import static funzy.variables.memberships.PointMembership.newPoint;
+import static funzy.variables.solvers.Solvers.RMM;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import funzy.variables.memberships.PointMembership;
+
 /**
- * Test cases for the triangle membership.
+ * Test of the right most max (RMM) solver.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class TriangleMembershipTest {
-	private FuzzyMembership triangle;
+public class RightMostMaxSolverTest {
+    private PointMembership a, b, c, d;
 
-	@Before
-	public void setup() {
-		triangle = newFuzzyMembership(newPoint(1.0, 0.0), newPoint(3.0, 1.0),
-				newPoint(5.0, 0.0));
-	}
+    @Before
+    public void setup() {
+        a = newPoint(0, 0);
+        b = newPoint(1, 1);
+        c = newPoint(2, 1);
+        d = newPoint(3, 0);
+    }
 
-	@Test
-	public void solveX1() {
-		assertEquals(0.0, triangle.solveY(1.0));
-	}
+    @Test
+    public void pointRMM() {
+        assertEquals(a, RMM.solve(immutableList(a)));
+    }
 
-	@Test
-	public void solveX2() {
-		assertEquals(0.5, triangle.solveY(2.0));
-	}
+    @Test
+    public void increasingLineRMM() {
+        assertEquals(b, RMM.solve(immutableList(a, b)));
+    }
 
-	@Test
-	public void solveX3() {
-		assertEquals(1.0, triangle.solveY(3.0));
-	}
+    @Test
+    public void horizontalLineRMM() {
+        assertEquals(c, RMM.solve(immutableList(b, c)));
+    }
 
-	@Test
-	public void solveX4() {
-		assertEquals(0.5, triangle.solveY(4.0));
-	}
+    @Test
+    public void decreasingLineRMM() {
+        assertEquals(c, RMM.solve(immutableList(c, d)));
+    }
 
-	@Test
-	public void solveX5() {
-		assertEquals(0.0, triangle.solveY(5.0));
-	}
+    @Test
+    public void triangleRMM() {
+        assertEquals(b, RMM.solve(immutableList(a, b, d)));
+    }
+
+    @Test
+    public void trapezoidRMM() {
+        assertEquals(c, RMM.solve(immutableList(a, b, c)));
+    }
 }
