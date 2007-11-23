@@ -20,20 +20,35 @@
 package funzy.variables;
 
 /**
- * Exception thrown when the variable range is wrong.
+ * Exception thrown when a value range is invalid.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
 public class IllegalRangeException extends RuntimeException {
 
-	public <T> IllegalRangeException(String message, T min, T max) {
-		super(message + " range [" + min + "," + max + "]");
+	public IllegalRangeException(String message) {
+		super(message);
 	}
-	
-	public static final <T extends Number> void checkRange(T min, T max,
-			String message) throws IllegalRangeException {
-		if (min.doubleValue() > max.doubleValue())
-			throw new IllegalRangeException(message, min, max);
+
+	public static final void checkRange(double min, double max)
+			throws IllegalRangeException {
+		if (min > max)
+			throw new IllegalRangeException("Invalid range [" + min + "," + max
+					+ "]");
+	}
+
+	public static final void checkRange(double val, double min, double max)
+			throws IllegalRangeException {
+		if (val < min || val > max)
+			throw new IllegalRangeException(val + " is out of range [" + min
+					+ "," + max + "]");
+	}
+
+	public static final void checkStrictRange(double val, double min, double max)
+			throws IllegalRangeException {
+		if (val <= min || val >= max)
+			throw new IllegalRangeException(val + " is out of range ]" + min
+					+ "," + max + "[");
 	}
 }

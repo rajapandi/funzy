@@ -23,7 +23,7 @@ import static funzy.literals.SimpleDegree.HIGH;
 import static funzy.literals.SimpleDegree.LOW;
 import static funzy.literals.SimpleDegree.MEDIUM;
 import static funzy.variables.InputVariable.newInputVariable;
-import static funzy.variables.NumberProvider.newNumberSupplier;
+import static funzy.variables.ValueProvider.newValueProvider;
 import static funzy.variables.memberships.FuzzyMembership.newFuzzyMembership;
 import static funzy.variables.memberships.PointMembership.newPoint;
 import static org.junit.Assert.assertTrue;
@@ -43,11 +43,11 @@ import funzy.literals.SimpleDegree;
  */
 public class TriangleInputVariableTest {
 	private InputVariable<SimpleDegree> variable;
-	private NumberProvider provider;
+	private ValueProvider provider;
 
 	@Before
 	public void setup() {
-		provider = newNumberSupplier(0);
+		provider = newValueProvider(0);
 		variable = newInputVariable(SimpleDegree.class, 1, 5, provider);
 		variable.addMembership(LOW, newFuzzyMembership(newPoint(1, 1),
 				newPoint(2, 1), newPoint(3, 0), newPoint(5, 0)));

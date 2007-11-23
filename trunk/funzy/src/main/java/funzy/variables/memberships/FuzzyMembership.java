@@ -20,11 +20,18 @@
 package funzy.variables.memberships;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static funzy.variables.memberships.IllegalMembershipException.checkMembership;
+import static funzy.variables.IllegalRangeException.checkRange;
 import static funzy.variables.memberships.LineMembership.newLine;
+import static funzy.variables.solvers.Solvers.DEFAULT;
+import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.NaN;
+import static java.lang.Double.POSITIVE_INFINITY;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 import java.util.List;
+
+import funzy.variables.IllegalRangeException;
 
 /**
  * Implementation of a Fuzzy membership function. A fuzzy membership is an
@@ -35,59 +42,52 @@ import java.util.List;
  */
 public class FuzzyMembership implements Membership {
 
-	private final List<LineMembership> lines = newArrayList();
-	private final Double unknown;
+    private final List<LineMembership> lines = newArrayList();
+    private double min = POSITIVE_INFINITY, max = NEGATIVE_INFINITY,
+            floor = POSITIVE_INFINITY, ceil = NEGATIVE_INFINITY;
 
-	private FuzzyMembership(double defaultValue, PointMembership... points) {
-		unknown = defaultValue;
-		PointMembership pred = null;
-		for (PointMembership suc : points) {
-			if (pred != null) {
-				if (pred.x() > suc.x())
-					throw new IllegalMembershipException(
-							"Membership indexes should be ordered");
-				checkMembership(0, 1, suc.y());
-				lines.add(newLine(pred, suc));
-			}
-			pred = suc;
-		}
-	}
+    private FuzzyMembership(PointMembership... point) {
+        PointMembership pred = null;
+        for (PointMembership suc : point) {
+            if (pred != null) {
+                if (pred.x() > suc.x())
+                    throw new IllegalMembershipException(
+                            "Membership indexes should be ordered");
+                lines.add(newLine(pred, suc));
+            }
+            min = min(min, suc.x());
+            max = max(max, suc.x());
+            floor = min(floor, suc.y());
+            ceil = max(ceil, suc.y());
+            pred = suc;
+        }
+    }
 
-	public boolean inXRange(double value) {
-		for (LineMembership l : lines)
-			if (l.inXRange(value))
-				return true;
-		return false;
-	}
+    public double fuzzy(double x) throws IllegalRangeException {
+        checkRange(x, min, max);
+        for (LineMembership l : lines)
+            try {
+                return l.fuzzy(x);
+            } catch (IllegalRangeException e) {
+                continue;
+            }
+        return NaN;
+    }
 
-	public double solveY(double x) {
-		for (LineMembership l : lines)
-			if (l.inXRange(x))
-				return l.solveY(x);
-		return unknown;
-	}
+    public double unfuzzy(double y) throws IllegalRangeException {
+        checkRange(y, floor, ceil);
+        return DEFAULT.solve(trunc(y)).x();
+    }
 
-	public boolean inYRange(double value) {
-		for (LineMembership l : lines)
-			if (l.inYRange(value))
-				return true;
-		return false;
-	}
+    public List<PointMembership> trunc(double y) {
+        List<PointMembership> list = newArrayList();
+        for (LineMembership line : lines)
+            list.addAll(line.trunc(y));
+        return list;
+    }
 
-	public double solveX(double y) {
-		for (LineMembership l : lines)
-			if (l.inYRange(y))
-				return l.solveX(y);
-		return unknown;
-	}
-
-	public static final FuzzyMembership newFuzzyMembership(double unknown,
-			PointMembership... points) {
-		return new FuzzyMembership(unknown, points);
-	}
-
-	public static final FuzzyMembership newFuzzyMembership(
-			PointMembership... points) {
-		return newFuzzyMembership(NaN, points);
-	}
+    public static final FuzzyMembership newFuzzyMembership(
+            PointMembership... points) {
+        return new FuzzyMembership(points);
+    }
 }

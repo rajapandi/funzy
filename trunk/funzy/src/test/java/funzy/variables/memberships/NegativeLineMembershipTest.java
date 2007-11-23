@@ -22,14 +22,13 @@ package funzy.variables.memberships;
 import static funzy.variables.memberships.LineMembership.newLine;
 import static funzy.variables.memberships.PointMembership.newPoint;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import funzy.variables.memberships.LineMembership;
-import funzy.variables.memberships.PointMembership;
+import funzy.variables.IllegalRangeException;
 
 /**
  * Test of a graph line.
@@ -37,112 +36,88 @@ import funzy.variables.memberships.PointMembership;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class LineMembershipTest {
+public class NegativeLineMembershipTest {
 	private PointMembership p1, p2;
-	private LineMembership line ;
+	private LineMembership line;
 
 	@Before
 	public void setup() {
-		p1= newPoint(1.0, 0.0);
-		p2 = newPoint(3.0, 1.0);
+		p1 = newPoint(1.0, 1.0);
+		p2 = newPoint(3.0, 0.0);
 		line = newLine(p1, p2);
 	}
-	
+
 	@Test
-	public void newLineConstructor() {
+	public void newLineFactory() {
 		assertEquals(p1, line.a());
 		assertEquals(p2, line.b());
 	}
-	
+
 	@Test
 	public void delta() {
-		assertEquals(0.5, line.delta());
-	}
-		
-	@Test
-	public void negativeDelta() {
-		p1 = newPoint(1.0, 2.0);
-		line = newLine(p1, p2);
 		assertEquals(-0.5, line.delta());
 	}
 
 	@Test
-	public void minRange() {
-		assertTrue(line.inXRange(1.0));
-	}
-	
-	@Test
-	public void inXRange() {
-		assertTrue(line.inXRange(2.0));
-	}
-	
-	@Test
-	public void maxRange() {
-		assertTrue(line.inXRange(3.0));
-	}
-	
-	@Test
-	public void outOfMinRange() {
-		assertFalse(line.inXRange(0.0));
+	public void fuzzyMin() {
+		assertEquals(1.0, line.fuzzy(1.0));
 	}
 
 	@Test
-	public void outOfMaxRange() {
-		assertFalse(line.inXRange(4.0));
-	}
-	
-	@Test
-	public void floorRange() {
-		assertTrue(line.inYRange(0.0));
+	public void fuzzyMax() {
+		assertEquals(0.0, line.fuzzy(3.0));
 	}
 
 	@Test
-	public void ceilRange() {
-		assertTrue(line.inYRange(1.0));
+	public void fuzzy() {
+		assertEquals(0.5, line.fuzzy(2.0));
 	}
-	
-	@Test
-	public void inYRange() {
-		assertTrue(line.inYRange(0.5));
-	}
-	
-	@Test
-	public void outOfFloorRange() {
-		assertFalse(line.inYRange(-1.0));
+
+	@Test(expected = IllegalRangeException.class)
+	public void fuzzyFailure() {
+		line.fuzzy(4.0);
 	}
 
 	@Test
-	public void outOfCeilRange() {
-		assertFalse(line.inYRange(2.0));
+	public void unfuzzyFloor() {
+		assertEquals(3.0, line.unfuzzy(0.0));
 	}
-	
-	@Test
-	public void solveMinX() {
-		assertEquals(0.0, line.solveY(1.0));
-	}
-	
-	@Test
-	public void solveMaxX() {
-		assertEquals(1.0, line.solveY(3.0));
-	}
-	
-	@Test
-	public void solveInX() {
-		assertEquals(0.5, line.solveY(2.0));
-	}	
 
 	@Test
-	public void solveFloorY() {
-		assertEquals(1.0, line.solveX(0.0));
+	public void unfuzzyCeil() {
+		assertEquals(1.0, line.unfuzzy(1.0));
+	}
+
+	@Test
+	public void unfuzzy() {
+		assertEquals(2.0, line.unfuzzy(0.5));
+	}
+
+	@Test(expected = IllegalRangeException.class)
+	public void unfuzzyFailure() {
+		line.unfuzzy(2.0);
 	}
 	
-	@Test
-	public void solveCeilY() {
-		assertEquals(3.0, line.solveX(1.0));
-	}
-	
-	@Test
-	public void solveInY() {
-		assertEquals(2.0, line.solveX(0.5));
-	}	
+    @Test
+    public void truncY1() {
+        List<PointMembership> trunc = line.trunc(1);
+        assertEquals(2,trunc.size());
+        assertEquals(p1, trunc.get(0));
+        assertEquals(p2, trunc.get(1));
+    }
+
+    @Test
+    public void truncYdot5() {
+        List<PointMembership> trunc = line.trunc(0.5);
+        assertEquals(2,trunc.size());
+        assertEquals(newPoint(2, .5), trunc.get(0));
+        assertEquals(p2, trunc.get(1));
+    }
+
+    @Test
+    public void truncY0() {
+        List<PointMembership> trunc = line.trunc(0);
+        assertEquals(1,trunc.size());
+        assertEquals(p2, trunc.get(0));
+    }
 }

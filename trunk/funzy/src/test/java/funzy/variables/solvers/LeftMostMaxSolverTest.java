@@ -17,9 +17,11 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables.memberships;
+package funzy.variables.solvers;
 
+import static com.google.common.collect.Lists.immutableList;
 import static funzy.variables.memberships.PointMembership.newPoint;
+import static funzy.variables.solvers.Solvers.LMM;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
@@ -28,30 +30,49 @@ import org.junit.Test;
 import funzy.variables.memberships.PointMembership;
 
 /**
- * Test of a graph point.
+ * Test of the left most max (LMM) solver.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class PointMembershipTest {
-	private double a, b;
-	private PointMembership p;
+public class LeftMostMaxSolverTest {
+    private PointMembership a, b, c, d;
 
-	@Before
-	public void setup() {
-		a = 20;
-		b = 30;
-		p = newPoint(a, b);
-	}
+    @Before
+    public void setup() {
+        a = newPoint(0, 0);
+        b = newPoint(1, 1);
+        c = newPoint(2, 1);
+        d = newPoint(3, 0);
+    }
 
-	@Test
-	public void checkNewPoint() {
-		assertEquals(a, p.x());
-		assertEquals(b, p.y());
-	}
+    @Test
+    public void pointLMM() {
+        assertEquals(a, LMM.solve(immutableList(a)));
+    }
 
-	@Test
-	public void checkEqualsPoint() {
-		assertEquals(p, newPoint(a,b));
-	}
+    @Test
+    public void increasingLineLMM() {
+        assertEquals(b, LMM.solve(immutableList(a, b)));
+    }
+
+    @Test
+    public void horizontalLineLMM() {
+        assertEquals(b, LMM.solve(immutableList(b, c)));
+    }
+
+    @Test
+    public void decreasingLineLMM() {
+        assertEquals(c, LMM.solve(immutableList(c, d)));
+    }
+
+    @Test
+    public void triangleLMM() {
+        assertEquals(b, LMM.solve(immutableList(a, b, c)));
+    }
+
+    @Test
+    public void trapezoidLMM() {
+        assertEquals(b, LMM.solve(immutableList(a, b, c)));
+    }
 }

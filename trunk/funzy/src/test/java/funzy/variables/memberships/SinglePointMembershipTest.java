@@ -19,50 +19,59 @@
 // THE SOFTWARE. 
 package funzy.variables.memberships;
 
-import static funzy.variables.memberships.FuzzyMembership.newFuzzyMembership;
 import static funzy.variables.memberships.PointMembership.newPoint;
-import static java.lang.Double.NaN;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import funzy.variables.IllegalRangeException;
+
 /**
- * Test cases for the crispy functions.
+ * Test of a graph point.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class PartialMembershipTest {
-	private FuzzyMembership partial;
+public class SinglePointMembershipTest {
+	private double a, b;
+	private PointMembership p;
 
 	@Before
 	public void setup() {
-		partial = newFuzzyMembership(newPoint(2.0, 0.0), newPoint(5.0, 1.0));
+		a = 20;
+		b = 30;
+		p = newPoint(a, b);
 	}
 
 	@Test
-	public void solveX1() {
-		assertEquals(NaN, partial.solveY(1.0));
+	public void checkNewPoint() {
+		assertEquals(a, p.x());
+		assertEquals(b, p.y());
 	}
 
 	@Test
-	public void solveX2() {
-		assertEquals(0.0, partial.solveY(2.0));
+	public void checkEqualsPoint() {
+		assertEquals(p, newPoint(a,b));
+	}
+	
+	@Test
+	public void fuzzy() {
+		assertEquals(b,p.fuzzy(a));
+	}
+
+	@Test(expected=IllegalRangeException.class)
+	public void fuzzyFailure() {
+		p.fuzzy(b);
 	}
 
 	@Test
-	public void solveX3() {
-		assertEquals(0.33, partial.solveY(3.0), 0.01);
+	public void unfuzzy() {
+		assertEquals(a,p.unfuzzy(b));
 	}
 
-	@Test
-	public void solveX4() {
-		assertEquals(0.66, partial.solveY(4.0), 0.01);
-	}
-
-	@Test
-	public void solveX5() {
-		assertEquals(1.0, partial.solveY(5.0));
+	@Test(expected=IllegalRangeException.class)
+	public void unfuzzyFailure() {
+		p.unfuzzy(a);
 	}
 }

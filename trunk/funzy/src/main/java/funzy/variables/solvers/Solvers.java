@@ -17,52 +17,22 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables.memberships;
+package funzy.variables.solvers;
 
-import static funzy.variables.memberships.FuzzyMembership.newFuzzyMembership;
-import static funzy.variables.memberships.PointMembership.newPoint;
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Before;
-import org.junit.Test;
 
 /**
- * Test cases for the trapezoid membership.
+ * Implementation of a solver factory.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class TrapezoidMembershipTest {
-	private FuzzyMembership trapezoid;
+public class Solvers {
+    private Solvers() {
+    }
 
-	@Before
-	public void setup() {
-		trapezoid = newFuzzyMembership(newPoint(1.0, 0.0), newPoint(2.0, 1.0),
-				newPoint(4.0, 1.0), newPoint(5.0, 0.0));
-	}
+    public static final Solver COG = new CenterOfGravitySolver();
+    public static final Solver LMM = new LeftMostMaxSolver();
+    public static final Solver RMM = new RightMostMaxSolver();
 
-	@Test
-	public void solveX1() {
-		assertEquals(0.0, trapezoid.solveY(1.0));
-	}
-
-	@Test
-	public void solveX2() {
-		assertEquals(1.0, trapezoid.solveY(2.0));
-	}
-
-	@Test
-	public void solveX3() {
-		assertEquals(1.0, trapezoid.solveY(3.0));
-	}
-
-	@Test
-	public void solveX4() {
-		assertEquals(1.0, trapezoid.solveY(4.0));
-	}
-
-	@Test
-	public void solveX5() {
-		assertEquals(0.0, trapezoid.solveY(5.0));
-	}
+    public static Solver DEFAULT = COG;
 }
