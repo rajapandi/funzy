@@ -28,24 +28,24 @@ import funzy.rules.operators.FuzzyOperator;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyRule<E, N extends Number> {
-	private final FuzzyOperator<N> condition;
-	private final RuleAssigner<E, N>[] assign;
+public class FuzzyRule<E> {
+    private final FuzzyOperator condition;
+    private final RuleAssigner<E>[] assign;
 
-	private FuzzyRule(FuzzyOperator<N> cond, RuleAssigner<E, N>... assigners) {
-		condition = cond;
-		assign = assigners;
-	}
+    private FuzzyRule(FuzzyOperator cond, RuleAssigner<E>... assigners) {
+        condition = cond;
+        assign = assigners;
+    }
 
-	public Iterable<RuleAssigner<E, N>> evaluate() {
-		N confidence = condition.get();
-		for (RuleAssigner<E, N> ass : assign)
-			ass.assign(confidence);
-		return immutableList(assign);
-	}
+    public Iterable<RuleAssigner<E>> evaluate() {
+        double confidence = condition.get();
+        for (RuleAssigner<E> ass : assign)
+            ass.assign(confidence);
+        return immutableList(assign);
+    }
 
-	public static final <E, N extends Number> FuzzyRule<E, N> newRule(
-			FuzzyOperator<N> condition, RuleAssigner<E, N>... assigners) {
-		return new FuzzyRule<E, N>(condition, assigners);
-	}
+    public static final <E> FuzzyRule<E> newRule(FuzzyOperator condition,
+            RuleAssigner<E>... assigners) {
+        return new FuzzyRule<E>(condition, assigners);
+    }
 }

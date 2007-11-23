@@ -27,12 +27,12 @@ import static java.lang.Math.max;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyFunctionMax extends FuzzyFunctionMultiple<Double> {
+public class FuzzyFunctionMax extends FuzzyFunctionMultiple {
 	/* (non-Javadoc)
 	 * @see funzy.operators.MultipleOperator#compute(java.lang.Number, java.lang.Number)
 	 */
 	@Override
-	protected Double evaluate(Double value1, Double value2) {
+	protected double evaluate(double value1, double value2) {
 		return max(value1,value2);
 	}
 }

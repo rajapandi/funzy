@@ -51,7 +51,7 @@ import funzy.rules.functions.FuzzyFunction;
  */
 public class FuzzyFunctionTest {
 	private static void assertResult(Double expected,
-			FuzzyFunction<Double> function, Double... param) {
+			FuzzyFunction function, Double... param) {
 		assertEquals(expected, function.evaluate(immutableList(param)));
 	}
 

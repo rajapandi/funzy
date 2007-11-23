@@ -26,12 +26,12 @@ package funzy.rules.functions;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyFunctionAdd extends FuzzyFunctionMultiple<Double> {
+public class FuzzyFunctionAdd extends FuzzyFunctionMultiple {
 	/* (non-Javadoc)
 	 * @see funzy.operators.MultipleOperator#compute(java.lang.Number,java.lang.Number)
 	 */
 	@Override
-	protected Double evaluate(Double value1, Double value2) {
-		return value1.doubleValue() + value2.doubleValue();
+	protected double evaluate(double value1, double value2) {
+		return value1 + value2;
 	}
 }

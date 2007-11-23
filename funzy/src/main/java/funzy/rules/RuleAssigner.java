@@ -28,26 +28,26 @@ import funzy.rules.functions.FuzzyFunction;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class RuleAssigner<E, N extends Number> {
+public class RuleAssigner<E> {
 	private final String var;
 	private final E lit;
-	private final FuzzyFunction<N>[] func;
-	private N confidence;
+	private final FuzzyFunction[] func;
+	private double confidence;
 
 	public RuleAssigner(String variable, E literal,
-			FuzzyFunction<N>... functions) {
+			FuzzyFunction... functions) {
 		var = variable;
 		lit = literal;
 		func = functions;
 	}
 
-	public void assign(N value) {
+	public void assign(double value) {
 		confidence = value;
-		for (FuzzyFunction<N> f : func)
+		for (FuzzyFunction f : func)
 			confidence = f.evaluate(immutableList(confidence));
 	}
 
-	public N confidence() {
+	public double confidence() {
 		return confidence;
 	}
 

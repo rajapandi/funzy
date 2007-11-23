@@ -36,10 +36,10 @@ import funzy.variables.InputVariable;
  */
 public class RuleEngine<L> implements Pull<Map<String, Map<L, Double>>> {
 	private final Map<String, Map<L, Double>> values = newHashMap();
-	private final List<FuzzyRule<L, Double>> rules = newLinkedList();
+	private final List<FuzzyRule<L>> rules = newLinkedList();
 	private final List<InputVariable<L>> inputs = newLinkedList();
 
-	public void addRule(FuzzyRule<L, Double> rule) {
+	public void addRule(FuzzyRule<L> rule) {
 		rules.add(rule);
 	}
 
@@ -51,7 +51,7 @@ public class RuleEngine<L> implements Pull<Map<String, Map<L, Double>>> {
 		values.clear();
 		for (InputVariable<L> in : inputs)
 			values.put(in.name(), in.pull());
-		for (FuzzyRule<L, Double> rule : rules)
+		for (FuzzyRule<L> rule : rules)
 			rule.evaluate();
 		return values;
 	}
