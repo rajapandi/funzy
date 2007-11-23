@@ -20,6 +20,7 @@
 package funzy.rules.operators;
 
 import static com.google.common.collect.Iterables.transform;
+import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
 
 import java.util.Collection;
@@ -35,26 +36,26 @@ import funzy.rules.functions.FuzzyFunction;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyOperator<N extends Number>  implements Supplier<N>{
-	private FuzzyFunction<N> function;
-	private Collection<Supplier<N>> operators;
-	private Function<Supplier<N>, N> values = new Function<Supplier<N>, N>() {
-		public N apply(Supplier<N> operator) {
+public class FuzzyOperator  implements Supplier<Double>{
+	private FuzzyFunction function;
+	private Collection<Supplier<Double>> operators;
+	private Function<Supplier<Double>, Double> values = new Function<Supplier<Double>, Double>() {
+		public Double apply(Supplier<Double> operator) {
 			return operator.get();
 		}
 	};
 	
-	private FuzzyOperator(FuzzyFunction<N> f, Supplier<N>[] ops) {
+	private FuzzyOperator(FuzzyFunction f, Supplier<Double>[] ops) {
 		function = f;
 		operators = asList(ops);
 	}
 
-	public N get() {
-		return function.evaluate(transform(operators, values));
+	public Double get() {
+		return function.evaluate(newArrayList(transform(operators, values)));
 	}
 	
 	
-	public static final <N extends Number> Supplier<N> newOperator(FuzzyFunction<N> function, Supplier<N>... operators) {
-		return new FuzzyOperator<N>(function, operators);
+	public static final Supplier<Double> newOperator(FuzzyFunction function, Supplier<Double>... operators) {
+		return new FuzzyOperator(function, operators);
 	}
 }

@@ -26,96 +26,95 @@ package funzy.rules.functions;
  * @version $Revision$
  */
 public final class FuzzyInterpreters {
-	private static final Double CONST_LITTLE = 1.3;
-	private static final Double CONST_SLIGHTLY = 1.7;
-	private static final Double CONST_VERY = 2.0;
-	private static final Double CONST_EXTREMELY = 3.0;
-	private static final Double CONST_VERY_VERY = 4.0;
-	private static final Double CONST_SOMEWHAT = 0.5;
+    private static final Double CONST_LITTLE = 1.3;
+    private static final Double CONST_SLIGHTLY = 1.7;
+    private static final Double CONST_VERY = 2.0;
+    private static final Double CONST_EXTREMELY = 3.0;
+    private static final Double CONST_VERY_VERY = 4.0;
+    private static final Double CONST_SOMEWHAT = 0.5;
 
-	private FuzzyInterpreters() {
-	}
+    private FuzzyInterpreters() {
+    }
 
-	public static final FuzzyFunction<Double> not() {
-		return new FuzzyFunctionNot();
-	}
+    public static final FuzzyFunction not() {
+        return new FuzzyFunctionNot();
+    }
 
-	public static final FuzzyFunction<Double> nop() {
-		return new FuzzyFunctionNop();
-	}
-	
-	public static final FuzzyFunction<Double> max() {
-		return new FuzzyFunctionMax();
-	}
+    public static final FuzzyFunction nop() {
+        return new FuzzyFunctionNop();
+    }
 
-	public static final FuzzyFunction<Double> min() {
-		return new FuzzyFunctionMin();
-	}
+    public static final FuzzyFunction max() {
+        return new FuzzyFunctionMax();
+    }
 
-	public static final FuzzyFunction<Double> add() {
-		return new FuzzyFunctionAdd();
-	}
-	
-	public static final FuzzyFunction<Double> prod() {
-		return new FuzzyFunctionProd();
-	}
+    public static final FuzzyFunction min() {
+        return new FuzzyFunctionMin();
+    }
 
-	public static final FuzzyFunction<Double> pow(double exponent) {
-		return new FuzzyFunctionPow(exponent);
-	}
+    public static final FuzzyFunction add() {
+        return new FuzzyFunctionAdd();
+    }
 
-	public static final FuzzyFunction<Double> little() {
-		return pow(CONST_LITTLE);
-	}
+    public static final FuzzyFunction prod() {
+        return new FuzzyFunctionProd();
+    }
 
-	public static final FuzzyFunction<Double> slightly() {
-		return pow(CONST_SLIGHTLY);
-	}
+    public static final FuzzyFunction pow(double exponent) {
+        return new FuzzyFunctionPow(exponent);
+    }
 
-	public static final FuzzyFunction<Double> very() {
-		return pow(CONST_VERY);
-	}
+    public static final FuzzyFunction little() {
+        return pow(CONST_LITTLE);
+    }
 
-	public static final FuzzyFunction<Double> extremely() {
-		return pow(CONST_EXTREMELY);
-	}
+    public static final FuzzyFunction slightly() {
+        return pow(CONST_SLIGHTLY);
+    }
 
-	public static final FuzzyFunction<Double> veryvery() {
-		return pow(CONST_VERY_VERY);
-	}
+    public static final FuzzyFunction very() {
+        return pow(CONST_VERY);
+    }
 
-	public static final FuzzyFunction<Double> somewhat() {
-		return pow(CONST_SOMEWHAT);
-	}
+    public static final FuzzyFunction extremely() {
+        return pow(CONST_EXTREMELY);
+    }
 
-	public static final FuzzyFunction<Double> xor() {
-		return new FuzzyFunctionXor(AND,OR,NOT);
-	}
-	
-	private static final FuzzyFunction<Double> pipe(
-			FuzzyFunction<Double>... functions) {
-		return new FuzzyFunctionPipe<Double>(functions);
-	}
+    public static final FuzzyFunction veryvery() {
+        return pow(CONST_VERY_VERY);
+    }
 
-	public static final FuzzyFunction<Double> nor() {
-		return pipe(NOT,OR);
-	}
+    public static final FuzzyFunction somewhat() {
+        return pow(CONST_SOMEWHAT);
+    }
 
-	public static final FuzzyFunction<Double> nand() {
-		return pipe(NOT,AND);
-	}
+    public static final FuzzyFunction xor() {
+        return new FuzzyFunctionXor(AND, OR, NOT);
+    }
 
-	public static final FuzzyFunction<Double> nxr() {
-		return pipe(NOT,xor());
-	}
-	
-	public static FuzzyFunction<Double> AND = min();
-	public static FuzzyFunction<Double> OR = max();
-	public static FuzzyFunction<Double> NOT = not();
-	public static FuzzyFunction<Double> LITTLE = little();
-	public static FuzzyFunction<Double> SLIHTLY = slightly();
-	public static FuzzyFunction<Double> VERY = very();
-	public static FuzzyFunction<Double> EXTREMELY = extremely();
-	public static FuzzyFunction<Double> VERYVERY = veryvery();
-	public static FuzzyFunction<Double> SOMEWHAT = somewhat();
+    private static final FuzzyFunction pipe(FuzzyFunction... functions) {
+        return new FuzzyFunctionPipe(functions);
+    }
+
+    public static final FuzzyFunction nor() {
+        return pipe(NOT, OR);
+    }
+
+    public static final FuzzyFunction nand() {
+        return pipe(NOT, AND);
+    }
+
+    public static final FuzzyFunction nxr() {
+        return pipe(NOT, xor());
+    }
+
+    public static FuzzyFunction AND = min();
+    public static FuzzyFunction OR = max();
+    public static FuzzyFunction NOT = not();
+    public static FuzzyFunction LITTLE = little();
+    public static FuzzyFunction SLIHTLY = slightly();
+    public static FuzzyFunction VERY = very();
+    public static FuzzyFunction EXTREMELY = extremely();
+    public static FuzzyFunction VERYVERY = veryvery();
+    public static FuzzyFunction SOMEWHAT = somewhat();
 }

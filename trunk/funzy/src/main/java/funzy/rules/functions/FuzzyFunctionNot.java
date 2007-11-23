@@ -26,12 +26,12 @@ package funzy.rules.functions;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyFunctionNot extends FuzzyFunctionSingle<Double> {
+public class FuzzyFunctionNot extends FuzzyFunctionSingle {
 	/* (non-Javadoc)
 	 * @see com.google.common.base.Function#apply(java.lang.Object)
 	 */
 	@Override
-	public Double evaluate(Double value) {
+	public double evaluate(double value) {
 		return 1 - value;
 	}
 }

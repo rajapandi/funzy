@@ -36,47 +36,47 @@ public final class FuzzyAssigners {
 	private FuzzyAssigners() {
 	}
 
-	public static final FuzzyFunction<Double> not() {
+	public static final FuzzyFunction not() {
 		return new FuzzyFunctionNot();
 	}
 
-	public static final FuzzyFunction<Double> nop() {
+	public static final FuzzyFunction nop() {
 		return new FuzzyFunctionNop();
 	}
 	
-	public static final FuzzyFunction<Double> root(double exponent) {
+	public static final FuzzyFunction root(double exponent) {
 		return new FuzzyFunctionRoot(exponent);
 	}
 
-	public static final FuzzyFunction<Double> little() {
+	public static final FuzzyFunction little() {
 		return root(CONST_LITTLE);
 	}
 
-	public static final FuzzyFunction<Double> slightly() {
+	public static final FuzzyFunction slightly() {
 		return root(CONST_SLIGHTLY);
 	}
 
-	public static final FuzzyFunction<Double> very() {
+	public static final FuzzyFunction very() {
 		return root(CONST_VERY);
 	}
 
-	public static final FuzzyFunction<Double> extremely() {
+	public static final FuzzyFunction extremely() {
 		return root(CONST_EXTREMELY);
 	}
 
-	public static final FuzzyFunction<Double> veryvery() {
+	public static final FuzzyFunction veryvery() {
 		return root(CONST_VERY_VERY);
 	}
 
-	public static final FuzzyFunction<Double> somewhat() {
+	public static final FuzzyFunction somewhat() {
 		return root(CONST_SOMEWHAT);
 	}
 	
-	public static FuzzyFunction<Double> NOT = not();
-	public static FuzzyFunction<Double> LITTLE = little();
-	public static FuzzyFunction<Double> SLIHTLY = slightly();
-	public static FuzzyFunction<Double> VERY = very();
-	public static FuzzyFunction<Double> EXTREMELY = extremely();
-	public static FuzzyFunction<Double> VERYVERY = veryvery();
-	public static FuzzyFunction<Double> SOMEWHAT = somewhat();
+	public static FuzzyFunction NOT = not();
+	public static FuzzyFunction LITTLE = little();
+	public static FuzzyFunction SLIHTLY = slightly();
+	public static FuzzyFunction VERY = very();
+	public static FuzzyFunction EXTREMELY = extremely();
+	public static FuzzyFunction VERYVERY = veryvery();
+	public static FuzzyFunction SOMEWHAT = somewhat();
 }

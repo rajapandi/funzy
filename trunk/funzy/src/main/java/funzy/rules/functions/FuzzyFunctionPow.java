@@ -27,7 +27,7 @@ import static java.lang.Math.pow;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyFunctionPow extends FuzzyFunctionSingle<Double> {
+public class FuzzyFunctionPow extends FuzzyFunctionSingle {
 	private final double pow;
 
 	public FuzzyFunctionPow(double exponent) {
@@ -38,7 +38,7 @@ public class FuzzyFunctionPow extends FuzzyFunctionSingle<Double> {
 	 * @see funzy.operators.SingleOperator#evaluate(java.lang.Number)
 	 */
 	@Override
-	protected Double evaluate(Double value) {
+	protected double evaluate(double value) {
 		return pow(value, pow) ;
 	}
 }

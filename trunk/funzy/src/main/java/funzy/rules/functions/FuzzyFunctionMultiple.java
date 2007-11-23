@@ -1,5 +1,7 @@
 package funzy.rules.functions;
 
+import java.util.List;
+
 
 /**
  * Implementation of a fuzzy operator requiring exactly 1 parameter.
@@ -8,13 +10,13 @@ package funzy.rules.functions;
  * @version $Revision$
  */
 public abstract class FuzzyFunctionMultiple<N extends Number> implements
-		FuzzyFunction<N> {
+		FuzzyFunction {
 	/* (non-Javadoc)
 	 * @see funzy.operators.FuzzyOperator#evaluate(N[])
 	 */
-	public N evaluate(Iterable<N> values) {
-		N res = null;
-		for (N value : values)
+	public double evaluate(List<Double> values) {
+		Double res = null;
+		for (double value : values)
 			if (res == null)
 				res = value;
 			else
@@ -22,5 +24,5 @@ public abstract class FuzzyFunctionMultiple<N extends Number> implements
 		return res;
 	}
 
-	protected abstract N evaluate(N value1, N value2);
+	protected abstract double evaluate(double value1, double value2);
 }

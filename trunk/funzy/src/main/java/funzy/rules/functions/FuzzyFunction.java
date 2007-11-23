@@ -19,6 +19,8 @@
 // THE SOFTWARE. 
 package funzy.rules.functions;
 
+import java.util.List;
+
 
 /**
  * Description of a fuzzy operator.
@@ -26,7 +28,7 @@ package funzy.rules.functions;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public interface FuzzyFunction<N extends Number> {
+public interface FuzzyFunction {
 	/**
 	 * Evaluates the operator parameter(s) and returns a single value of the
 	 * same type.
@@ -34,5 +36,5 @@ public interface FuzzyFunction<N extends Number> {
 	 * @param values the list of input values for the parameter.
 	 * @return the value computed by the operator.
 	 */
-	N evaluate(Iterable<N> values);
+	double evaluate(List<Double> values);
 }

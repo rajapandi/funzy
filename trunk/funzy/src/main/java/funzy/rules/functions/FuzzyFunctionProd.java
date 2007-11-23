@@ -31,7 +31,7 @@ public class FuzzyFunctionProd extends FuzzyFunctionMultiple<Double> {
 	 * @see funzy.operators.MultipleOperator#compute(java.lang.Number,java.lang.Number)
 	 */
 	@Override
-	protected Double evaluate(Double value1, Double value2) {
-		return value1.doubleValue() * value2.doubleValue();
+	protected double evaluate(double value1, double value2) {
+		return value1 * value2;
 	}
 }
