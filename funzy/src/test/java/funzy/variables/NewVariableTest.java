@@ -17,31 +17,43 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables.crispy;
+package funzy.variables;
 
-import static com.google.common.collect.Lists.immutableList;
+import static funzy.variables.Variable.newVariable;
 
-import java.util.List;
+import org.junit.Test;
 
-import com.google.common.base.Supplier;
-
-import funzy.variables.memberships.PointMembership;
-
+import funzy.literals.SimpleDegree;
 
 /**
- * Implementation of a Crispy membership function.
+ * Test cases for the literal variables.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class CrispyMembership implements Supplier<List<PointMembership>> {
-	private final List<PointMembership> points ;
-
-	public CrispyMembership(PointMembership... point) {
-		points = immutableList(point);
+public class NewVariableTest {
+	@Test
+	public void CheckNewEnumIntVariable() {
+		newVariable(SimpleDegree.class,0.0,100.0);
+	}
+	
+	@Test(expected=IllegalRangeException.class)
+	public void newEnumIntVariable() {
+	    newVariable(SimpleDegree.class,100.0,0.0);
 	}
 
-	public List<PointMembership> get() {
-		return points;
+	@Test
+	public void newIntVariable() {
+	    newVariable("temperature",-10,10);
+	}
+	
+	@Test
+	public void newDoubleVariable() {
+	    newVariable("length",0.0,100.0);
+	}
+	
+	@Test(expected=IllegalRangeException.class)
+	public void newDoubleVariableRangeFailure() {
+	    newVariable("Incorrect range",100.0,0.0);
 	}
 }

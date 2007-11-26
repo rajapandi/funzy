@@ -30,22 +30,22 @@ import funzy.rules.operators.FuzzyOperator;
  */
 public class FuzzyRule<E> {
     private final FuzzyOperator condition;
-    private final RuleAssigner<E>[] assign;
+    private final FuzzyRuleAssigner<E>[] assign;
 
-    private FuzzyRule(FuzzyOperator cond, RuleAssigner<E>... assigners) {
+    private FuzzyRule(FuzzyOperator cond, FuzzyRuleAssigner<E>... assigners) {
         condition = cond;
         assign = assigners;
     }
 
-    public Iterable<RuleAssigner<E>> evaluate() {
+    public Iterable<FuzzyRuleAssigner<E>> evaluate() {
         double confidence = condition.get();
-        for (RuleAssigner<E> ass : assign)
+        for (FuzzyRuleAssigner<E> ass : assign)
             ass.assign(confidence);
         return immutableList(assign);
     }
 
     public static final <E> FuzzyRule<E> newRule(FuzzyOperator condition,
-            RuleAssigner<E>... assigners) {
+            FuzzyRuleAssigner<E>... assigners) {
         return new FuzzyRule<E>(condition, assigners);
     }
 }

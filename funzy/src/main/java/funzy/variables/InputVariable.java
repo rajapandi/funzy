@@ -20,15 +20,10 @@
 package funzy.variables;
 
 import static com.google.common.base.Objects.nonNull;
-import static com.google.common.collect.Maps.newHashMap;
 
-import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import funzy.Pull;
-import funzy.variables.memberships.Membership;
 
 /**
  * Implementation of a literal input variable in fuzzy logic.
@@ -36,48 +31,28 @@ import funzy.variables.memberships.Membership;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class InputVariable<L> extends Variable<L> implements
-		Pull<Map<L, Double>> {
+public class InputVariable<L> implements Pull<Map<L, Double>> {
 
-	private final Pull<Double> input;
+    private final Variable<L> variable;
+    private final Pull<Double> input;
 
-	private InputVariable(String name, double minimum, double maximum,
-			Pull<Double> provider, double ceil, double floor,
-			Map<L, Membership> memberships) throws IllegalRangeException {
-		super(name, minimum, maximum, ceil, floor, memberships);
-		input = nonNull(provider, "Provider reference is required");
-	}
+    private InputVariable(Variable<L> fuzzyfier, Pull<Double> provider) {
+        variable = nonNull(fuzzyfier, "Variable reference is required");
+        input = nonNull(provider, "Provider reference is required");
+    }
 
-	public Map<L, Double> pull() {
-		final double value = input.pull();
-		final Map<L, Double> memberships = newHashMap();
-		for (Entry<L, Membership> m : members.entrySet())
-			try {
-				memberships.put(m.getKey(), m.getValue().fuzzy(value));
-			} catch(IllegalRangeException e) {
-				continue;
-			}
-		return memberships;
-	}
+    public Map<L, Double> pull() {
+        return variable.fuzzy(input.pull());
+    }
 
-	// Factory methods
+    public String name() {
+        return variable.name();
+    }
+    
+    // Factory methods
 
-	public static final <L extends Enum<L>> InputVariable newInputVariable(
-			Class<L> literals, String name, double min, double max,
-			Pull<Double> provider) {
-		return new InputVariable<L>(name, min, max, provider, 0, 1,
-				new EnumMap<L, Membership>(literals));
-	}
-
-	public static final <L extends Enum<L>> InputVariable newInputVariable(
-			Class<L> literals, double min, double max, Pull<Double> provider) {
-		return newInputVariable(literals, literals.getSimpleName(), min, max,
-				provider);
-	}
-
-	public static final <L> InputVariable newInputVariable(
-			String name, double min, double max, Pull<Double> provider) {
-		return new InputVariable<L>(name, min, max, provider, 0, 1,
-				new HashMap<L, Membership>());
-	}
+    public static final <L extends Enum<L>> InputVariable newInputVariable(
+            Variable<L> fuzzyfier, Pull<Double> provider) {
+        return new InputVariable<L>(fuzzyfier, provider);
+    }
 }
