@@ -20,17 +20,11 @@
 package funzy.variables;
 
 import static com.google.common.base.Objects.nonNull;
-import static com.google.common.collect.Lists.newArrayList;
-import static funzy.variables.memberships.PointMembership.newPoint;
-import static funzy.variables.solvers.Solvers.DEFAULT;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import funzy.Pull;
 import funzy.variables.memberships.Membership;
-import funzy.variables.memberships.PointMembership;
 
 /**
  * Implementation of a literal output variable in fuzzy logic.
@@ -49,14 +43,6 @@ public class OutputVariable<L> extends Variable<L> implements Pull<Double> {
 	}
 
 	public Double pull() {
-		Map<L, Double> values = input.pull();
-		List<PointMembership> points = newArrayList();
-		for (Entry<L, Double> m : values.entrySet())
-			points.add(newPoint(m.getValue(), solve(m.getKey(),m.getValue())));
-		return DEFAULT.solve(points).x();
-	}
-	
-	private Double solve(L key, double confidence) {
-		return members.get(key).unfuzzy(confidence);
+		return unfuzzy(input.pull());
 	}
 }
