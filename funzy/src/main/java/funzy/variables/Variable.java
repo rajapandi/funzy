@@ -19,6 +19,7 @@
 // THE SOFTWARE. 
 package funzy.variables;
 
+import static com.google.common.base.Objects.nonNull;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static funzy.Configuration.LOG;
@@ -85,12 +86,12 @@ public class Variable<L> {
     public final String name() {
         return name;
     }
-    
+
     public Variable conflictHandler(ConflictHandler handler) {
         conflict = handler;
         return this;
     }
-    
+
     public ConflictHandler conflictHandler() {
         return conflict;
     }
@@ -115,11 +116,13 @@ public class Variable<L> {
     }
 
     public Variable<L> addIncreasingMembership(L key, double a, double b) {
-        return addTrapezoidMembership(key, a, b, max, max);
+        return b == max ? addTriangleMembership(key, a, b, max)
+                : addTrapezoidMembership(key, a, b, max, max);
     }
 
     public Variable<L> addDecreasingMembership(L key, double a, double b) {
-        return addTrapezoidMembership(key, min, min, a, b);
+        return a == min ? addTriangleMembership(key, min, a, b)
+                : addTrapezoidMembership(key, min, min, a, b);
     }
 
     public Variable<L> addAfterMembership(L key, double a) {
@@ -142,12 +145,13 @@ public class Variable<L> {
         return memberships;
     }
 
-    public double unfuzzy(Map<L, Double> confidence)
+    public double unfuzzy(Map<L, Double> confidences)
             throws IllegalRangeException {
         List<PointMembership> points = newArrayList();
-        for (Entry<L, Double> m : confidence.entrySet())
-            points.add(newPoint(m.getValue(), members.get(m.getKey()).unfuzzy(
-                    m.getValue())));
+        for (Entry<L, Double> confidence : nonNull(confidences,
+                "Confidence values cannot be null").entrySet())
+            points.add(newPoint(members.get(confidence.getKey()).unfuzzy(
+                    confidence.getValue()), confidence.getValue()));
         return DEFAULT.solve(points).x();
     }
 
