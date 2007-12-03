@@ -80,12 +80,18 @@ public class FuzzyMembership implements Membership {
     }
 
     public List<PointMembership> trunc(double y) {
-        List<PointMembership> list = newArrayList();
+        List<PointMembership> set = newArrayList();
         for (LineMembership line : lines)
-            list.addAll(line.trunc(y));
-        return list;
+            for (PointMembership p : line.trunc(y))
+                if (!set.contains(p))
+                    set.add(p);
+        return set;
     }
 
+    public String toString() {
+        return lines.toString();
+    }
+    
     public static final FuzzyMembership newFuzzyMembership(
             PointMembership... points) {
         return new FuzzyMembership(points);
