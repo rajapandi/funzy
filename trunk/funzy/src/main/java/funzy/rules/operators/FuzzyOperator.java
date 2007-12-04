@@ -19,15 +19,11 @@
 // THE SOFTWARE. 
 package funzy.rules.operators;
 
-import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
-import static java.util.Arrays.asList;
 
-import java.util.Collection;
+import java.util.List;
 
-import com.google.common.base.Function;
-import com.google.common.base.Supplier;
-
+import funzy.MapOfMap;
 import funzy.rules.functions.FuzzyFunction;
 
 /**
@@ -36,26 +32,24 @@ import funzy.rules.functions.FuzzyFunction;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyOperator  implements Supplier<Double>{
-	private FuzzyFunction function;
-	private Collection<Supplier<Double>> operators;
-	private Function<Supplier<Double>, Double> values = new Function<Supplier<Double>, Double>() {
-		public Double apply(Supplier<Double> operator) {
-			return operator.get();
-		}
-	};
-	
-	private FuzzyOperator(FuzzyFunction f, Supplier<Double>[] ops) {
-		function = f;
-		operators = asList(ops);
-	}
+public class FuzzyOperator<K, V> implements FuzzyCondition<K, V> {
+    private final FuzzyFunction function;
+    private final FuzzyCondition<K, V>[] operators;
 
-	public Double get() {
-		return function.evaluate(newArrayList(transform(operators, values)));
-	}
-	
-	
-	public static final Supplier<Double> newOperator(FuzzyFunction function, Supplier<Double>... operators) {
-		return new FuzzyOperator(function, operators);
-	}
+    private FuzzyOperator(FuzzyFunction f, FuzzyCondition<K, V>[] ops) {
+        function = f;
+        operators = ops;
+    }
+
+    public Double evaluate(MapOfMap<K, V, Double> provider) {
+        List<Double> parameters = newArrayList();
+        for (FuzzyCondition<K, V> child : operators)
+            parameters.add(child.evaluate(provider));
+        return function.evaluate(parameters);
+    }
+
+    public static final <K, V> FuzzyCondition<K, V> newOperator(
+            FuzzyFunction function, FuzzyCondition<K, V>... operators) {
+        return new FuzzyOperator(function, operators);
+    }
 }

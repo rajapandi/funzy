@@ -39,7 +39,10 @@
 package funzy.rules;
 
 import static com.google.common.collect.Lists.immutableList;
+import funzy.MapOfMap;
 import funzy.rules.functions.FuzzyFunction;
+import funzy.variables.conflicts.ConflictHandler;
+import funzy.variables.conflicts.ConflictHandlerException;
 
 /**
  * Implementation of the assign part of a fuzzy rule.
@@ -47,34 +50,23 @@ import funzy.rules.functions.FuzzyFunction;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyRuleAssigner<E> {
-	private final String var;
-	private final E lit;
-	private final FuzzyFunction[] func;
-	private double confidence;
+public class FuzzyRuleIs<K, V> {
+    private final K var;
+    private final V lit;
+    private final FuzzyFunction[] func;
+    public static ConflictHandler CONFLICT = new ConflictHandlerException();
 
-	public FuzzyRuleAssigner(String variable, E literal,
-			FuzzyFunction... functions) {
-		var = variable;
-		lit = literal;
-		func = functions;
-	}
+    public FuzzyRuleIs(K variable, V literal, FuzzyFunction... functions) {
+        var = variable;
+        lit = literal;
+        func = functions;
+    }
 
-	public void assign(double value) {
-		confidence = value;
-		for (FuzzyFunction f : func)
-			confidence = f.evaluate(immutableList(confidence));
-	}
-
-	public double confidence() {
-		return confidence;
-	}
-
-	public String variable() {
-		return var;
-	}
-
-	public E literal() {
-		return lit;
-	}
+    public void assign(double value, MapOfMap<K, V, Double> output) {
+        double res = value;
+        for (FuzzyFunction f : func)
+            res = f.evaluate(immutableList(res));
+        output.put(var, lit, output.get(var, lit) == null ? res : CONFLICT
+                .handle(output.get(var, lit), res));
+    }
 }

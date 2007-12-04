@@ -17,32 +17,10 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.rules;
-
-import static com.google.common.collect.Lists.newLinkedList;
-import static funzy.HashMapOfMap.newHashMapOfMap;
-
-import java.util.List;
+package funzy.rules.operators;
 
 import funzy.MapOfMap;
 
-/**
- * Implementation of the fuzzy rule engine.
- * 
- * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
- * @version $Revision$
- */
-public class FuzzyRuleEngine<K,L> {
-    private final List<FuzzyRule<K,L>> rules = newLinkedList();
-
-    public void addRule(FuzzyRule<K,L> rule) {
-        rules.add(rule);
-    }
-
-    public MapOfMap<K, L, Double> evaluate(MapOfMap<K, L, Double> input) {
-        MapOfMap<K, L, Double> output = newHashMapOfMap();
-        for (FuzzyRule<K,L> rule : rules)
-            rule.evaluate(input,output);
-        return output;
-    }
+public interface FuzzyCondition<K, V> {
+    Double evaluate(MapOfMap<K, V, Double> provider);
 }

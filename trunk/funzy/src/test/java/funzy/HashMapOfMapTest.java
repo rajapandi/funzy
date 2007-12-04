@@ -17,32 +17,55 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables;
+package funzy;
 
-import static com.google.common.base.Objects.nonNull;
+import static funzy.HashMapOfMap.newHashMapOfMap;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
-import java.util.Map;
-
-import funzy.Pull;
-import funzy.variables.memberships.Membership;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
- * Implementation of a literal output variable in fuzzy logic.
+ * Test of the map of map.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class OutputVariable<L> extends Variable<L> implements Pull<Double> {
-	private final Pull<Map<L, Double>> input;
+public class HashMapOfMapTest {
+    private MapOfMap<String, String, Integer> map;
 
-	private OutputVariable(String name, double minimum, double maximum,
-			Pull<Map<L, Double>> provider, double ceil, double floor,
-			Map<L, Membership> memberships) throws IllegalRangeException {
-		super(name, minimum, maximum, ceil, floor, memberships);
-		input = nonNull(provider, "Provider reference is required");
-	}
+    @Before
+    public void setup() {
+        map = newHashMapOfMap();
+    }
 
-	public Double pull() {
-		return unfuzzy(input.pull());
-	}
+    @Test
+    public void putValue() {
+        assertEquals(map, map.put("row", "column", 1));
+    }
+
+    @Test
+    public void getExistingValue() {
+        map.put("row", "column", 1);
+        assertEquals(1, map.get("row", "column"));
+    }
+
+    @Test
+    public void getInvalidColumn() {
+        assertNull("Invalid column should return null", map
+                .get("row", "column"));
+    }
+
+    @Test
+    public void getInvalidRow() {
+        assertNull("Invalid row should return null", map.get("row"));
+    }
+
+    @Test
+    public void lookupEmptyValue() {
+        assertNotNull("Valid row lookup should not return null", map
+                .lookup("row"));
+    }
 }

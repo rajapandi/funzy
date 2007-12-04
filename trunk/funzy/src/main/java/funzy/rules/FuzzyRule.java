@@ -19,8 +19,8 @@
 // THE SOFTWARE. 
 package funzy.rules;
 
-import static com.google.common.collect.Lists.immutableList;
-import funzy.rules.operators.FuzzyOperator;
+import funzy.MapOfMap;
+import funzy.rules.operators.FuzzyCondition;
 
 /**
  * Implementation of a fuzzy rule.
@@ -28,24 +28,24 @@ import funzy.rules.operators.FuzzyOperator;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyRule<E> {
-    private final FuzzyOperator condition;
-    private final FuzzyRuleAssigner<E>[] assign;
+public class FuzzyRule<K, V> {
+    private final FuzzyCondition<K, V> condition;
+    private final FuzzyRuleIs<K, V>[] assign;
 
-    private FuzzyRule(FuzzyOperator cond, FuzzyRuleAssigner<E>... assigners) {
+    private FuzzyRule(FuzzyCondition<K, V> cond, FuzzyRuleIs<K, V>... assigners) {
         condition = cond;
         assign = assigners;
     }
 
-    public Iterable<FuzzyRuleAssigner<E>> evaluate() {
-        double confidence = condition.get();
-        for (FuzzyRuleAssigner<E> ass : assign)
-            ass.assign(confidence);
-        return immutableList(assign);
+    public void evaluate(MapOfMap<K, V, Double> input, MapOfMap<K, V, Double> output) {
+        double confidence = condition.evaluate(input);
+        if (confidence > 0)
+            for (FuzzyRuleIs<K, V> ass : assign)
+                ass.assign(confidence, output);
     }
 
-    public static final <E> FuzzyRule<E> newRule(FuzzyOperator condition,
-            FuzzyRuleAssigner<E>... assigners) {
-        return new FuzzyRule<E>(condition, assigners);
+    public static final <K, V> FuzzyRule<K, V> newRule(
+            FuzzyCondition<K, V> condition, FuzzyRuleIs<K, V>... assigners) {
+        return new FuzzyRule(condition, assigners);
     }
 }

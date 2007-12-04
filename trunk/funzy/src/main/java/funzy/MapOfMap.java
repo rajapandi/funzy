@@ -17,40 +17,15 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables;
+package funzy;
 
 import java.util.Map;
 
-import funzy.Pull;
+public interface MapOfMap<K, L, V> extends Map<K, Map<L, V>> {
 
-/**
- * Structure encapsulating a fuzzy result consumed by another module.
- * 
- * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
- * @version $Revision$
- */
-public class ValueProvider<T> implements Pull<T> {
-	private T value;
+    Map<L, V> lookup(K key);
 
-	public void set(T input) {
-		value = input;
-	}
+    MapOfMap<K, L, V> put(K key, L literal, V value);
 
-	public T pull() {
-		return value;
-	}
-
-	public static final <T> ValueProvider<T> newValueProvider(T input) {
-		ValueProvider provider = new ValueProvider<T>();
-		provider.set(input);
-		return provider;
-	}
-
-	public static final ValueProvider<Double> newDoubleProvider() {
-		return new ValueProvider<Double>();
-	}
-
-	public static final <L> ValueProvider<Map<L, Double>> newMapProvider() {
-		return new ValueProvider<Map<L, Double>>();
-	}
+    V get(K key, L literal);
 }
