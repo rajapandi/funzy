@@ -45,9 +45,9 @@ public class TriangleVariableTest {
 
     @Before
     public void setup() {
-        variable = newVariable(SimpleDegree.class, 1, 5).addTriangleMembership(
-                LOW, 1, 1, 3).addTriangleMembership(MEDIUM, 2, 3, 4)
-                .addTriangleMembership(HIGH, 1, 5, 5);
+        variable = newVariable(SimpleDegree.class, 1, 5).addTriangle(
+                LOW, 1, 1, 3).addTriangle(MEDIUM, 2, 3, 4)
+                .addTriangle(HIGH, 1, 5, 5);
         middle = (variable.floor() + variable.ceil()) / 2;
     }
 

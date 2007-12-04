@@ -46,49 +46,49 @@ public class NewFuzzyMembershipTest {
 
 	@Test
 	public void fuzzyMembership() {
-		variable.addMembership(LOW, newFuzzyMembership(newPoint(0.0, 0.0),
+		variable.add(LOW, newFuzzyMembership(newPoint(0.0, 0.0),
 				newPoint(3.0, 1.0), newPoint(6.0, 0.0), newPoint(9.0, 1.0),
 				newPoint(10.0, 1.0)));
 	}
 
 	@Test
 	public void inverseFuzzyMembership() {
-		variable.addMembership(LOW, newFuzzyMembership(newPoint(0.0, 1.0),
+		variable.add(LOW, newFuzzyMembership(newPoint(0.0, 1.0),
 				newPoint(3.0, 0.0), newPoint(6.0, 1.0), newPoint(9.0, 0.0),
 				newPoint(10.0, 0.0)));
 	}
 
 	@Test(expected = IllegalMembershipException.class)
 	public void unorderedFuzzyMembership() {
-		variable.addMembership(LOW,
+		variable.add(LOW,
 				newFuzzyMembership(newPoint(0.0, 0.0), newPoint(6.0, 1.0), newPoint(3.0,
 						0.0), newPoint(9.0, 1.0), newPoint(10.0, 1.0)));
 	}
 
 //	@Test(expected = IllegalMembershipException.class)
 	public void outOfCeilRangeFuzzyMembership() {
-		variable.addMembership(LOW,
+		variable.add(LOW,
 				newFuzzyMembership(newPoint(0.0, 0.0), newPoint(6.0, 2.0), newPoint(3.0,
 						0.0), newPoint(9.0, 1.0), newPoint(10.0, 1.0)));
 	}
 
 //	@Test(expected = IllegalMembershipException.class)
 	public void outOfFloorRangeFuzzyMembership2() {
-		variable.addMembership(LOW, newFuzzyMembership(newPoint(0.0, 0.0),
+		variable.add(LOW, newFuzzyMembership(newPoint(0.0, 0.0),
 				newPoint(6.0, -1.0), newPoint(3.0, 0.0), newPoint(9.0, 1.0),
 				newPoint(10.0, 1.0)));
 	}
 
 //	@Test(expected = IllegalMembershipException.class)
 	public void outOfMinRangeFuzzyMembership() {
-		variable.addMembership(LOW,
+		variable.add(LOW,
 				newFuzzyMembership(newPoint(-2.0, 0.0), newPoint(6.0, 2.0), newPoint(3.0,
 						0.0), newPoint(9.0, 1.0), newPoint(10.0, 1.0)));
 	}
 
 //	@Test(expected = IllegalMembershipException.class)
 	public void outOfMaxRangeFuzzyMembership2() {
-		variable.addMembership(LOW,
+		variable.add(LOW,
 				newFuzzyMembership(newPoint(0.0, 0.0), newPoint(6.0, 2.0), newPoint(3.0,
 						0.0), newPoint(9.0, 1.0), newPoint(11.0, 1.0)));
 	}

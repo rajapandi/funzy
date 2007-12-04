@@ -46,8 +46,8 @@ public class IncreasingVariableTest {
     @Before 
     public void setup() {
         variable = newVariable(SimpleDegree.class, 1, 5)
-                .addIncreasingMembership(LOW, 2, 3).addIncreasingMembership(
-                        MEDIUM, 3, 4).addIncreasingMembership(HIGH, 3, 5);
+                .addIncrease(LOW, 2, 3).addIncrease(
+                        MEDIUM, 3, 4).addIncrease(HIGH, 3, 5);
         middle = (variable.floor() + variable.ceil()) / 2;
     }
 
