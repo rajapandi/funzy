@@ -49,7 +49,6 @@ import funzy.variables.memberships.PointMembership;
  * @version $Revision$
  */
 public class Variable<L> {
-
     private final Logger log = getLogger("funzy.variable");
     private final String name;
     private final double min, max, fl, ce;
@@ -155,6 +154,8 @@ public class Variable<L> {
         return DEFAULT.solve(points).x();
     }
 
+    
+    
     public static final <L extends Enum<L>> Variable newVariable(
             Class<L> literals, String name, double min, double max) {
         return new Variable<L>(name, min, max, 0, 1,

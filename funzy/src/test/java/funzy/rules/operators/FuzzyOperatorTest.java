@@ -19,8 +19,7 @@
 // THE SOFTWARE. 
 package funzy.rules.operators;
 
-import static com.google.common.collect.Maps.immutableMap;
-import static com.google.common.collect.Maps.newHashMap;
+import static funzy.HashMapOfMap.newHashMapOfMap;
 import static funzy.literals.SimpleDegree.HIGH;
 import static funzy.literals.SimpleDegree.LOW;
 import static funzy.literals.SimpleDegree.MEDIUM;
@@ -34,11 +33,10 @@ import static funzy.rules.operators.FuzzyExtractor.newExtractor;
 import static funzy.rules.operators.FuzzyOperator.newOperator;
 import static org.junit.Assert.assertEquals;
 
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
 
+import funzy.MapOfMap;
 import funzy.literals.SimpleDegree;
 
 /**
@@ -48,62 +46,59 @@ import funzy.literals.SimpleDegree;
  * @version $Revision$
  */
 public class FuzzyOperatorTest {
-	private Map<String, Map<SimpleDegree, Double>> input;
-	private static final String VARIABLE = "degrees";
+    private MapOfMap<String, SimpleDegree, Double> input;
+    private static final String VARIABLE = "degrees";
 
-	@Before
-	public void setup() {
-		input = newHashMap();
-		input.put(VARIABLE,
-				immutableMap(LOW, (Double) .0, MEDIUM, .3, HIGH, .8));
-	}
+    @Before
+    public void setup() {
+        input = newHashMapOfMap();
+        input.put(VARIABLE, LOW, .0).put(VARIABLE, MEDIUM, .3).put(VARIABLE,
+                HIGH, .8);
+    }
 
-	@Test
-	public void checkExtractor() {
-		assertEquals(.0, newExtractor(VARIABLE, LOW, input).get());
-		assertEquals(.3, newExtractor(VARIABLE, MEDIUM, input).get());
-		assertEquals(.8, newExtractor(VARIABLE, HIGH, input).get());
-	}
+    @Test
+    public void checkExtractor() {
+        assertEquals(.0, newExtractor(VARIABLE, LOW).evaluate(input));
+        assertEquals(.3, newExtractor(VARIABLE, MEDIUM).evaluate(input));
+        assertEquals(.8, newExtractor(VARIABLE, HIGH).evaluate(input));
+    }
 
-	@Test(expected = NullPointerException.class)
-	public void checkExtractorVariableFailure() {
-		assertEquals(.0, newExtractor("error", LOW, input).get());
-	}
+    @Test(expected = NullPointerException.class)
+    public void checkExtractorVariableFailure() {
+        assertEquals(.0, newExtractor("error", LOW).evaluate(input));
+    }
 
-	@Test
-	public void checkOperatorNot() {
-		assertEquals(1.0, newOperator(NOT,
-				newExtractor(VARIABLE, LOW, input)).get());
-		assertEquals(.7, newOperator(not(),
-				newExtractor(VARIABLE, MEDIUM, input)).get());
-		assertEquals(.2, newOperator(not(),
-				newExtractor(VARIABLE, HIGH, input)).get(), .01);
-	}
+    @Test
+    public void checkOperatorNot() {
+        assertEquals(1.0, newOperator(NOT, newExtractor(VARIABLE, LOW))
+                .evaluate(input));
+        assertEquals(.7, newOperator(not(), newExtractor(VARIABLE, MEDIUM))
+                .evaluate(input));
+        assertEquals(.2, newOperator(not(), newExtractor(VARIABLE, HIGH))
+                .evaluate(input), .01);
+    }
 
-	@Test
-	public void checkOperatorVery() {
-		assertEquals(.09, newOperator(VERY,
-				newExtractor(VARIABLE, MEDIUM, input)).get());
-	}
+    @Test
+    public void checkOperatorVery() {
+        assertEquals(.09, newOperator(VERY, newExtractor(VARIABLE, MEDIUM))
+                .evaluate(input));
+    }
 
-	@Test
-	public void checkOperatorAND() {
-		assertEquals(.3, newOperator(AND,
-				newExtractor(VARIABLE, MEDIUM, input),
-				newExtractor(VARIABLE, HIGH, input)).get());
-	}
+    @Test
+    public void checkOperatorAND() {
+        assertEquals(.3, newOperator(AND, newExtractor(VARIABLE, MEDIUM),
+                newExtractor(VARIABLE, HIGH)).evaluate(input));
+    }
 
-	@Test
-	public void checkOperatorOR() {
-		assertEquals(.8, newOperator(OR,
-				newExtractor(VARIABLE, MEDIUM, input),
-				newExtractor(VARIABLE, HIGH, input)).get());
-	}
+    @Test
+    public void checkOperatorOR() {
+        assertEquals(.8, newOperator(OR, newExtractor(VARIABLE, MEDIUM),
+                newExtractor(VARIABLE, HIGH)).evaluate(input));
+    }
 
-	@Test
-	public void checkOperatorProduct() {
-		assertEquals(.24, newOperator(prod(),
-				newExtractor(VARIABLE, MEDIUM, input),
-				newExtractor(VARIABLE, HIGH, input)).get());
-	}
+    @Test
+    public void checkOperatorProduct() {
+        assertEquals(.24, newOperator(prod(), newExtractor(VARIABLE, MEDIUM),
+                newExtractor(VARIABLE, HIGH)).evaluate(input));
+    }
 }

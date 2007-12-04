@@ -20,10 +20,7 @@
 package funzy.rules.operators;
 
 import static com.google.common.base.Objects.nonNull;
-
-import java.util.Map;
-
-import com.google.common.base.Supplier;
+import funzy.MapOfMap;
 
 /**
  * Implementation of a fuzzy literal extractor.
@@ -31,22 +28,21 @@ import com.google.common.base.Supplier;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyExtractor <K, V, N extends Number> implements Supplier<N>{
-	private Map<K, Map<V,N>> values;
-	private K key;
-	private V value;
-	
-	private FuzzyExtractor(K variable, V literal, Map<K, Map<V,N>> provider) {
-		key = variable;
-		value = literal;
-		values = provider;
-	}
-	
-	public N get() {
-		return nonNull(nonNull(values.get(key)).get(value));
-	}
-	
-	public static final <K, V, N extends Number> Supplier<N> newExtractor(K variable, V literal, Map<K, Map<V,N>> provider) {
-		return new FuzzyExtractor<K,V,N>(variable, literal, provider);
-	}
+public class FuzzyExtractor<K, V> implements FuzzyCondition<K, V> {
+    private K key;
+    private V value;
+
+    private FuzzyExtractor(K variable, V literal) {
+        key = variable;
+        value = literal;
+    }
+
+    public Double evaluate(MapOfMap<K, V, Double> provider) {
+        return nonNull(nonNull(provider.get(key)).get(value));
+    }
+
+    public static final <K, V> FuzzyCondition<K, V> newExtractor(K variable,
+            V literal) {
+        return new FuzzyExtractor<K, V>(variable, literal);
+    }
 }

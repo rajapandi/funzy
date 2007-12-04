@@ -47,8 +47,8 @@ public class TriangleVariableTest {
     public void setup() {
         variable = newVariable(SimpleDegree.class, 1, 5).addTriangleMembership(
                 LOW, 1, 1, 3).addTriangleMembership(MEDIUM, 2, 3, 4)
-                .addTriangleMembership(HIGH, 3, 5, 5);
-        middle = (variable.floor() + variable.ceil())/2;
+                .addTriangleMembership(HIGH, 1, 5, 5);
+        middle = (variable.floor() + variable.ceil()) / 2;
     }
 
     @Test
@@ -78,7 +78,7 @@ public class TriangleVariableTest {
 
     @Test
     public void fuzzyDegreeHigh2() {
-        assertEquals(variable.floor(), variable.fuzzy(2).get(HIGH));
+        assertEquals(middle / 2, variable.fuzzy(2).get(HIGH));
     }
 
     @Test
@@ -93,7 +93,7 @@ public class TriangleVariableTest {
 
     @Test
     public void fuzzyDegreeHigh3() {
-        assertEquals(variable.floor(), variable.fuzzy(3).get(HIGH));
+        assertEquals(middle, variable.fuzzy(3).get(HIGH));
     }
 
     @Test
@@ -108,8 +108,7 @@ public class TriangleVariableTest {
 
     @Test
     public void fuzzyDegreeHigh4() {
-        assertEquals(middle, variable.fuzzy(4)
-                .get(HIGH));
+        assertEquals(middle * 1.5, variable.fuzzy(4).get(HIGH));
     }
 
     @Test
@@ -126,55 +125,56 @@ public class TriangleVariableTest {
     public void fuzzyDegreeHigh5() {
         assertEquals(variable.ceil(), variable.fuzzy(5).get(HIGH));
     }
-    
-    private static final Map<SimpleDegree,Double> map(SimpleDegree key, double value) {
-        Map<SimpleDegree,Double> res = newHashMap();
+
+    private static final Map<SimpleDegree, Double> map(SimpleDegree key,
+            double value) {
+        Map<SimpleDegree, Double> res = newHashMap();
         res.put(key, value);
         return res;
     }
-    
+
     @Test
     public void unfuzzyDegreeLow1() {
-        assertEquals(2.0, variable.unfuzzy(map(LOW,1)));
+        assertEquals(1.66, variable.unfuzzy(map(LOW, 1)),.01);
     }
-    
+
     @Test
     public void unfuzzyDegreeLowDot5() {
-        assertEquals(2.25, variable.unfuzzy(map(LOW,.5)));
+        assertEquals(1.75, variable.unfuzzy(map(LOW, .5)));
     }
 
     @Test
     public void unfuzzyDegreeLow0() {
-        assertEquals(1.0, variable.unfuzzy(map(LOW,0)));
+        assertEquals(1.0, variable.unfuzzy(map(LOW, 0)));
     }
 
     @Test
     public void unfuzzyDegreeMedium1() {
-        assertEquals(3.0, variable.unfuzzy(map(MEDIUM,1)));
+        assertEquals(3.0, variable.unfuzzy(map(MEDIUM, 1)));
     }
-    
+
     @Test
     public void unfuzzyDegreeMediumDot5() {
-        assertEquals(3.0, variable.unfuzzy(map(MEDIUM,.5)));
+        assertEquals(3.0, variable.unfuzzy(map(MEDIUM, .5)));
     }
 
     @Test
     public void unfuzzyDegreeMedium0() {
-        assertEquals(1.0, variable.unfuzzy(map(MEDIUM,0)));
+        assertEquals(2.0, variable.unfuzzy(map(MEDIUM, 0)));
     }
-    
+
     @Test
     public void unfuzzyDegreeHigh1() {
-        assertEquals(4.0, variable.unfuzzy(map(HIGH,1)));
+        assertEquals(3.66, variable.unfuzzy(map(HIGH, 1)),.01);
     }
-    
+
     @Test
     public void unfuzzyDegreeHighDot5() {
-        assertEquals(3.75, variable.unfuzzy(map(HIGH,.5)));
+        assertEquals(3.5, variable.unfuzzy(map(HIGH, .5)));
     }
 
     @Test
     public void unfuzzyDegreeHigh0() {
-        assertEquals(2.0, variable.unfuzzy(map(HIGH,0)));
+        assertEquals(1.0, variable.unfuzzy(map(HIGH, 0)));
     }
 }
