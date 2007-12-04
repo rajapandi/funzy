@@ -17,32 +17,59 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.rules;
+package funzy.variables;
 
-import static com.google.common.collect.Lists.newLinkedList;
+import static com.google.common.base.Objects.nonNull;
+import static com.google.common.collect.Maps.newHashMap;
 import static funzy.HashMapOfMap.newHashMapOfMap;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import funzy.MapOfMap;
 
 /**
- * Implementation of the fuzzy rule set.
+ * Implementation of the variable set.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyRuleSet {
-    private final List<FuzzyRule<String, Object>> rules = newLinkedList();
+public class VariableSet {
+    private Map<String, Variable> variables;
 
-    public void addRule(FuzzyRule<String, Object> rule) {
-        rules.add(rule);
+    private VariableSet() {
+        variables = newHashMap();
     }
 
-    public MapOfMap<String, Object, Double> evaluate(MapOfMap<String, Object, Double> input) {
+    public VariableSet add(String name, Variable var) {
+        variables.put(name, var);
+        return this;
+    }
+
+    public VariableSet add(Variable var) {
+        return add(var.name(), var);
+    }
+
+    public Variable get(String name) {
+        return nonNull(variables.get(name), "Variable " + name + " is unknown");
+    }
+
+    public MapOfMap<String, Object, Double> fuzzy(Map<String, Double> input) {
         MapOfMap<String, Object, Double> output = newHashMapOfMap();
-        for (FuzzyRule<String, Object> rule : rules)
-            rule.evaluate(input,output);
+        for (Entry<String, Double> val : input.entrySet()) {
+            output.put(val.getKey(), get(val.getKey()).fuzzy(val.getValue()));
+        }
         return output;
+    }
+
+    public Map<String, Double> unfuzzy(MapOfMap<String, Object, Double> input) {
+        Map<String, Double> output = newHashMap();
+        for (Entry<String, Map<Object, Double>> val : input.entrySet())
+            output.put(val.getKey(), get(val.getKey()).unfuzzy(val.getValue()));
+        return output;
+    }
+
+    public static final VariableSet newVariableSet() {
+        return new VariableSet();
     }
 }

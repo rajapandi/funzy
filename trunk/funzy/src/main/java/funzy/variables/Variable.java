@@ -95,7 +95,7 @@ public class Variable<L> {
         return conflict;
     }
 
-    public Variable<L> addMembership(L key, Membership value) {
+    public Variable<L> add(L key, Membership value) {
         if (LOG && log.isLoggable(WARNING) && members.get(key) != null)
             log.warning("A membership " + key
                     + " is already defined for variable " + name);
@@ -103,33 +103,33 @@ public class Variable<L> {
         return this;
     }
 
-    public Variable<L> addTriangleMembership(L key, double a, double b, double c) {
-        return addMembership(key, newFuzzyMembership(newPoint(a, fl), newPoint(
-                b, ce), newPoint(c, fl)));
+    public Variable<L> addTriangle(L key, double a, double b, double c) {
+        return add(key, newFuzzyMembership(newPoint(a, fl), newPoint(b, ce),
+                newPoint(c, fl)));
     }
 
-    public Variable<L> addTrapezoidMembership(L key, double a, double b,
-            double c, double d) {
-        return addMembership(key, newFuzzyMembership(newPoint(a, fl), newPoint(
-                b, ce), newPoint(c, ce), newPoint(d, fl)));
+    public Variable<L> addTrapezoid(L key, double a, double b, double c,
+            double d) {
+        return add(key, newFuzzyMembership(newPoint(a, fl), newPoint(b, ce),
+                newPoint(c, ce), newPoint(d, fl)));
     }
 
-    public Variable<L> addIncreasingMembership(L key, double a, double b) {
-        return b == max ? addTriangleMembership(key, a, b, max)
-                : addTrapezoidMembership(key, a, b, max, max);
+    public Variable<L> addIncrease(L key, double a, double b) {
+        return b == max ? addTriangle(key, a, b, max) : addTrapezoid(key, a, b,
+                max, max);
     }
 
-    public Variable<L> addDecreasingMembership(L key, double a, double b) {
-        return a == min ? addTriangleMembership(key, min, a, b)
-                : addTrapezoidMembership(key, min, min, a, b);
+    public Variable<L> addDecrease(L key, double a, double b) {
+        return a == min ? addTriangle(key, min, a, b) : addTrapezoid(key, min,
+                min, a, b);
     }
 
-    public Variable<L> addAfterMembership(L key, double a) {
-        return addIncreasingMembership(key, a, a);
+    public Variable<L> addAfter(L key, double a) {
+        return addIncrease(key, a, a);
     }
 
-    public Variable<L> addBeforeMembership(L key, double a) {
-        return addDecreasingMembership(key, a, a);
+    public Variable<L> addBefore(L key, double a) {
+        return addDecrease(key, a, a);
     }
 
     public Map<L, Double> fuzzy(double value) throws IllegalRangeException {
@@ -154,8 +154,6 @@ public class Variable<L> {
         return DEFAULT.solve(points).x();
     }
 
-    
-    
     public static final <L extends Enum<L>> Variable newVariable(
             Class<L> literals, String name, double min, double max) {
         return new Variable<L>(name, min, max, 0, 1,

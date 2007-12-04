@@ -46,9 +46,9 @@ public class TrapezoidVariableTest {
     @Before
     public void setup() {
         variable = newVariable(SimpleDegree.class, 1, 5)
-                .addTrapezoidMembership(LOW, 1, 1, 2, 4)
-                .addTrapezoidMembership(MEDIUM, 1, 2, 4, 5)
-                .addTrapezoidMembership(HIGH, 2, 4, 5, 5);
+                .addTrapezoid(LOW, 1, 1, 2, 4)
+                .addTrapezoid(MEDIUM, 1, 2, 4, 5)
+                .addTrapezoid(HIGH, 2, 4, 5, 5);
         middle = (variable.floor() + variable.ceil()) / 2;
     }
 

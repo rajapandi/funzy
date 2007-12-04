@@ -21,6 +21,13 @@ package funzy;
 
 import java.util.Map;
 
+/**
+ * Description of a map of map: Hierarchical structure that can be used to store
+ * the extensible content of a matrix.
+ * 
+ * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
+ * @version $Revision$
+ */
 public interface MapOfMap<K, L, V> extends Map<K, Map<L, V>> {
 
     Map<L, V> lookup(K key);
