@@ -19,8 +19,16 @@
 // THE SOFTWARE. 
 package funzy.rules;
 
+import static com.google.common.collect.Lists.immutableList;
+import static com.google.common.collect.Lists.newArrayList;
+
+import java.util.List;
+
 import funzy.MapOfMap;
-import funzy.rules.operators.FuzzyCondition;
+import funzy.rules.conditions.FuzzyCondition;
+import funzy.rules.functions.FuzzyFunction;
+import funzy.variables.conflicts.ConflictHandler;
+import funzy.variables.conflicts.ConflictHandlerException;
 
 /**
  * Implementation of a fuzzy rule.
@@ -30,22 +38,49 @@ import funzy.rules.operators.FuzzyCondition;
  */
 public class FuzzyRule<K, V> {
     private final FuzzyCondition<K, V> condition;
-    private final FuzzyRuleIs<K, V>[] assign;
+    private final List<FuzzyRuleIs> assign;
+    public static ConflictHandler CONFLICT = new ConflictHandlerException();
 
-    private FuzzyRule(FuzzyCondition<K, V> cond, FuzzyRuleIs<K, V>... assigners) {
+    private FuzzyRule(FuzzyCondition<K, V> cond, FuzzyRuleIs... assigners) {
         condition = cond;
-        assign = assigners;
+        assign = newArrayList();
     }
 
+    public FuzzyRule<K, V> assign(K variable, V literal, FuzzyFunction... functions) {
+        assign.add(new FuzzyRuleIs(variable, literal, functions));
+        return this;
+    }
+    
     public void evaluate(MapOfMap<K, V, Double> input, MapOfMap<K, V, Double> output) {
         double confidence = condition.evaluate(input);
         if (confidence > 0)
-            for (FuzzyRuleIs<K, V> ass : assign)
+            for (FuzzyRuleIs ass : assign)
                 ass.assign(confidence, output);
     }
 
+    
+    private class FuzzyRuleIs {
+        private final K var;
+        private final V lit;
+        private final FuzzyFunction[] func;
+
+        public FuzzyRuleIs(K variable, V literal, FuzzyFunction... functions) {
+            var = variable;
+            lit = literal;
+            func = functions;
+        }
+
+        public void assign(double value, MapOfMap<K, V, Double> output) {
+            double res = value;
+            for (FuzzyFunction f : func)
+                res = f.evaluate(immutableList(res));
+            output.put(var, lit, output.get(var, lit) == null ? res : CONFLICT
+                    .handle(output.get(var, lit), res));
+        }
+    }    
+    
     public static final <K, V> FuzzyRule<K, V> newRule(
-            FuzzyCondition<K, V> condition, FuzzyRuleIs<K, V>... assigners) {
-        return new FuzzyRule(condition, assigners);
+            FuzzyCondition<K, V> condition) {
+        return new FuzzyRule(condition);
     }
 }
