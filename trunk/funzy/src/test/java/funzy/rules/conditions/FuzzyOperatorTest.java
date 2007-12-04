@@ -17,20 +17,20 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.rules.operators;
+package funzy.rules.conditions;
 
 import static funzy.HashMapOfMap.newHashMapOfMap;
 import static funzy.literals.SimpleDegree.HIGH;
 import static funzy.literals.SimpleDegree.LOW;
 import static funzy.literals.SimpleDegree.MEDIUM;
+import static funzy.rules.conditions.FuzzyExtractor.newExtractor;
+import static funzy.rules.conditions.FuzzyOperator.newOperator;
 import static funzy.rules.functions.FuzzyInterpreters.AND;
 import static funzy.rules.functions.FuzzyInterpreters.NOT;
 import static funzy.rules.functions.FuzzyInterpreters.OR;
 import static funzy.rules.functions.FuzzyInterpreters.VERY;
 import static funzy.rules.functions.FuzzyInterpreters.not;
 import static funzy.rules.functions.FuzzyInterpreters.prod;
-import static funzy.rules.operators.FuzzyExtractor.newExtractor;
-import static funzy.rules.operators.FuzzyOperator.newOperator;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;

@@ -17,32 +17,10 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.rules.operators;
+package funzy.rules.conditions;
 
-import static com.google.common.base.Objects.nonNull;
 import funzy.MapOfMap;
 
-/**
- * Implementation of a fuzzy literal extractor.
- * 
- * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
- * @version $Revision$
- */
-public class FuzzyExtractor<K, V> implements FuzzyCondition<K, V> {
-    private K key;
-    private V value;
-
-    private FuzzyExtractor(K variable, V literal) {
-        key = variable;
-        value = literal;
-    }
-
-    public Double evaluate(MapOfMap<K, V, Double> provider) {
-        return nonNull(nonNull(provider.get(key)).get(value));
-    }
-
-    public static final <K, V> FuzzyCondition<K, V> newExtractor(K variable,
-            V literal) {
-        return new FuzzyExtractor<K, V>(variable, literal);
-    }
+public interface FuzzyCondition<K, V> {
+    Double evaluate(MapOfMap<K, V, Double> provider);
 }

@@ -32,7 +32,7 @@ import funzy.MapOfMap;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyRuleEngine<K,L> {
+public class FuzzyRuleSet<K,L> {
     private final List<FuzzyRule<K,L>> rules = newLinkedList();
 
     public void addRule(FuzzyRule<K,L> rule) {
