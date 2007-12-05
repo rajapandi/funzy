@@ -44,6 +44,6 @@ public class FuzzyIs<K, V> implements FuzzyCondition<K, V> {
     }
 
     public static final <K, V> FuzzyCondition<K, V> is(K variable, V literal) {
-        return new FuzzyIs<K, V>(variable, literal);
+        return new FuzzyIs(variable, literal);
     }
 }

@@ -17,26 +17,31 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables.conflicts;
+package funzy.rules.conflicts;
+
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class ConflictHandlerExceptionTest {
+import funzy.rules.conflicts.ConflictHandler;
+import funzy.rules.conflicts.ConflictHandlerKeepMax;
+
+public class ConflictHandlerKeepMaxTest {
     private ConflictHandler handler;
     
     @Before
     public void setup() {
-        handler = new ConflictHandlerException();
+        handler = new ConflictHandlerKeepMax();
     }
     
-    @Test(expected=RuntimeException.class)
+    @Test
     public void throwExceptionNotEquals() {
-        handler.handle(1, 2);
+        assertEquals(2.0,handler.handle(1, 2));
     }
 
-    @Test(expected=RuntimeException.class)
+    @Test
     public void throwExceptionEquals() {
-        handler.handle(1, 1);
+        assertEquals(1.0,handler.handle(1, 1));
     }
 }

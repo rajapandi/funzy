@@ -24,7 +24,7 @@ import static funzy.literals.SimpleDegree.HIGH;
 import static funzy.literals.SimpleDegree.LOW;
 import static funzy.literals.SimpleDegree.MEDIUM;
 import static funzy.rules.conditions.FuzzyIs.is;
-import static funzy.rules.conditions.FuzzyOperator.iff;
+import static funzy.rules.conditions.FuzzyOperator.test;
 import static funzy.rules.functions.FuzzyConditions.AND;
 import static funzy.rules.functions.FuzzyConditions.NOT;
 import static funzy.rules.functions.FuzzyConditions.OR;
@@ -70,35 +70,35 @@ public class FuzzyOperatorTest {
 
     @Test
     public void checkOperatorNot() {
-        assertEquals(1.0, iff(NOT, is(VARIABLE, LOW))
+        assertEquals(1.0, test(NOT, is(VARIABLE, LOW))
                 .evaluate(input));
-        assertEquals(.7, iff(not(), is(VARIABLE, MEDIUM))
+        assertEquals(.7, test(not(), is(VARIABLE, MEDIUM))
                 .evaluate(input));
-        assertEquals(.2, iff(not(), is(VARIABLE, HIGH))
+        assertEquals(.2, test(not(), is(VARIABLE, HIGH))
                 .evaluate(input), .01);
     }
 
     @Test
     public void checkOperatorVery() {
-        assertEquals(.09, iff(VERY, is(VARIABLE, MEDIUM))
+        assertEquals(.09, test(VERY, is(VARIABLE, MEDIUM))
                 .evaluate(input));
     }
 
     @Test
     public void checkOperatorAND() {
-        assertEquals(.3, iff(AND, is(VARIABLE, MEDIUM),
+        assertEquals(.3, test(AND, is(VARIABLE, MEDIUM),
                 is(VARIABLE, HIGH)).evaluate(input));
     }
 
     @Test
     public void checkOperatorOR() {
-        assertEquals(.8, iff(OR, is(VARIABLE, MEDIUM),
+        assertEquals(.8, test(OR, is(VARIABLE, MEDIUM),
                 is(VARIABLE, HIGH)).evaluate(input));
     }
 
     @Test
     public void checkOperatorProduct() {
-        assertEquals(.24, iff(prod(), is(VARIABLE, MEDIUM),
+        assertEquals(.24, test(prod(), is(VARIABLE, MEDIUM),
                 is(VARIABLE, HIGH)).evaluate(input));
     }
 }

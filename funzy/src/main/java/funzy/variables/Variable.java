@@ -38,8 +38,8 @@ import java.util.Set;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import funzy.variables.conflicts.ConflictHandler;
-import funzy.variables.conflicts.ConflictHandlerException;
+import funzy.rules.conflicts.ConflictHandler;
+import funzy.rules.conflicts.ConflictHandlerException;
 import funzy.variables.memberships.Membership;
 import funzy.variables.memberships.PointMembership;
 

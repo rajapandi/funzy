@@ -21,14 +21,12 @@ package funzy.rules;
 
 import static com.google.common.collect.Lists.newLinkedList;
 import static funzy.HashMapOfMap.newHashMapOfMap;
-import static funzy.rules.FuzzyRule.rule;
 
 import java.util.List;
 
 import funzy.MapOfMap;
-import funzy.rules.conditions.FuzzyCondition;
-import funzy.variables.conflicts.ConflictHandler;
-import funzy.variables.conflicts.ConflictHandlerException;
+import funzy.rules.conflicts.ConflictHandler;
+import funzy.rules.conflicts.ConflictHandlerException;
 
 /**
  * Implementation of the fuzzy rule set.
@@ -44,10 +42,9 @@ public class FuzzyRuleSet<T extends Object> {
         conflict = handler;
     }
 
-    public FuzzyRule<String, T> add(FuzzyCondition<String, T> condition) {
-        FuzzyRule<String,T> r = rule(conflict, condition);
-        rules.add(r);
-        return r;
+    public FuzzyRuleSet<T> add(FuzzyRule<String, T> rule) {
+        rules.add(rule.conflictHandler(conflict));
+        return this;
     }
 
     public MapOfMap<String, T, Double> evaluate(
