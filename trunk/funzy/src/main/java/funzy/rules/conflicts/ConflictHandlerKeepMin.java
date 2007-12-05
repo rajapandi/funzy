@@ -36,18 +36,18 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables.conflicts;
+package funzy.rules.conflicts;
 
-import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 /**
- * Implementation of a rule conflict handler keeping the highest confidence.
+ * Implementation of a rule conflict handler keeping the lowest confidence.
  * 
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class ConflictHandlerKeepMax implements ConflictHandler {
+public class ConflictHandlerKeepMin implements ConflictHandler {
     public double handle(double oldValue, double newValue){
-        return max(oldValue, newValue);
+        return min(oldValue, newValue);
     }
 }

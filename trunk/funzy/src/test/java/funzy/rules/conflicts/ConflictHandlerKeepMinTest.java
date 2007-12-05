@@ -17,12 +17,15 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE. 
-package funzy.variables.conflicts;
+package funzy.rules.conflicts;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import funzy.rules.conflicts.ConflictHandler;
+import funzy.rules.conflicts.ConflictHandlerKeepMin;
 
 public class ConflictHandlerKeepMinTest {
     private ConflictHandler handler;

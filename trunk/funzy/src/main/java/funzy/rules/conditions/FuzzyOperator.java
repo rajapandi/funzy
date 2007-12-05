@@ -48,7 +48,7 @@ public class FuzzyOperator<K, V> implements FuzzyCondition<K, V> {
         return function.evaluate(parameters);
     }
 
-    public static final <K, V> FuzzyCondition<K, V> iff(
+    public static final <K, V> FuzzyCondition<K, V> test(
             FuzzyFunction function, FuzzyCondition<K, V>... operators) {
         return new FuzzyOperator(function, operators);
     }

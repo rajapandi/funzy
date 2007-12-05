@@ -26,8 +26,9 @@ import java.util.List;
 
 import funzy.MapOfMap;
 import funzy.rules.conditions.FuzzyCondition;
+import funzy.rules.conflicts.ConflictHandler;
+import funzy.rules.conflicts.ConflictHandlerException;
 import funzy.rules.functions.FuzzyFunction;
-import funzy.variables.conflicts.ConflictHandler;
 
 /**
  * Implementation of a fuzzy rule.
@@ -38,27 +39,32 @@ import funzy.variables.conflicts.ConflictHandler;
 public class FuzzyRule<K, V> {
     private final FuzzyCondition<K, V> iff;
     private final List<FuzzyRuleThen> then;
-    private ConflictHandler conflict ;
+    private ConflictHandler conflict = new ConflictHandlerException();
 
-    private FuzzyRule(ConflictHandler handler, FuzzyCondition<K, V> cond) {
-        conflict = handler;
+    private FuzzyRule(FuzzyCondition<K, V> cond) {
         iff = cond;
         then = newArrayList();
     }
 
-    public FuzzyRule<K, V> then(K variable, V literal, FuzzyFunction... functions) {
+    public FuzzyRule<K, V> conflictHandler(ConflictHandler handler) {
+        conflict = handler;
+        return this;
+    }
+
+    public FuzzyRule<K, V> then(K variable, V literal,
+            FuzzyFunction... functions) {
         then.add(new FuzzyRuleThen(variable, literal, functions));
         return this;
     }
-    
-    public void evaluate(MapOfMap<K, V, Double> input, MapOfMap<K, V, Double> output) {
+
+    public void evaluate(MapOfMap<K, V, Double> input,
+            MapOfMap<K, V, Double> output) {
         double confidence = iff.evaluate(input);
         if (confidence > 0)
             for (FuzzyRuleThen t : then)
                 t.apply(confidence, output);
     }
 
-    
     private class FuzzyRuleThen {
         private final K var;
         private final V lit;
@@ -77,10 +83,10 @@ public class FuzzyRule<K, V> {
             output.put(var, lit, output.get(var, lit) == null ? res : conflict
                     .handle(output.get(var, lit), res));
         }
-    }    
-    
-    public static final <K, V> FuzzyRule<K, V> rule(ConflictHandler handler,
+    }
+
+    public static final <K, V> FuzzyRule<K, V> iff(
             FuzzyCondition<K, V> condition) {
-        return new FuzzyRule(handler, condition);
+        return new FuzzyRule(condition);
     }
 }

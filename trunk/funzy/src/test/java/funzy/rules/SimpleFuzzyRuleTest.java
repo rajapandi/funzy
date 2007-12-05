@@ -20,7 +20,7 @@
 package funzy.rules;
 
 import static funzy.HashMapOfMap.newHashMapOfMap;
-import static funzy.rules.FuzzyRule.rule;
+import static funzy.rules.FuzzyRule.iff;
 import static funzy.rules.conditions.FuzzyIs.is;
 import static funzy.rules.functions.FuzzyAssigners.VERY;
 import static org.junit.Assert.assertEquals;
@@ -30,7 +30,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import funzy.MapOfMap;
-import funzy.variables.conflicts.ConflictHandlerException;
 
 /**
  * Test of a simple fuzzy rule.
@@ -49,7 +48,7 @@ public class SimpleFuzzyRuleTest {
 
     @Before
     public void setup() {
-        rule = rule(new ConflictHandlerException(), is(INPUT, LOW));
+        rule = iff(is(INPUT, LOW));
         input = newHashMapOfMap();
         output = newHashMapOfMap();
     }
@@ -68,29 +67,31 @@ public class SimpleFuzzyRuleTest {
 
     @Test
     public void ruleFitsVery() {
-        rule.then(OUTPUT, HIGH, VERY).evaluate(input.put(INPUT, LOW, .25), output);
+        rule.then(OUTPUT, HIGH, VERY).evaluate(input.put(INPUT, LOW, .25),
+                output);
         assertEquals(.5, output.get(OUTPUT, HIGH));
     }
-    
+
     @Test
     public void ruleFitsTwo() {
-        rule.then(OUTPUT, HIGH, VERY).then(OUTPUT, LOW).evaluate(input.put(INPUT, LOW, .25), output);
+        rule.then(OUTPUT, HIGH, VERY).then(OUTPUT, LOW).evaluate(
+                input.put(INPUT, LOW, .25), output);
         assertEquals(.5, output.get(OUTPUT, HIGH));
         assertEquals(.25, output.get(OUTPUT, LOW));
     }
-    
+
     @Test
     public void ruleDoesNotFit() {
         rule.then(OUTPUT, HIGH).evaluate(input.put(INPUT, LOW, .0), output);
         assertTrue("Rule output should be empty", output.isEmpty());
     }
- 
-    @Test(expected=RuntimeException.class)
+
+    @Test(expected = RuntimeException.class)
     public void ruleVariableError() {
         rule.then(OUTPUT, HIGH).evaluate(input.put(OUTPUT, LOW, .0), output);
     }
 
-    @Test(expected=RuntimeException.class)
+    @Test(expected = RuntimeException.class)
     public void ruleLiteralError() {
         rule.then(OUTPUT, HIGH).evaluate(input.put(INPUT, HIGH, .0), output);
     }

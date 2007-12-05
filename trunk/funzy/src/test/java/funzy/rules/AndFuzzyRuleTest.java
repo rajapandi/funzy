@@ -1,9 +1,9 @@
 package funzy.rules;
 
 import static funzy.HashMapOfMap.newHashMapOfMap;
-import static funzy.rules.FuzzyRule.rule;
+import static funzy.rules.FuzzyRule.iff;
 import static funzy.rules.conditions.FuzzyIs.is;
-import static funzy.rules.conditions.FuzzyOperator.iff;
+import static funzy.rules.conditions.FuzzyOperator.test;
 import static funzy.rules.functions.FuzzyAssigners.VERY;
 import static funzy.rules.functions.FuzzyConditions.AND;
 import static org.junit.Assert.assertEquals;
@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import funzy.MapOfMap;
-import funzy.variables.conflicts.ConflictHandlerException;
 
 /**
  * Test of an AND fuzzy rule.
@@ -33,8 +32,7 @@ public class AndFuzzyRuleTest {
 
     @Before
     public void setup() {
-        rule = rule(new ConflictHandlerException(), iff(AND, is(INPUT, LOW), is(
-                INPUT, MEDIUM)));
+        rule = iff(test(AND, is(INPUT, LOW), is(INPUT, MEDIUM)));
         input = newHashMapOfMap();
         output = newHashMapOfMap();
     }
