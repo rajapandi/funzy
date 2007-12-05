@@ -20,22 +20,22 @@
 package funzy.rules.functions;
 
 import static com.google.common.collect.Lists.immutableList;
-import static funzy.rules.functions.FuzzyInterpreters.add;
-import static funzy.rules.functions.FuzzyInterpreters.extremely;
-import static funzy.rules.functions.FuzzyInterpreters.little;
-import static funzy.rules.functions.FuzzyInterpreters.max;
-import static funzy.rules.functions.FuzzyInterpreters.min;
-import static funzy.rules.functions.FuzzyInterpreters.nand;
-import static funzy.rules.functions.FuzzyInterpreters.nop;
-import static funzy.rules.functions.FuzzyInterpreters.nor;
-import static funzy.rules.functions.FuzzyInterpreters.not;
-import static funzy.rules.functions.FuzzyInterpreters.nxr;
-import static funzy.rules.functions.FuzzyInterpreters.prod;
-import static funzy.rules.functions.FuzzyInterpreters.slightly;
-import static funzy.rules.functions.FuzzyInterpreters.somewhat;
-import static funzy.rules.functions.FuzzyInterpreters.very;
-import static funzy.rules.functions.FuzzyInterpreters.veryvery;
-import static funzy.rules.functions.FuzzyInterpreters.xor;
+import static funzy.rules.functions.FuzzyConditions.add;
+import static funzy.rules.functions.FuzzyConditions.extremely;
+import static funzy.rules.functions.FuzzyConditions.little;
+import static funzy.rules.functions.FuzzyConditions.max;
+import static funzy.rules.functions.FuzzyConditions.min;
+import static funzy.rules.functions.FuzzyConditions.nand;
+import static funzy.rules.functions.FuzzyConditions.nop;
+import static funzy.rules.functions.FuzzyConditions.nor;
+import static funzy.rules.functions.FuzzyConditions.not;
+import static funzy.rules.functions.FuzzyConditions.nxr;
+import static funzy.rules.functions.FuzzyConditions.prod;
+import static funzy.rules.functions.FuzzyConditions.slightly;
+import static funzy.rules.functions.FuzzyConditions.somewhat;
+import static funzy.rules.functions.FuzzyConditions.very;
+import static funzy.rules.functions.FuzzyConditions.veryvery;
+import static funzy.rules.functions.FuzzyConditions.xor;
 import static java.lang.Math.pow;
 import static org.junit.Assert.assertEquals;
 
