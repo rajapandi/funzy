@@ -34,7 +34,7 @@ import funzy.MapOfMap;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class VariableSet {
+public class VariableSet<T extends Object> {
     private Map<String, Variable> variables;
 
     private VariableSet() {
@@ -54,22 +54,22 @@ public class VariableSet {
         return nonNull(variables.get(name), "Variable " + name + " is unknown");
     }
 
-    public MapOfMap<String, Object, Double> fuzzy(Map<String, Double> input) {
-        MapOfMap<String, Object, Double> output = newHashMapOfMap();
+    public MapOfMap<String, T, Double> fuzzy(Map<String, Double> input) {
+        MapOfMap<String, T, Double> output = newHashMapOfMap();
         for (Entry<String, Double> val : input.entrySet()) {
             output.put(val.getKey(), get(val.getKey()).fuzzy(val.getValue()));
         }
         return output;
     }
 
-    public Map<String, Double> unfuzzy(MapOfMap<String, Object, Double> input) {
+    public Map<String, Double> unfuzzy(MapOfMap<String, T, Double> input) {
         Map<String, Double> output = newHashMap();
-        for (Entry<String, Map<Object, Double>> val : input.entrySet())
+        for (Entry<String, Map<T, Double>> val : input.entrySet())
             output.put(val.getKey(), get(val.getKey()).unfuzzy(val.getValue()));
         return output;
     }
 
-    public static final VariableSet newVariableSet() {
-        return new VariableSet();
+    public static final VariableSet<String> newVariableSet() {
+        return new VariableSet<String>();
     }
 }

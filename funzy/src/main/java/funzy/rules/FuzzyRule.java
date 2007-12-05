@@ -28,7 +28,6 @@ import funzy.MapOfMap;
 import funzy.rules.conditions.FuzzyCondition;
 import funzy.rules.functions.FuzzyFunction;
 import funzy.variables.conflicts.ConflictHandler;
-import funzy.variables.conflicts.ConflictHandlerException;
 
 /**
  * Implementation of a fuzzy rule.
@@ -37,50 +36,51 @@ import funzy.variables.conflicts.ConflictHandlerException;
  * @version $Revision$
  */
 public class FuzzyRule<K, V> {
-    private final FuzzyCondition<K, V> condition;
-    private final List<FuzzyRuleIs> assign;
-    public static ConflictHandler CONFLICT = new ConflictHandlerException();
+    private final FuzzyCondition<K, V> iff;
+    private final List<FuzzyRuleThen> then;
+    private ConflictHandler conflict ;
 
-    private FuzzyRule(FuzzyCondition<K, V> cond, FuzzyRuleIs... assigners) {
-        condition = cond;
-        assign = newArrayList();
+    private FuzzyRule(ConflictHandler handler, FuzzyCondition<K, V> cond) {
+        conflict = handler;
+        iff = cond;
+        then = newArrayList();
     }
 
-    public FuzzyRule<K, V> assign(K variable, V literal, FuzzyFunction... functions) {
-        assign.add(new FuzzyRuleIs(variable, literal, functions));
+    public FuzzyRule<K, V> then(K variable, V literal, FuzzyFunction... functions) {
+        then.add(new FuzzyRuleThen(variable, literal, functions));
         return this;
     }
     
     public void evaluate(MapOfMap<K, V, Double> input, MapOfMap<K, V, Double> output) {
-        double confidence = condition.evaluate(input);
+        double confidence = iff.evaluate(input);
         if (confidence > 0)
-            for (FuzzyRuleIs ass : assign)
-                ass.assign(confidence, output);
+            for (FuzzyRuleThen t : then)
+                t.apply(confidence, output);
     }
 
     
-    private class FuzzyRuleIs {
+    private class FuzzyRuleThen {
         private final K var;
         private final V lit;
         private final FuzzyFunction[] func;
 
-        public FuzzyRuleIs(K variable, V literal, FuzzyFunction... functions) {
+        public FuzzyRuleThen(K variable, V literal, FuzzyFunction... functions) {
             var = variable;
             lit = literal;
             func = functions;
         }
 
-        public void assign(double value, MapOfMap<K, V, Double> output) {
+        public void apply(double value, MapOfMap<K, V, Double> output) {
             double res = value;
             for (FuzzyFunction f : func)
                 res = f.evaluate(immutableList(res));
-            output.put(var, lit, output.get(var, lit) == null ? res : CONFLICT
+            output.put(var, lit, output.get(var, lit) == null ? res : conflict
                     .handle(output.get(var, lit), res));
         }
     }    
     
-    public static final <K, V> FuzzyRule<K, V> newRule(
+    public static final <K, V> FuzzyRule<K, V> rule(ConflictHandler handler,
             FuzzyCondition<K, V> condition) {
-        return new FuzzyRule(condition);
+        return new FuzzyRule(handler, condition);
     }
 }

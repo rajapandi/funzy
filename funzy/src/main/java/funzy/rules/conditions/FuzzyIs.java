@@ -28,11 +28,11 @@ import funzy.MapOfMap;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyExtractor<K, V> implements FuzzyCondition<K, V> {
+public class FuzzyIs<K, V> implements FuzzyCondition<K, V> {
     private K key;
     private V value;
 
-    private FuzzyExtractor(K variable, V literal) {
+    private FuzzyIs(K variable, V literal) {
         key = variable;
         value = literal;
     }
@@ -43,8 +43,7 @@ public class FuzzyExtractor<K, V> implements FuzzyCondition<K, V> {
                 + value + "\' is invalid");
     }
 
-    public static final <K, V> FuzzyCondition<K, V> newExtractor(K variable,
-            V literal) {
-        return new FuzzyExtractor<K, V>(variable, literal);
+    public static final <K, V> FuzzyCondition<K, V> is(K variable, V literal) {
+        return new FuzzyIs<K, V>(variable, literal);
     }
 }

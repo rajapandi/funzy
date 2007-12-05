@@ -23,8 +23,8 @@ import static funzy.HashMapOfMap.newHashMapOfMap;
 import static funzy.literals.SimpleDegree.HIGH;
 import static funzy.literals.SimpleDegree.LOW;
 import static funzy.literals.SimpleDegree.MEDIUM;
-import static funzy.rules.conditions.FuzzyExtractor.newExtractor;
-import static funzy.rules.conditions.FuzzyOperator.newOperator;
+import static funzy.rules.conditions.FuzzyIs.is;
+import static funzy.rules.conditions.FuzzyOperator.iff;
 import static funzy.rules.functions.FuzzyConditions.AND;
 import static funzy.rules.functions.FuzzyConditions.NOT;
 import static funzy.rules.functions.FuzzyConditions.OR;
@@ -58,47 +58,47 @@ public class FuzzyOperatorTest {
 
     @Test
     public void checkExtractor() {
-        assertEquals(.0, newExtractor(VARIABLE, LOW).evaluate(input));
-        assertEquals(.3, newExtractor(VARIABLE, MEDIUM).evaluate(input));
-        assertEquals(.8, newExtractor(VARIABLE, HIGH).evaluate(input));
+        assertEquals(.0, is(VARIABLE, LOW).evaluate(input));
+        assertEquals(.3, is(VARIABLE, MEDIUM).evaluate(input));
+        assertEquals(.8, is(VARIABLE, HIGH).evaluate(input));
     }
 
     @Test(expected = NullPointerException.class)
     public void checkExtractorVariableFailure() {
-        assertEquals(.0, newExtractor("error", LOW).evaluate(input));
+        assertEquals(.0, is("error", LOW).evaluate(input));
     }
 
     @Test
     public void checkOperatorNot() {
-        assertEquals(1.0, newOperator(NOT, newExtractor(VARIABLE, LOW))
+        assertEquals(1.0, iff(NOT, is(VARIABLE, LOW))
                 .evaluate(input));
-        assertEquals(.7, newOperator(not(), newExtractor(VARIABLE, MEDIUM))
+        assertEquals(.7, iff(not(), is(VARIABLE, MEDIUM))
                 .evaluate(input));
-        assertEquals(.2, newOperator(not(), newExtractor(VARIABLE, HIGH))
+        assertEquals(.2, iff(not(), is(VARIABLE, HIGH))
                 .evaluate(input), .01);
     }
 
     @Test
     public void checkOperatorVery() {
-        assertEquals(.09, newOperator(VERY, newExtractor(VARIABLE, MEDIUM))
+        assertEquals(.09, iff(VERY, is(VARIABLE, MEDIUM))
                 .evaluate(input));
     }
 
     @Test
     public void checkOperatorAND() {
-        assertEquals(.3, newOperator(AND, newExtractor(VARIABLE, MEDIUM),
-                newExtractor(VARIABLE, HIGH)).evaluate(input));
+        assertEquals(.3, iff(AND, is(VARIABLE, MEDIUM),
+                is(VARIABLE, HIGH)).evaluate(input));
     }
 
     @Test
     public void checkOperatorOR() {
-        assertEquals(.8, newOperator(OR, newExtractor(VARIABLE, MEDIUM),
-                newExtractor(VARIABLE, HIGH)).evaluate(input));
+        assertEquals(.8, iff(OR, is(VARIABLE, MEDIUM),
+                is(VARIABLE, HIGH)).evaluate(input));
     }
 
     @Test
     public void checkOperatorProduct() {
-        assertEquals(.24, newOperator(prod(), newExtractor(VARIABLE, MEDIUM),
-                newExtractor(VARIABLE, HIGH)).evaluate(input));
+        assertEquals(.24, iff(prod(), is(VARIABLE, MEDIUM),
+                is(VARIABLE, HIGH)).evaluate(input));
     }
 }

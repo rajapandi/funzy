@@ -21,10 +21,14 @@ package funzy.rules;
 
 import static com.google.common.collect.Lists.newLinkedList;
 import static funzy.HashMapOfMap.newHashMapOfMap;
+import static funzy.rules.FuzzyRule.rule;
 
 import java.util.List;
 
 import funzy.MapOfMap;
+import funzy.rules.conditions.FuzzyCondition;
+import funzy.variables.conflicts.ConflictHandler;
+import funzy.variables.conflicts.ConflictHandlerException;
 
 /**
  * Implementation of the fuzzy rule set.
@@ -32,17 +36,33 @@ import funzy.MapOfMap;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class FuzzyRuleSet {
-    private final List<FuzzyRule<String, Object>> rules = newLinkedList();
+public class FuzzyRuleSet<T extends Object> {
+    private final List<FuzzyRule<String, T>> rules = newLinkedList();
+    private ConflictHandler conflict ;
 
-    public void addRule(FuzzyRule<String, Object> rule) {
-        rules.add(rule);
+    private FuzzyRuleSet(ConflictHandler handler) {
+        conflict = handler;
     }
 
-    public MapOfMap<String, Object, Double> evaluate(MapOfMap<String, Object, Double> input) {
-        MapOfMap<String, Object, Double> output = newHashMapOfMap();
-        for (FuzzyRule<String, Object> rule : rules)
-            rule.evaluate(input,output);
+    public FuzzyRule<String, T> add(FuzzyCondition<String, T> condition) {
+        FuzzyRule<String,T> r = rule(conflict, condition);
+        rules.add(r);
+        return r;
+    }
+
+    public MapOfMap<String, T, Double> evaluate(
+            MapOfMap<String, T, Double> input) {
+        MapOfMap<String, T, Double> output = newHashMapOfMap();
+        for (FuzzyRule<String, T> rule : rules)
+            rule.evaluate(input, output);
         return output;
+    }
+
+    public static final FuzzyRuleSet newRuleSet() {
+        return newRuleSet(new ConflictHandlerException());
+    }
+
+    public static final FuzzyRuleSet newRuleSet(ConflictHandler handler) {
+        return new FuzzyRuleSet<String>(handler);
     }
 }

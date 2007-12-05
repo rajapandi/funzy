@@ -104,33 +104,33 @@ public class Variable<L> {
         return this;
     }
 
-    public Variable<L> addTriangle(L key, double a, double b, double c) {
+    public Variable<L> triangle(L key, double a, double b, double c) {
         return add(key, newFuzzyMembership(newPoint(a, fl), newPoint(b, ce),
                 newPoint(c, fl)));
     }
 
-    public Variable<L> addTrapezoid(L key, double a, double b, double c,
+    public Variable<L> trapezoid(L key, double a, double b, double c,
             double d) {
         return add(key, newFuzzyMembership(newPoint(a, fl), newPoint(b, ce),
                 newPoint(c, ce), newPoint(d, fl)));
     }
 
-    public Variable<L> addIncrease(L key, double a, double b) {
-        return b == max ? addTriangle(key, a, b, max) : addTrapezoid(key, a, b,
+    public Variable<L> increase(L key, double a, double b) {
+        return b == max ? triangle(key, a, b, max) : trapezoid(key, a, b,
                 max, max);
     }
 
-    public Variable<L> addDecrease(L key, double a, double b) {
-        return a == min ? addTriangle(key, min, a, b) : addTrapezoid(key, min,
+    public Variable<L> decrease(L key, double a, double b) {
+        return a == min ? triangle(key, min, a, b) : trapezoid(key, min,
                 min, a, b);
     }
 
     public Variable<L> addAfter(L key, double a) {
-        return addIncrease(key, a, a);
+        return increase(key, a, a);
     }
 
     public Variable<L> addBefore(L key, double a) {
-        return addDecrease(key, a, a);
+        return decrease(key, a, a);
     }
 
     public Map<L, Double> fuzzy(double value) throws IllegalRangeException {
@@ -155,18 +155,18 @@ public class Variable<L> {
         return DEFAULT.solve(newArrayList(points)).x();
     }
 
-    public static final <L extends Enum<L>> Variable newVariable(
+    public static final <L extends Enum<L>> Variable variable(
             Class<L> literals, String name, double min, double max) {
         return new Variable<L>(name, min, max, 0, 1,
                 new EnumMap<L, Membership>(literals));
     }
 
-    public static final <L extends Enum<L>> Variable newVariable(
+    public static final <L extends Enum<L>> Variable variable(
             Class<L> literals, double min, double max) {
-        return newVariable(literals, literals.getSimpleName(), min, max);
+        return variable(literals, literals.getSimpleName(), min, max);
     }
 
-    public static final <L> Variable newVariable(String name, double min,
+    public static final <L> Variable variable(String name, double min,
             double max) {
         return new Variable<L>(name, min, max, 0, 1,
                 new HashMap<L, Membership>());

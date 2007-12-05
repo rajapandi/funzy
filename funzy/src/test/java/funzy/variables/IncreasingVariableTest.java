@@ -23,7 +23,7 @@ import static com.google.common.collect.Maps.immutableMap;
 import static funzy.literals.SimpleDegree.HIGH;
 import static funzy.literals.SimpleDegree.LOW;
 import static funzy.literals.SimpleDegree.MEDIUM;
-import static funzy.variables.Variable.newVariable;
+import static funzy.variables.Variable.variable;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
@@ -43,8 +43,8 @@ public class IncreasingVariableTest {
 
     @Before
     public void setup() {
-        variable = newVariable(SimpleDegree.class, 1, 5).addIncrease(LOW, 2, 3)
-                .addIncrease(MEDIUM, 3, 4).addIncrease(HIGH, 3, 5);
+        variable = variable(SimpleDegree.class, 1, 5).increase(LOW, 2, 3)
+                .increase(MEDIUM, 3, 4).increase(HIGH, 3, 5);
         middle = (variable.floor() + variable.ceil()) / 2;
     }
 

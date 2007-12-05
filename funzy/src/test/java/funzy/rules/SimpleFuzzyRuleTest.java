@@ -20,8 +20,8 @@
 package funzy.rules;
 
 import static funzy.HashMapOfMap.newHashMapOfMap;
-import static funzy.rules.FuzzyRule.newRule;
-import static funzy.rules.conditions.FuzzyExtractor.newExtractor;
+import static funzy.rules.FuzzyRule.rule;
+import static funzy.rules.conditions.FuzzyIs.is;
 import static funzy.rules.functions.FuzzyAssigners.VERY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -30,6 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import funzy.MapOfMap;
+import funzy.variables.conflicts.ConflictHandlerException;
 
 /**
  * Test of a simple fuzzy rule.
@@ -48,49 +49,49 @@ public class SimpleFuzzyRuleTest {
 
     @Before
     public void setup() {
-        rule = newRule(newExtractor(INPUT, LOW));
+        rule = rule(new ConflictHandlerException(), is(INPUT, LOW));
         input = newHashMapOfMap();
         output = newHashMapOfMap();
     }
 
     @Test
     public void ruleFits1() {
-        rule.assign(OUTPUT, HIGH).evaluate(input.put(INPUT, LOW, 1.0), output);
+        rule.then(OUTPUT, HIGH).evaluate(input.put(INPUT, LOW, 1.0), output);
         assertEquals(1.0, output.get(OUTPUT, HIGH));
     }
 
     @Test
     public void ruleFitsDot5() {
-        rule.assign(OUTPUT, HIGH).evaluate(input.put(INPUT, LOW, .5), output);
+        rule.then(OUTPUT, HIGH).evaluate(input.put(INPUT, LOW, .5), output);
         assertEquals(.5, output.get(OUTPUT, HIGH));
     }
 
     @Test
     public void ruleFitsVery() {
-        rule.assign(OUTPUT, HIGH, VERY).evaluate(input.put(INPUT, LOW, .25), output);
+        rule.then(OUTPUT, HIGH, VERY).evaluate(input.put(INPUT, LOW, .25), output);
         assertEquals(.5, output.get(OUTPUT, HIGH));
     }
     
     @Test
     public void ruleFitsTwo() {
-        rule.assign(OUTPUT, HIGH, VERY).assign(OUTPUT, LOW).evaluate(input.put(INPUT, LOW, .25), output);
+        rule.then(OUTPUT, HIGH, VERY).then(OUTPUT, LOW).evaluate(input.put(INPUT, LOW, .25), output);
         assertEquals(.5, output.get(OUTPUT, HIGH));
         assertEquals(.25, output.get(OUTPUT, LOW));
     }
     
     @Test
     public void ruleDoesNotFit() {
-        rule.assign(OUTPUT, HIGH).evaluate(input.put(INPUT, LOW, .0), output);
+        rule.then(OUTPUT, HIGH).evaluate(input.put(INPUT, LOW, .0), output);
         assertTrue("Rule output should be empty", output.isEmpty());
     }
  
     @Test(expected=RuntimeException.class)
     public void ruleVariableError() {
-        rule.assign(OUTPUT, HIGH).evaluate(input.put(OUTPUT, LOW, .0), output);
+        rule.then(OUTPUT, HIGH).evaluate(input.put(OUTPUT, LOW, .0), output);
     }
 
     @Test(expected=RuntimeException.class)
     public void ruleLiteralError() {
-        rule.assign(OUTPUT, HIGH).evaluate(input.put(INPUT, HIGH, .0), output);
+        rule.then(OUTPUT, HIGH).evaluate(input.put(INPUT, HIGH, .0), output);
     }
 }
