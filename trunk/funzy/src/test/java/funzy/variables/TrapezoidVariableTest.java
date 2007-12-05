@@ -23,7 +23,7 @@ import static com.google.common.collect.Maps.immutableMap;
 import static funzy.literals.SimpleDegree.HIGH;
 import static funzy.literals.SimpleDegree.LOW;
 import static funzy.literals.SimpleDegree.MEDIUM;
-import static funzy.variables.Variable.newVariable;
+import static funzy.variables.Variable.variable;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
@@ -43,10 +43,10 @@ public class TrapezoidVariableTest {
 
     @Before
     public void setup() {
-        variable = newVariable(SimpleDegree.class, 1, 5)
-                .addTrapezoid(LOW, 1, 1, 2, 4)
-                .addTrapezoid(MEDIUM, 1, 2, 4, 5)
-                .addTrapezoid(HIGH, 2, 4, 5, 5);
+        variable = variable(SimpleDegree.class, 1, 5)
+                .trapezoid(LOW, 1, 1, 2, 4)
+                .trapezoid(MEDIUM, 1, 2, 4, 5)
+                .trapezoid(HIGH, 2, 4, 5, 5);
         middle = (variable.floor() + variable.ceil()) / 2;
     }
 

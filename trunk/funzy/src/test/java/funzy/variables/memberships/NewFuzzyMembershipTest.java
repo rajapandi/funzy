@@ -20,7 +20,7 @@
 package funzy.variables.memberships;
 
 import static funzy.literals.SimpleDegree.LOW;
-import static funzy.variables.Variable.newVariable;
+import static funzy.variables.Variable.variable;
 import static funzy.variables.memberships.FuzzyMembership.newFuzzyMembership;
 import static funzy.variables.memberships.PointMembership.newPoint;
 
@@ -41,7 +41,7 @@ public class NewFuzzyMembershipTest {
 
 	@Before
 	public void setup() {
-		variable = newVariable(SimpleDegree.class, .0, 10.0);
+		variable = variable(SimpleDegree.class, .0, 10.0);
 	}
 
 	@Test

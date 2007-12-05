@@ -20,9 +20,9 @@
 package funzy.rules;
 
 import static funzy.HashMapOfMap.newHashMapOfMap;
-import static funzy.rules.FuzzyRule.newRule;
-import static funzy.rules.conditions.FuzzyExtractor.newExtractor;
-import static funzy.rules.conditions.FuzzyOperator.newOperator;
+import static funzy.rules.FuzzyRule.rule;
+import static funzy.rules.conditions.FuzzyIs.is;
+import static funzy.rules.conditions.FuzzyOperator.iff;
 import static funzy.rules.functions.FuzzyAssigners.VERY;
 import static funzy.rules.functions.FuzzyConditions.OR;
 import static org.junit.Assert.assertEquals;
@@ -32,6 +32,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import funzy.MapOfMap;
+import funzy.variables.conflicts.ConflictHandlerException;
 
 /**
  * Test of an OR fuzzy rule.
@@ -51,36 +52,36 @@ public class OrFuzzyRuleTest {
 
     @Before
     public void setup() {
-        rule = newRule(newOperator(OR, newExtractor(INPUT, LOW),
-                newExtractor(INPUT, MEDIUM)));
+        rule = rule(new ConflictHandlerException(), iff(OR, is(INPUT, LOW), is(
+                INPUT, MEDIUM)));
         input = newHashMapOfMap();
         output = newHashMapOfMap();
     }
 
     @Test
     public void ruleFits1() {
-        rule.assign(OUTPUT, HIGH).evaluate(
+        rule.then(OUTPUT, HIGH).evaluate(
                 input.put(INPUT, LOW, 1.0).put(INPUT, MEDIUM, 1.0), output);
         assertEquals(1.0, output.get(OUTPUT, HIGH));
     }
 
     @Test
     public void ruleFitsDot5() {
-        rule.assign(OUTPUT, HIGH).evaluate(
+        rule.then(OUTPUT, HIGH).evaluate(
                 input.put(INPUT, LOW, .5).put(INPUT, MEDIUM, 1.0), output);
         assertEquals(1.0, output.get(OUTPUT, HIGH));
     }
 
     @Test
     public void ruleFitsVery() {
-        rule.assign(OUTPUT, HIGH, VERY).evaluate(
+        rule.then(OUTPUT, HIGH, VERY).evaluate(
                 input.put(INPUT, LOW, .25).put(INPUT, MEDIUM, 1.0), output);
         assertEquals(1.0, output.get(OUTPUT, HIGH));
     }
 
     @Test
     public void ruleFitsTwo() {
-        rule.assign(OUTPUT, HIGH, VERY).assign(OUTPUT, LOW).evaluate(
+        rule.then(OUTPUT, HIGH, VERY).then(OUTPUT, LOW).evaluate(
                 input.put(INPUT, LOW, .25).put(INPUT, MEDIUM, 1.0), output);
         assertEquals(1.0, output.get(OUTPUT, HIGH));
         assertEquals(1.0, output.get(OUTPUT, LOW));
@@ -88,20 +89,20 @@ public class OrFuzzyRuleTest {
 
     @Test
     public void ruleDoesNotFit() {
-        rule.assign(OUTPUT, HIGH).evaluate(
+        rule.then(OUTPUT, HIGH).evaluate(
                 input.put(INPUT, LOW, .0).put(INPUT, MEDIUM, .0), output);
         assertTrue("Rule output should be empty", output.isEmpty());
     }
 
     @Test(expected = RuntimeException.class)
     public void ruleVariableError() {
-        rule.assign(OUTPUT, HIGH).evaluate(
+        rule.then(OUTPUT, HIGH).evaluate(
                 input.put(OUTPUT, LOW, .0).put(INPUT, MEDIUM, 1.0), output);
     }
 
     @Test(expected = RuntimeException.class)
     public void ruleLiteralError() {
-        rule.assign(OUTPUT, HIGH).evaluate(
+        rule.then(OUTPUT, HIGH).evaluate(
                 input.put(INPUT, HIGH, .0).put(INPUT, MEDIUM, 1.0), output);
     }
 }

@@ -19,7 +19,7 @@
 // THE SOFTWARE. 
 package funzy.variables;
 
-import static funzy.variables.Variable.newVariable;
+import static funzy.variables.Variable.variable;
 
 import org.junit.Test;
 
@@ -34,26 +34,26 @@ import funzy.literals.SimpleDegree;
 public class NewVariableTest {
 	@Test
 	public void CheckNewEnumIntVariable() {
-		newVariable(SimpleDegree.class,0.0,100.0);
+	    variable(SimpleDegree.class,0.0,100.0);
 	}
 	
 	@Test(expected=IllegalRangeException.class)
 	public void newEnumIntVariable() {
-	    newVariable(SimpleDegree.class,100.0,0.0);
+	    variable(SimpleDegree.class,100.0,0.0);
 	}
 
 	@Test
 	public void newIntVariable() {
-	    newVariable("temperature",-10,10);
+	    variable("temperature",-10,10);
 	}
 	
 	@Test
 	public void newDoubleVariable() {
-	    newVariable("length",0.0,100.0);
+	    variable("length",0.0,100.0);
 	}
 	
 	@Test(expected=IllegalRangeException.class)
 	public void newDoubleVariableRangeFailure() {
-	    newVariable("Incorrect range",100.0,0.0);
+	    variable("Incorrect range",100.0,0.0);
 	}
 }

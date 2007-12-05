@@ -23,7 +23,7 @@ import static com.google.common.collect.Maps.immutableMap;
 import static funzy.literals.SimpleDegree.HIGH;
 import static funzy.literals.SimpleDegree.LOW;
 import static funzy.literals.SimpleDegree.MEDIUM;
-import static funzy.variables.Variable.newVariable;
+import static funzy.variables.Variable.variable;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
@@ -43,9 +43,9 @@ public class TriangleVariableTest {
 
     @Before
     public void setup() {
-        variable = newVariable(SimpleDegree.class, 1, 5).addTriangle(
-                LOW, 1, 1, 3).addTriangle(MEDIUM, 2, 3, 4)
-                .addTriangle(HIGH, 1, 5, 5);
+        variable = variable(SimpleDegree.class, 1, 5).triangle(
+                LOW, 1, 1, 3).triangle(MEDIUM, 2, 3, 4)
+                .triangle(HIGH, 1, 5, 5);
         middle = (variable.floor() + variable.ceil()) / 2;
     }
 
