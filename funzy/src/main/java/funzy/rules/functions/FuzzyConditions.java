@@ -25,7 +25,7 @@ package funzy.rules.functions;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public final class FuzzyInterpreters {
+public final class FuzzyConditions {
     private static final Double CONST_LITTLE = 1.3;
     private static final Double CONST_SLIGHTLY = 1.7;
     private static final Double CONST_VERY = 2.0;
@@ -33,7 +33,7 @@ public final class FuzzyInterpreters {
     private static final Double CONST_VERY_VERY = 4.0;
     private static final Double CONST_SOMEWHAT = 0.5;
 
-    private FuzzyInterpreters() {
+    private FuzzyConditions() {
     }
 
     public static final FuzzyFunction not() {

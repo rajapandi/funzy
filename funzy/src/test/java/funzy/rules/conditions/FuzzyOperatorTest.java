@@ -25,12 +25,12 @@ import static funzy.literals.SimpleDegree.LOW;
 import static funzy.literals.SimpleDegree.MEDIUM;
 import static funzy.rules.conditions.FuzzyExtractor.newExtractor;
 import static funzy.rules.conditions.FuzzyOperator.newOperator;
-import static funzy.rules.functions.FuzzyInterpreters.AND;
-import static funzy.rules.functions.FuzzyInterpreters.NOT;
-import static funzy.rules.functions.FuzzyInterpreters.OR;
-import static funzy.rules.functions.FuzzyInterpreters.VERY;
-import static funzy.rules.functions.FuzzyInterpreters.not;
-import static funzy.rules.functions.FuzzyInterpreters.prod;
+import static funzy.rules.functions.FuzzyConditions.AND;
+import static funzy.rules.functions.FuzzyConditions.NOT;
+import static funzy.rules.functions.FuzzyConditions.OR;
+import static funzy.rules.functions.FuzzyConditions.VERY;
+import static funzy.rules.functions.FuzzyConditions.not;
+import static funzy.rules.functions.FuzzyConditions.prod;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;

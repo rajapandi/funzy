@@ -38,7 +38,9 @@ public class FuzzyExtractor<K, V> implements FuzzyCondition<K, V> {
     }
 
     public Double evaluate(MapOfMap<K, V, Double> provider) {
-        return nonNull(nonNull(provider.get(key)).get(value));
+        return nonNull(nonNull(provider.get(key),
+                "Variable \'" + key + "\' is invalid").get(value), "Literal \'"
+                + value + "\' is invalid");
     }
 
     public static final <K, V> FuzzyCondition<K, V> newExtractor(K variable,
