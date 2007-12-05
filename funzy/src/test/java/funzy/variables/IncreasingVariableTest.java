@@ -19,14 +19,12 @@
 // THE SOFTWARE. 
 package funzy.variables;
 
-import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.collect.Maps.immutableMap;
 import static funzy.literals.SimpleDegree.HIGH;
 import static funzy.literals.SimpleDegree.LOW;
 import static funzy.literals.SimpleDegree.MEDIUM;
 import static funzy.variables.Variable.newVariable;
 import static org.junit.Assert.assertEquals;
-
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -43,11 +41,10 @@ public class IncreasingVariableTest {
     private Variable<SimpleDegree> variable;
     private double middle;
 
-    @Before 
+    @Before
     public void setup() {
-        variable = newVariable(SimpleDegree.class, 1, 5)
-                .addIncrease(LOW, 2, 3).addIncrease(
-                        MEDIUM, 3, 4).addIncrease(HIGH, 3, 5);
+        variable = newVariable(SimpleDegree.class, 1, 5).addIncrease(LOW, 2, 3)
+                .addIncrease(MEDIUM, 3, 4).addIncrease(HIGH, 3, 5);
         middle = (variable.floor() + variable.ceil()) / 2;
     }
 
@@ -125,55 +122,67 @@ public class IncreasingVariableTest {
     public void fuzzyDegreeHigh5() {
         assertEquals(variable.ceil(), variable.fuzzy(5).get(HIGH));
     }
-    
-    private static final Map<SimpleDegree,Double> map(SimpleDegree key, double value) {
-        Map<SimpleDegree,Double> res = newHashMap();
-        res.put(key, value);
-        return res;
-    }
-    
+
     @Test
     public void unfuzzyDegreeLow1() {
-        assertEquals(3.75, variable.unfuzzy(map(LOW,1)));
+        assertEquals(3.75, variable.unfuzzy(immutableMap(LOW, 1.0)));
     }
-    
+
     @Test
     public void unfuzzyDegreeLowDot5() {
-        assertEquals(3.625, variable.unfuzzy(map(LOW,.5)));
+        assertEquals(3.625, variable.unfuzzy(immutableMap(LOW, .5)));
     }
 
     @Test
     public void unfuzzyDegreeLow0() {
-        assertEquals(2.0, variable.unfuzzy(map(LOW,0)));
+        assertEquals(2.0, variable.unfuzzy(immutableMap(LOW, .0)));
     }
 
     @Test
     public void unfuzzyDegreeMedium1() {
-        assertEquals(4.25, variable.unfuzzy(map(MEDIUM,1)));
+        assertEquals(4.25, variable.unfuzzy(immutableMap(MEDIUM, 1.0)));
     }
-    
+
     @Test
     public void unfuzzyDegreeMediumDot5() {
-        assertEquals(4.125, variable.unfuzzy(map(MEDIUM,.5)));
+        assertEquals(4.125, variable.unfuzzy(immutableMap(MEDIUM, .5)));
     }
 
     @Test
     public void unfuzzyDegreeMedium0() {
-        assertEquals(3.0, variable.unfuzzy(map(MEDIUM,0)));
+        assertEquals(3.0, variable.unfuzzy(immutableMap(MEDIUM, .0)));
     }
-    
+
     @Test
     public void unfuzzyDegreeHigh1() {
-        assertEquals(4.33, variable.unfuzzy(map(HIGH,1)),.01);
+        assertEquals(4.33, variable.unfuzzy(immutableMap(HIGH, 1.0)), .01);
     }
-    
+
     @Test
     public void unfuzzyDegreeHighDot5() {
-        assertEquals(4.25, variable.unfuzzy(map(HIGH,.5)));
+        assertEquals(4.25, variable.unfuzzy(immutableMap(HIGH, .5)));
     }
 
     @Test
     public void unfuzzyDegreeHigh0() {
-        assertEquals(3.0, variable.unfuzzy(map(HIGH,0)));
+        assertEquals(3.0, variable.unfuzzy(immutableMap(HIGH, .0)));
+    }
+
+    @Test
+    public void unfuzzyDegrees1() {
+        assertEquals(4.11, variable.unfuzzy(immutableMap(LOW, 1.0, MEDIUM, 1.0,
+                HIGH, 1.0)), .01);
+    }
+
+    @Test
+    public void unfuzzyDegreesDot5() {
+        assertEquals(4.0, variable.unfuzzy(immutableMap(LOW, .5, MEDIUM, .5,
+                HIGH, .5)));
+    }
+
+    @Test
+    public void unfuzzyDegrees0() {
+        assertEquals(2.0, variable.unfuzzy(immutableMap(LOW, .0, MEDIUM, .0,
+                HIGH, .0)));
     }
 }

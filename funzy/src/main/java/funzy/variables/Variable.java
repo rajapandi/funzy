@@ -22,6 +22,7 @@ package funzy.variables;
 import static com.google.common.base.Objects.nonNull;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.collect.Sets.newSortedArraySet;
 import static funzy.Configuration.LOG;
 import static funzy.variables.IllegalRangeException.checkRange;
 import static funzy.variables.memberships.FuzzyMembership.newFuzzyMembership;
@@ -32,8 +33,8 @@ import static java.util.logging.Logger.getLogger;
 
 import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
@@ -146,12 +147,12 @@ public class Variable<L> {
 
     public double unfuzzy(Map<L, Double> confidences)
             throws IllegalRangeException {
-        List<PointMembership> points = newArrayList();
+        Set<PointMembership> points = newSortedArraySet();
         for (Entry<L, Double> confidence : nonNull(confidences,
                 "Confidence values cannot be null").entrySet())
             points.add(newPoint(members.get(confidence.getKey()).unfuzzy(
                     confidence.getValue()), confidence.getValue()));
-        return DEFAULT.solve(points).x();
+        return DEFAULT.solve(newArrayList(points)).x();
     }
 
     public static final <L extends Enum<L>> Variable newVariable(
