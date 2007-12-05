@@ -33,10 +33,10 @@ import funzy.variables.memberships.PointMembership;
 public class LeftMostMaxSolver implements Solver {
 
     public PointMembership solve(List<PointMembership> points) {
-        PointMembership max = null;
+        PointMembership left = null;
         for (PointMembership p : points)
-            if (max == null || max.y() < p.y())
-                max = p;
-        return max;
+            if (left == null || left.y() < p.y())
+                left = p;
+        return left;
     }
 }

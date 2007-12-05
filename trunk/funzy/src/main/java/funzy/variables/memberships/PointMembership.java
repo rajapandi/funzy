@@ -28,7 +28,7 @@ import funzy.variables.IllegalRangeException;
  * @author <a href="romain.rouvoy+funzy@gmail.com">Romain Rouvoy</a>
  * @version $Revision$
  */
-public class PointMembership implements Membership {
+public class PointMembership implements Membership, Comparable<PointMembership> {
 	private final double x, y;
 
 	private PointMembership(double abs, double ord) {
@@ -63,7 +63,16 @@ public class PointMembership implements Membership {
 		return "(" + x + "," + y + ")";
 	}
 
+    public int compareTo(PointMembership o) {
+        if (x<o.x)
+            return -1;
+        if (x==o.x)
+            return (int) (y-o.y);
+        return 1;
+    }
+    
 	public static final PointMembership newPoint(double x, double y) {
 		return new PointMembership(x, y);
 	}
+
 }
