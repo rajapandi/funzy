@@ -1,5 +1,5 @@
 #summary History of the project.
 
-*07/12/04* - Funzy 1.0 is released on [http://code.google.com/p/funzy/downloads/list Downloads] section.
+*07/12/05* - Funzy 1.0 is released on [http://code.google.com/p/funzy/downloads/list Downloads] section.
 
 *07/11/01* - Funzy project is created on [http://code.google.com GoogleCode].
